@@ -2,7 +2,10 @@
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="KR Akademi">
 <title>KR Akademi 4. Fasikül</title>
 <style>
 :root{--primary:#6366f1;--secondary:#818cf8;--accent:#fbbf24;--bg:#0f0f1a;--surface:#1a1a2e;--surface2:#16213e;--text:#e8e8f0;--text2:#a0a0b8;--correct:#4ade80;--wrong:#f87171;--xp:#fbbf24;--r:16px;--sh:0 8px 32px rgba(0,0,0,.4)}
@@ -143,6 +146,28 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,san
 .blank-inp{border:none;border-bottom:2px solid var(--primary);background:transparent;color:var(--text);padding:2px 7px;font-size:.97rem;width:90px;text-align:center;outline:none;transition:border-color .2s}
 .blank-inp:focus{border-color:var(--accent)}.blank-inp.c-i{border-color:var(--correct);color:var(--correct)}.blank-inp.w-i{border-color:var(--wrong);color:var(--wrong)}
 @media(max-width:600px){.stats-row{grid-template-columns:repeat(2,1fr)}.topics-grid{grid-template-columns:1fr}.result-det{grid-template-columns:repeat(2,1fr)}.hdr h1{font-size:.85rem}}
+/* ── ÇİZİM ALANI ── */
+.q-with-canvas{display:flex;flex-direction:column;gap:14px}
+.q-with-canvas .quiz-card{flex:1;min-width:0}
+.q-with-canvas .canvas-side{flex:1;min-width:0}
+@media(orientation:landscape){
+  .q-with-canvas{flex-direction:row;align-items:flex-start}
+  .q-with-canvas .quiz-card{flex:1}
+  .q-with-canvas .canvas-side{flex:1;position:sticky;top:70px}
+}
+.canvas-wrap{border-radius:12px;overflow:hidden;border:2px solid var(--primary);background:var(--surface)}
+.canvas-toolbar{display:flex;align-items:center;gap:8px;padding:8px 12px;background:var(--surface2);flex-wrap:wrap}
+.canvas-toolbar button{padding:5px 12px;border-radius:20px;border:2px solid var(--primary);background:transparent;color:var(--primary);cursor:pointer;font-size:.78rem;font-weight:600;transition:all .2s}
+.canvas-toolbar button.active{background:var(--primary);color:#fff}
+.canvas-toolbar button:hover:not(.active){background:rgba(99,102,241,.15)}
+.color-btn{width:26px!important;height:26px!important;border-radius:50%!important;padding:0!important;border:3px solid transparent!important;cursor:pointer;transition:all .2s}
+.color-btn.active{border-color:#fff!important;transform:scale(1.2)}
+.size-slider{-webkit-appearance:none;width:80px;height:4px;border-radius:2px;background:var(--primary);outline:none;cursor:pointer}
+.size-slider::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;border-radius:50%;background:var(--primary);cursor:pointer}
+.drawing-canvas{display:block;width:100%;touch-action:none;cursor:crosshair;background:#fff}
+.canvas-toggle-btn{display:flex;align-items:center;gap:6px;margin-top:12px;padding:8px 16px;border-radius:20px;border:2px dashed var(--primary);background:rgba(99,102,241,.06);color:var(--primary);cursor:pointer;font-size:.82rem;font-weight:600;width:100%;justify-content:center;transition:all .2s}
+.canvas-toggle-btn:hover{background:rgba(99,102,241,.15)}
+.canvas-side-label{font-size:.78rem;color:var(--text2);padding:6px 12px;background:var(--surface2);border-radius:8px 8px 0 0;font-weight:600;display:flex;align-items:center;gap:5px}
 /* ── KESİR STILLER ── */
 .frac-q{display:inline;line-height:2.4}
 .frac-inline{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;margin:0 3px;font-size:.9em}
@@ -1024,25 +1049,32 @@ function renderQuiz(c,t){
   let tl=35;
   const labels=['A','B','C','D','E'];
   c.innerHTML=`
-    <div class="quiz-card">
-      <div class="quiz-meta">
-        <span>Soru ${i+1}/${t.quiz.length}</span>
-        <span>✅${S.cur.qScore.c} ❌${S.cur.qScore.w}</span>
-        <span class="q-timer">⏱️ <span id="qt">${tl}</span>s</span>
+    <div class="q-with-canvas">
+      <div class="quiz-card">
+        <div class="quiz-meta">
+          <span>Soru ${i+1}/${t.quiz.length}</span>
+          <span>✅${S.cur.qScore.c} ❌${S.cur.qScore.w}</span>
+          <span class="q-timer">⏱️ <span id="qt">${tl}</span>s</span>
+        </div>
+        <div class="timer-bar"><div class="timer-fill" id="tf" style="width:100%"></div></div>
+        <p class="q-text">${q.q}</p>
+        <div class="options" id="opts">
+          ${q.opts.map((o,j)=>`
+            <button class="option" id="opt${j}" onclick="chkAns(${j},${j===q.ans})">
+              <span class="opt-lbl">${labels[j]}</span>${fmtOpt(o)}
+            </button>
+          `).join('')}
+        </div>
+        <div class="q-fb" id="fb"></div>
+        <div class="q-nav">
+          <span style="font-size:.78rem;color:var(--text2)">📌 ${t.name}</span>
+          <button class="btn btn-p btn-sm" id="nxtBtn" style="display:none" onclick="nextQ()">Sonraki →</button>
+        </div>
+        <button class="canvas-toggle-btn" id="quiz-toggle-btn" onclick="toggleCanvas('quiz-canvas')">✏️ Çözüm Alanını Aç / Kapat</button>
       </div>
-      <div class="timer-bar"><div class="timer-fill" id="tf" style="width:100%"></div></div>
-      <p class="q-text">${q.q}</p>
-      <div class="options" id="opts">
-        ${q.opts.map((o,j)=>`
-          <button class="option" id="opt${j}" onclick="chkAns(${j},${j===q.ans})">
-            <span class="opt-lbl">${labels[j]}</span>${fmtOpt(o)}
-          </button>
-        `).join('')}
-      </div>
-      <div class="q-fb" id="fb"></div>
-      <div class="q-nav">
-        <span style="font-size:.78rem;color:var(--text2)">📌 ${t.name}</span>
-        <button class="btn btn-p btn-sm" id="nxtBtn" style="display:none" onclick="nextQ()">Sonraki →</button>
+      <div class="canvas-side" id="quiz-canvas" style="display:none">
+        <div class="canvas-side-label">✏️ Çözüm Alanı</div>
+        ${buildCanvas('quiz-canvas')}
       </div>
     </div>
   `;
@@ -1224,30 +1256,37 @@ function renderTestQuestion(container,t,testIdx){
   const labels=['A','B','C','D','E'];
   const total=test.questions.length;
   container.innerHTML=`
-    <div class="quiz-card">
-      <div class="quiz-meta">
-        <span style="color:var(--primary);font-weight:700">${test.name}</span>
-        <span>Soru ${qi+1}/${total}</span>
-        <span>✅${S.cur.qScore.c} ❌${S.cur.qScore.w}</span>
+    <div class="q-with-canvas">
+      <div class="quiz-card">
+        <div class="quiz-meta">
+          <span style="color:var(--primary);font-weight:700">${test.name}</span>
+          <span>Soru ${qi+1}/${total}</span>
+          <span>✅${S.cur.qScore.c} ❌${S.cur.qScore.w}</span>
+        </div>
+        <div style="height:5px;background:var(--surface2);border-radius:3px;margin-bottom:16px;overflow:hidden">
+          <div style="height:100%;width:${(qi/total)*100}%;background:linear-gradient(90deg,var(--primary),var(--secondary));border-radius:3px;transition:width .4s"></div>
+        </div>
+        <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:14px">
+          <span style="background:var(--primary);color:#fff;border-radius:50%;width:28px;height:28px;display:inline-flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:700;flex-shrink:0">${q.num}</span>
+          <p class="q-text" style="margin:0">${q.q}</p>
+        </div>
+        <div class="options" id="topts">
+          ${q.opts.map((o,j)=>`
+            <button class="option" id="topt${j}" onclick="chkTestAns(${j},${j===q.ans},${testIdx})">
+              <span class="opt-lbl">${labels[j]}</span>${fmtOpt(o)}
+            </button>
+          `).join('')}
+        </div>
+        <div class="q-fb" id="tfb"></div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:16px">
+          ${qi>0?`<button class="btn btn-o btn-sm" onclick="prevTestQ(${testIdx})">← Geri</button>`:'<span></span>'}
+          <button class="btn btn-p btn-sm" id="tnxt" style="display:none" onclick="nextTestQ(${testIdx})">${qi<total-1?'Sonraki →':'Sonuçları Gör 🎯'}</button>
+        </div>
+        <button class="canvas-toggle-btn" onclick="toggleCanvas('test-canvas')">✏️ Çözüm Alanını Aç / Kapat</button>
       </div>
-      <div style="height:5px;background:var(--surface2);border-radius:3px;margin-bottom:16px;overflow:hidden">
-        <div style="height:100%;width:${(qi/total)*100}%;background:linear-gradient(90deg,var(--primary),var(--secondary));border-radius:3px;transition:width .4s"></div>
-      </div>
-      <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:14px">
-        <span style="background:var(--primary);color:#fff;border-radius:50%;width:28px;height:28px;display:inline-flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:700;flex-shrink:0">${q.num}</span>
-        <p class="q-text" style="margin:0">${q.q}</p>
-      </div>
-      <div class="options" id="topts">
-        ${q.opts.map((o,j)=>`
-          <button class="option" id="topt${j}" onclick="chkTestAns(${j},${j===q.ans},${testIdx})">
-            <span class="opt-lbl">${labels[j]}</span>${fmtOpt(o)}
-          </button>
-        `).join('')}
-      </div>
-      <div class="q-fb" id="tfb"></div>
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:16px">
-        ${qi>0?`<button class="btn btn-o btn-sm" onclick="prevTestQ(${testIdx})">← Geri</button>`:'<span></span>'}
-        <button class="btn btn-p btn-sm" id="tnxt" style="display:none" onclick="nextTestQ(${testIdx})">${qi<total-1?'Sonraki →':'Sonuçları Gör 🎯'}</button>
+      <div class="canvas-side" id="test-canvas" style="display:none">
+        <div class="canvas-side-label">✏️ Çözüm Alanı</div>
+        ${buildCanvas('test-canvas')}
       </div>
     </div>
   `;
@@ -1348,14 +1387,21 @@ function renderFinalQ(){
         <div style="height:100%;width:${finalIdx/finalQs.length*100}%;background:linear-gradient(90deg,var(--primary),var(--secondary));border-radius:3px;transition:width .5s"></div>
       </div>
     </div>
-    <div class="quiz-card">
-      <div class="quiz-meta"><span>✅${finalScore.c}</span><span>❌${finalScore.w}</span><span style="color:var(--xp)">⚡${finalScore.c*10} XP</span></div>
-      <p class="q-text">${q.q}</p>
-      <div class="options" id="fopts">
-        ${q.opts.map((o,j)=>`<button class="option" id="fo${j}" onclick="chkFinal(${j},${j===q.ans})"><span class="opt-lbl">${labels[j]}</span>${fmtOpt(o)}</button>`).join('')}
+    <div class="q-with-canvas">
+      <div class="quiz-card">
+        <div class="quiz-meta"><span>✅${finalScore.c}</span><span>❌${finalScore.w}</span><span style="color:var(--xp)">⚡${finalScore.c*10} XP</span></div>
+        <p class="q-text">${q.q}</p>
+        <div class="options" id="fopts">
+          ${q.opts.map((o,j)=>`<button class="option" id="fo${j}" onclick="chkFinal(${j},${j===q.ans})"><span class="opt-lbl">${labels[j]}</span>${fmtOpt(o)}</button>`).join('')}
+        </div>
+        <div class="q-fb" id="ffb"></div>
+        <div style="text-align:right;margin-top:14px"><button class="btn btn-p btn-sm" id="fnxt" style="display:none" onclick="nextFinal()">Sonraki →</button></div>
+        <button class="canvas-toggle-btn" onclick="toggleCanvas('final-canvas')">✏️ Çözüm Alanını Aç / Kapat</button>
       </div>
-      <div class="q-fb" id="ffb"></div>
-      <div style="text-align:right;margin-top:14px"><button class="btn btn-p btn-sm" id="fnxt" style="display:none" onclick="nextFinal()">Sonraki →</button></div>
+      <div class="canvas-side" id="final-canvas" style="display:none">
+        <div class="canvas-side-label">✏️ Çözüm Alanı</div>
+        ${buildCanvas('final-canvas')}
+      </div>
     </div>
   `;
   qTimer=setInterval(()=>{
@@ -1468,6 +1514,151 @@ function toggleTheme(){
 
 // ── HELPERS ───────────────────────────────────────────
 function set(id,val){const el=document.getElementById(id);if(el)el.textContent=val;}
+
+// ── ÇİZİM ALANI (Apple Pencil & Parmak) ──────────────
+function buildCanvas(id){
+  return `
+  <div class="canvas-wrap">
+    <div class="canvas-toolbar">
+      <button class="active" id="${id}-pen" onclick="setTool('${id}','pen')">🖊 Kalem</button>
+      <button id="${id}-eraser" onclick="setTool('${id}','eraser')">🧹 Silgi</button>
+      <span style="color:var(--text2);font-size:.75rem">Renk:</span>
+      <button class="color-btn active" id="${id}-col-black" style="background:#1a1a2e;border-color:#888" onclick="setColor('${id}','#1a1a2e')"></button>
+      <button class="color-btn" id="${id}-col-blue" style="background:#3b82f6" onclick="setColor('${id}','#3b82f6')"></button>
+      <button class="color-btn" id="${id}-col-red" style="background:#ef4444" onclick="setColor('${id}','#ef4444')"></button>
+      <button class="color-btn" id="${id}-col-green" style="background:#22c55e" onclick="setColor('${id}','#22c55e')"></button>
+      <span style="color:var(--text2);font-size:.75rem">Kalınlık:</span>
+      <input class="size-slider" type="range" min="1" max="20" value="3" id="${id}-size" oninput="setSize('${id}',this.value)">
+      <button style="margin-left:auto" onclick="clearCanvas('${id}')">🗑 Temizle</button>
+    </div>
+    <canvas class="drawing-canvas" id="${id}-cvs" height="320"
+      ontouchstart="cvStart(event,'${id}')" ontouchmove="cvMove(event,'${id}')" ontouchend="cvEnd(event,'${id}')"
+      onmousedown="cvStart(event,'${id}')" onmousemove="cvMove(event,'${id}')" onmouseup="cvEnd(event,'${id}')" onmouseleave="cvEnd(event,'${id}')">
+    </canvas>
+  </div>`;
+}
+
+const cvState = {};
+
+function initCanvas(id){
+  const cvs = document.getElementById(id+'-cvs');
+  if(!cvs || cvs._init) return;
+  cvs._init = true;
+  cvs.width = cvs.offsetWidth || cvs.parentElement.offsetWidth || 600;
+  cvState[id] = { drawing: false, tool: 'pen', color: '#1a1a2e', size: 3 };
+  const ctx = cvs.getContext('2d');
+  ctx.lineCap = 'round';
+  ctx.lineJoin = 'round';
+}
+
+function toggleCanvas(id){
+  const wrap = document.getElementById(id);
+  if(!wrap) return;
+  const isHidden = wrap.style.display === 'none';
+  wrap.style.display = isHidden ? 'block' : 'none';
+  if(isHidden) setTimeout(() => initCanvas(id), 80);
+}
+
+// Yön değişince canvas boyutunu güncelle
+window.addEventListener('orientationchange', () => {
+  setTimeout(() => {
+    ['quiz-canvas','test-canvas','final-canvas'].forEach(id => {
+      const wrap = document.getElementById(id);
+      if(!wrap || wrap.style.display === 'none') return;
+      const cvs = document.getElementById(id + '-cvs');
+      if(!cvs) return;
+      // Mevcut çizimi koru
+      const tmp = document.createElement('canvas');
+      tmp.width = cvs.width; tmp.height = cvs.height;
+      tmp.getContext('2d').drawImage(cvs, 0, 0);
+      cvs._init = false;
+      initCanvas(id);
+      cvs.getContext('2d').drawImage(tmp, 0, 0);
+    });
+  }, 400);
+});
+
+function setTool(id, tool){
+  cvState[id] = cvState[id] || {};
+  cvState[id].tool = tool;
+  ['pen','eraser'].forEach(t => {
+    const b = document.getElementById(id+'-'+t);
+    if(b) b.classList.toggle('active', t === tool);
+  });
+}
+
+function setColor(id, color){
+  cvState[id] = cvState[id] || {};
+  cvState[id].color = color;
+  const cols = {
+    '#1a1a2e':'black','#3b82f6':'blue','#ef4444':'red','#22c55e':'green'
+  };
+  Object.keys(cols).forEach(c => {
+    const b = document.getElementById(id+'-col-'+cols[c]);
+    if(b) b.classList.toggle('active', c === color);
+  });
+  // Silgideyse kaleme geç
+  setTool(id, 'pen');
+}
+
+function setSize(id, val){
+  cvState[id] = cvState[id] || {};
+  cvState[id].size = parseInt(val);
+}
+
+function clearCanvas(id){
+  const cvs = document.getElementById(id+'-cvs');
+  if(!cvs) return;
+  cvs.getContext('2d').clearRect(0,0,cvs.width,cvs.height);
+}
+
+function getPos(e, cvs){
+  const r = cvs.getBoundingClientRect();
+  const scaleX = cvs.width / r.width;
+  const scaleY = cvs.height / r.height;
+  if(e.touches){
+    const t = e.touches[0];
+    return { x:(t.clientX - r.left)*scaleX, y:(t.clientY - r.top)*scaleY };
+  }
+  return { x:(e.clientX - r.left)*scaleX, y:(e.clientY - r.top)*scaleY };
+}
+
+function cvStart(e, id){
+  e.preventDefault();
+  initCanvas(id);
+  const st = cvState[id];
+  if(!st) return;
+  st.drawing = true;
+  const cvs = document.getElementById(id+'-cvs');
+  const ctx = cvs.getContext('2d');
+  const pos = getPos(e, cvs);
+  ctx.beginPath();
+  ctx.moveTo(pos.x, pos.y);
+}
+
+function cvMove(e, id){
+  e.preventDefault();
+  const st = cvState[id];
+  if(!st || !st.drawing) return;
+  const cvs = document.getElementById(id+'-cvs');
+  const ctx = cvs.getContext('2d');
+  const pos = getPos(e, cvs);
+  if(st.tool === 'eraser'){
+    ctx.clearRect(pos.x - 15, pos.y - 15, 30, 30);
+  } else {
+    ctx.strokeStyle = st.color;
+    ctx.lineWidth = st.size;
+    ctx.lineTo(pos.x, pos.y);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(pos.x, pos.y);
+  }
+}
+
+function cvEnd(e, id){
+  const st = cvState[id];
+  if(st) st.drawing = false;
+}
 
 init();
 </script>
