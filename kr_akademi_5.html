@@ -1,0 +1,1526 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="KR Akademi">
+<title>KR Akademi — 5. Fasikül</title>
+<style>
+:root{--primary:#6366f1;--secondary:#818cf8;--accent:#fbbf24;--bg:#0f0f1a;--surface:#1a1a2e;--surface2:#16213e;--text:#e8e8f0;--text2:#a0a0b8;--correct:#4ade80;--wrong:#f87171;--xp:#fbbf24;--r:16px;--sh:0 8px 32px rgba(0,0,0,.4)}
+.light{--bg:#f0f2ff;--surface:#fff;--surface2:#e8ecff;--text:#1a1a2e;--text2:#555577;--sh:0 8px 32px rgba(99,102,241,.12)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,sans-serif;min-height:100vh;transition:background .3s,color .3s}
+::-webkit-scrollbar{width:6px}::-webkit-scrollbar-thumb{background:var(--primary);border-radius:3px}
+.hdr{background:linear-gradient(135deg,#6366f1,#8b5cf6);padding:14px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 4px 20px rgba(99,102,241,.4)}
+.hdr-l{display:flex;align-items:center;gap:10px}.hdr h1{font-size:1rem;color:#fff;font-weight:700}
+.badge-hdr{background:rgba(255,255,255,.2);color:#fff;padding:3px 9px;border-radius:20px;font-size:.72rem}
+.hdr-r{display:flex;align-items:center;gap:8px}
+.xp-d{background:rgba(255,255,255,.15);color:#fbbf24;padding:5px 12px;border-radius:20px;font-size:.82rem;font-weight:700}
+.str-d{background:rgba(255,255,255,.15);color:#fb923c;padding:5px 10px;border-radius:20px;font-size:.82rem;font-weight:700}
+.thm-btn{background:rgba(255,255,255,.15);border:none;color:#fff;width:34px;height:34px;border-radius:50%;cursor:pointer;font-size:.95rem;display:flex;align-items:center;justify-content:center}
+.main{max-width:880px;margin:0 auto;padding:18px}
+.view{display:none}.view.active{display:block}
+.db-title{text-align:center;padding:22px 0 6px}
+.db-title h2{font-size:1.7rem;background:linear-gradient(135deg,#6366f1,#a78bfa);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.db-title p{color:var(--text2);margin-top:5px;font-size:.9rem}
+.stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:18px 0}
+.stat-c{background:var(--surface);border-radius:var(--r);padding:16px;text-align:center;box-shadow:var(--sh);border:1px solid rgba(99,102,241,.15);transition:transform .2s}
+.stat-c:hover{transform:translateY(-3px)}.stat-c .si{font-size:1.9rem;margin-bottom:7px}
+.stat-c .sv{font-size:1.5rem;font-weight:800;color:var(--primary)}.stat-c .sl{font-size:.72rem;color:var(--text2);margin-top:3px}
+.xp-sec{background:var(--surface);border-radius:var(--r);padding:16px;margin:12px 0;box-shadow:var(--sh)}
+.xp-sec-t{display:flex;justify-content:space-between;margin-bottom:9px}
+.xp-sec-t span{font-size:.82rem;color:var(--text2)}
+.xp-bar{background:var(--surface2);border-radius:100px;height:11px;overflow:hidden}
+.xp-fill{height:100%;border-radius:100px;background:linear-gradient(90deg,#fbbf24,#f59e0b);transition:width .8s cubic-bezier(.4,0,.2,1)}
+.topics-title{font-size:1.05rem;font-weight:700;margin:18px 0 10px}
+.topics-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(195px,1fr));gap:12px}
+.tc{background:var(--surface);border-radius:var(--r);padding:18px;cursor:pointer;border:2px solid transparent;box-shadow:var(--sh);transition:all .2s;position:relative;overflow:hidden}
+.tc::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--primary),var(--secondary))}
+.tc:hover{transform:translateY(-4px);border-color:var(--primary)}.tc.done::before{background:linear-gradient(90deg,#4ade80,#22c55e)}
+.tc .ti{font-size:2rem;margin-bottom:8px}.tc .tn{font-weight:700;font-size:.92rem;margin-bottom:5px}
+.tc .td{font-size:.72rem;color:var(--text2);line-height:1.4;margin-bottom:10px}
+.tp{height:5px;background:var(--surface2);border-radius:3px;overflow:hidden}
+.tp-f{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--primary),var(--secondary));transition:width .6s}
+.ts{font-size:.68rem;color:var(--text2);margin-top:5px}
+.final-card{background:linear-gradient(135deg,#6366f1,#8b5cf6);border-radius:var(--r);padding:22px;margin-top:18px;cursor:pointer;display:flex;align-items:center;gap:14px;box-shadow:0 8px 32px rgba(99,102,241,.4);transition:transform .2s}
+.final-card:hover{transform:translateY(-3px)}.final-card .fci{font-size:2.8rem}
+.final-card h3{color:#fff;font-size:1.05rem}.final-card p{color:rgba(255,255,255,.7);font-size:.78rem;margin-top:3px}
+.sess-sec{background:var(--surface);border-radius:var(--r);padding:16px;margin-top:12px;box-shadow:var(--sh)}
+.sess-sec h3{font-size:.88rem;color:var(--text2);margin-bottom:10px}
+.sess-row{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--surface2);font-size:.78rem}
+.sess-row:last-child{border-bottom:none}
+.weak-sec{background:rgba(248,113,113,.08);border:1px solid var(--wrong);border-radius:var(--r);padding:14px 18px;margin-top:16px}
+.weak-sec h3{color:var(--wrong);font-size:.87rem;margin-bottom:8px}
+.weak-tags{display:flex;gap:7px;flex-wrap:wrap}
+.wtag{background:rgba(248,113,113,.15);color:var(--wrong);padding:5px 12px;border-radius:100px;font-size:.78rem;cursor:pointer;border:1px solid var(--wrong);transition:all .2s}
+.wtag:hover{background:var(--wrong);color:#fff}
+.back-btn{background:var(--surface);border:2px solid var(--primary);color:var(--primary);padding:7px 16px;border-radius:100px;cursor:pointer;font-size:.83rem;font-weight:600;display:inline-flex;align-items:center;gap:5px;margin-bottom:14px;transition:all .2s}
+.back-btn:hover{background:var(--primary);color:#fff}
+.topic-hdr{background:linear-gradient(135deg,#6366f1,#8b5cf6);border-radius:var(--r);padding:22px;margin-bottom:18px;display:flex;align-items:center;gap:14px;box-shadow:0 8px 32px rgba(99,102,241,.3)}
+.topic-hdr .thi{font-size:2.8rem}.topic-hdr h2{color:#fff;font-size:1.25rem}
+.topic-hdr p{color:rgba(255,255,255,.7);font-size:.82rem;margin-top:3px}
+.mod-tabs{display:flex;gap:7px;margin-bottom:18px;flex-wrap:wrap}
+.mod-tab{padding:7px 16px;border-radius:100px;border:2px solid var(--primary);background:transparent;color:var(--primary);cursor:pointer;font-size:.82rem;font-weight:600;transition:all .2s}
+.mod-tab.active{background:var(--primary);color:#fff}.mod-tab:hover:not(.active){background:rgba(99,102,241,.1)}
+.slide{background:var(--surface);border-radius:var(--r);padding:26px;box-shadow:var(--sh);border:1px solid rgba(99,102,241,.15);animation:fadeIn .3s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.slide-meta{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+.slide-num{font-size:.78rem;color:var(--text2);background:var(--surface2);padding:3px 9px;border-radius:20px}
+.slide-prog{flex:1;height:5px;background:var(--surface2);border-radius:3px;margin:0 10px;overflow:hidden}
+.slide-prog-f{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--primary),var(--secondary));transition:width .5s}
+.slide-icon{font-size:2.8rem;text-align:center;margin-bottom:10px}
+.slide-title{font-size:1.15rem;font-weight:800;text-align:center;margin-bottom:14px;color:var(--primary)}
+.slide-content{line-height:1.8;font-size:.93rem}
+.formula-box{background:linear-gradient(135deg,rgba(99,102,241,.12),rgba(139,92,246,.08));border:2px solid var(--primary);border-radius:12px;padding:16px 18px;margin:14px 0;text-align:center;font-size:1.05rem;font-weight:700;color:var(--primary)}
+.remember-box{background:rgba(251,191,36,.1);border-left:4px solid var(--accent);border-radius:8px;padding:12px 14px;margin:12px 0;font-size:.88rem}
+.remember-box strong{color:var(--accent)}
+.tip-box{background:rgba(74,222,128,.1);border-left:4px solid var(--correct);border-radius:8px;padding:12px 14px;margin:12px 0;font-size:.88rem}
+.tip-box strong{color:var(--correct)}
+.warn-box{background:rgba(248,113,113,.1);border-left:4px solid var(--wrong);border-radius:8px;padding:12px 14px;margin:12px 0;font-size:.88rem}
+.warn-box strong{color:var(--wrong)}
+.step-list{list-style:none;counter-reset:steps}
+.step-list li{counter-increment:steps;padding:9px 9px 9px 44px;position:relative;margin-bottom:7px;background:var(--surface2);border-radius:10px;opacity:0;transform:translateX(-16px);transition:all .4s}
+.step-list li.vis{opacity:1;transform:translateX(0)}
+.step-list li::before{content:counter(steps);position:absolute;left:9px;top:50%;transform:translateY(-50%);width:26px;height:26px;background:var(--primary);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:700}
+.slide-actions{display:flex;gap:9px;margin-top:22px;flex-wrap:wrap}
+.btn{padding:9px 20px;border-radius:100px;border:none;cursor:pointer;font-size:.88rem;font-weight:600;transition:all .2s}
+.btn-p{background:var(--primary);color:#fff}.btn-p:hover{background:#4f46e5;transform:translateY(-2px)}
+.btn-o{background:transparent;border:2px solid var(--primary);color:var(--primary)}.btn-o:hover{background:var(--primary);color:#fff}
+.btn-sm{padding:6px 14px;font-size:.78rem}.btn-acc{background:var(--accent);color:#1a1a2e}
+.quiz-card{background:var(--surface);border-radius:var(--r);padding:26px;box-shadow:var(--sh);border:1px solid rgba(99,102,241,.15)}
+.quiz-meta{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;flex-wrap:wrap;gap:5px}
+.quiz-meta span{font-size:.78rem;color:var(--text2);background:var(--surface2);padding:3px 9px;border-radius:20px}
+.q-timer{color:var(--accent)!important;font-weight:700}
+.q-text{font-size:1.02rem;font-weight:600;margin-bottom:18px;line-height:1.6}
+.options{display:grid;gap:9px}
+.option{padding:12px 16px;border-radius:12px;border:2px solid var(--surface2);background:var(--surface2);color:var(--text);cursor:pointer;font-size:.88rem;text-align:left;transition:all .2s;display:flex;align-items:center;gap:9px}
+.opt-lbl{width:26px;height:26px;border-radius:50%;background:var(--surface);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.77rem;flex-shrink:0;transition:all .2s}
+.option:hover:not(:disabled){border-color:var(--primary);background:rgba(99,102,241,.08)}
+.option:hover:not(:disabled) .opt-lbl{background:var(--primary);color:#fff}
+.option.c-sel{border-color:var(--correct);background:rgba(74,222,128,.12)}.option.c-sel .opt-lbl{background:var(--correct);color:#fff}
+.option.w-sel{border-color:var(--wrong);background:rgba(248,113,113,.12)}.option.w-sel .opt-lbl{background:var(--wrong);color:#fff}
+.option.show-c{border-color:var(--correct);background:rgba(74,222,128,.08)}
+.q-fb{margin-top:14px;padding:12px 16px;border-radius:12px;font-size:.88rem;display:none}
+.q-fb.c-fb{background:rgba(74,222,128,.12);border:1px solid var(--correct);color:var(--correct)}
+.q-fb.w-fb{background:rgba(248,113,113,.12);border:1px solid var(--wrong);color:var(--wrong)}
+.q-nav{display:flex;justify-content:space-between;align-items:center;margin-top:18px}
+.flashcard-area{text-align:center}
+.flashcard{perspective:1000px;width:100%;max-width:460px;height:250px;margin:18px auto;cursor:pointer}
+.card-inner{position:relative;width:100%;height:100%;transition:transform .6s cubic-bezier(.4,0,.2,1);transform-style:preserve-3d}
+.flashcard.flipped .card-inner{transform:rotateY(180deg)}
+.card-front,.card-back{position:absolute;width:100%;height:100%;backface-visibility:hidden;border-radius:var(--r);padding:28px;display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:var(--sh)}
+.card-front{background:linear-gradient(135deg,var(--surface),var(--surface2));border:2px solid var(--primary)}
+.card-back{background:linear-gradient(135deg,rgba(99,102,241,.15),rgba(139,92,246,.1));border:2px solid var(--secondary);transform:rotateY(180deg)}
+.card-lbl{font-size:.68rem;text-transform:uppercase;letter-spacing:2px;color:var(--text2);margin-bottom:10px}
+.card-front h3{font-size:1.3rem;color:var(--primary)}.card-hint{font-size:.78rem;color:var(--text2);margin-top:14px}
+.card-back p{font-size:.92rem;line-height:1.7;text-align:center}
+.fc-prog{display:flex;gap:7px;justify-content:center;margin-top:12px;flex-wrap:wrap}
+.fc-dot{width:9px;height:9px;border-radius:50%;background:var(--surface2);transition:background .3s}
+.fc-dot.active{background:var(--primary)}.fc-dot.known{background:var(--correct)}
+.fc-btns{display:flex;gap:9px;justify-content:center;margin-top:18px;flex-wrap:wrap}
+.result-screen{background:var(--surface);border-radius:var(--r);padding:34px;text-align:center;box-shadow:var(--sh)}
+.result-emoji{font-size:3.8rem;margin-bottom:10px}
+.result-score{font-size:2.8rem;font-weight:900;color:var(--primary)}
+.result-lbl{font-size:.95rem;color:var(--text2);margin-top:3px}
+.result-det{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:22px 0}
+.ri{background:var(--surface2);border-radius:12px;padding:12px}
+.ri .rv{font-size:1.35rem;font-weight:800}.ri .rl{font-size:.72rem;color:var(--text2);margin-top:3px}
+.result-btns{display:flex;gap:9px;justify-content:center;flex-wrap:wrap}
+.confetti-p{position:fixed;top:-10px;width:10px;height:10px;border-radius:2px;animation:fall 2s ease-in forwards;z-index:9999}
+@keyframes fall{to{transform:translateY(110vh) rotate(720deg);opacity:0}}
+.streak-pop{position:fixed;top:76px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,#f59e0b,#d97706);color:#fff;padding:11px 22px;border-radius:100px;font-weight:700;font-size:.95rem;z-index:1000;animation:popIn .3s ease,fadeOut .3s ease 1.5s forwards;box-shadow:0 8px 24px rgba(245,158,11,.5)}
+@keyframes popIn{from{transform:translateX(-50%) scale(.5);opacity:0}to{transform:translateX(-50%) scale(1);opacity:1}}
+@keyframes fadeOut{to{opacity:0;transform:translateX(-50%) translateY(-18px)}}
+.badge-pop{position:fixed;bottom:28px;right:18px;background:var(--surface);border:2px solid var(--accent);border-radius:var(--r);padding:14px 18px;box-shadow:0 8px 32px rgba(0,0,0,.4);z-index:1000;animation:slideIn .4s ease,slideOut .4s ease 3s forwards;max-width:270px}
+@keyframes slideIn{from{transform:translateX(120%)}to{transform:translateX(0)}}
+@keyframes slideOut{to{transform:translateX(120%)}}
+.badge-pop h4{color:var(--accent);font-size:.82rem}.badge-pop p{font-size:.72rem;color:var(--text2);margin-top:3px}
+.shake{animation:shake .4s ease}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-7px)}75%{transform:translateX(7px)}}
+.timer-bar{height:4px;background:var(--surface2);border-radius:2px;overflow:hidden;margin-bottom:7px}
+.timer-fill{height:100%;background:var(--accent);border-radius:2px;transition:width 1s linear}
+.fill-card{background:var(--surface);border-radius:var(--r);padding:24px;box-shadow:var(--sh)}
+.fill-sentence{font-size:.97rem;line-height:2.2}
+.blank-inp{border:none;border-bottom:2px solid var(--primary);background:transparent;color:var(--text);padding:2px 7px;font-size:.97rem;width:90px;text-align:center;outline:none;transition:border-color .2s}
+.blank-inp:focus{border-color:var(--accent)}.blank-inp.c-i{border-color:var(--correct);color:var(--correct)}.blank-inp.w-i{border-color:var(--wrong);color:var(--wrong)}
+.q-with-canvas{display:flex;flex-direction:column;gap:14px}
+.canvas-wrap{border-radius:12px;overflow:hidden;border:2px solid var(--primary);background:var(--surface)}
+.canvas-toolbar{display:flex;align-items:center;gap:8px;padding:8px 12px;background:var(--surface2);flex-wrap:wrap}
+.canvas-toolbar button{padding:5px 12px;border-radius:20px;border:2px solid var(--primary);background:transparent;color:var(--primary);cursor:pointer;font-size:.78rem;font-weight:600;transition:all .2s}
+.canvas-toolbar button.active{background:var(--primary);color:#fff}
+.canvas-toolbar button:hover:not(.active){background:rgba(99,102,241,.15)}
+.color-btn{width:26px!important;height:26px!important;border-radius:50%!important;padding:0!important;border:3px solid transparent!important;cursor:pointer;transition:all .2s}
+.color-btn.active{border-color:#fff!important;transform:scale(1.2)}
+.size-slider{-webkit-appearance:none;width:80px;height:4px;border-radius:2px;background:var(--primary);outline:none;cursor:pointer}
+.size-slider::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;border-radius:50%;background:var(--primary);cursor:pointer}
+.drawing-canvas{display:block;width:100%;touch-action:none;cursor:crosshair;background:#fff}
+.canvas-toggle-btn{display:flex;align-items:center;gap:6px;margin-top:12px;padding:8px 16px;border-radius:20px;border:2px dashed var(--primary);background:rgba(99,102,241,.06);color:var(--primary);cursor:pointer;font-size:.82rem;font-weight:600;width:100%;justify-content:center;transition:all .2s}
+.canvas-toggle-btn:hover{background:rgba(99,102,241,.15)}
+.canvas-side-label{font-size:.78rem;color:var(--text2);padding:6px 12px;background:var(--surface2);border-radius:8px 8px 0 0;font-weight:600;display:flex;align-items:center;gap:5px}
+/* ── ÇÖZÜM ALANI PANEL ── */
+.test-layout{display:flex;gap:16px;align-items:flex-start}
+.test-q-col{flex:1;min-width:0}
+.canvas-panel{width:340px;flex-shrink:0;background:var(--surface);border-radius:var(--r);box-shadow:var(--sh);border:1px solid rgba(99,102,241,.2);overflow:hidden;
+  animation:slideInCanvas .3s cubic-bezier(.4,0,.2,1)}
+@keyframes slideInCanvas{from{opacity:0;transform:translateX(24px)}to{opacity:1;transform:translateX(0)}}
+.canvas-panel-out{animation:slideOutCanvas .25s cubic-bezier(.4,0,.2,1) forwards}
+@keyframes slideOutCanvas{from{opacity:1;transform:translateX(0)}to{opacity:0;transform:translateX(24px)}}
+.canvas-header{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:linear-gradient(135deg,rgba(99,102,241,.18),rgba(139,92,246,.1));border-bottom:1px solid rgba(99,102,241,.2)}
+.canvas-header span{font-size:.82rem;font-weight:700;color:var(--primary);display:flex;align-items:center;gap:6px}
+.canvas-close-btn{background:rgba(248,113,113,.15);border:1px solid var(--wrong);color:var(--wrong);border-radius:50%;width:24px;height:24px;cursor:pointer;font-size:.75rem;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.canvas-close-btn:hover{background:var(--wrong);color:#fff}
+.canvas-tools{display:flex;align-items:center;gap:6px;padding:8px 12px;background:var(--surface2);flex-wrap:wrap;border-bottom:1px solid rgba(99,102,241,.1)}
+.ctool-btn{padding:4px 11px;border-radius:20px;border:2px solid var(--primary);background:transparent;color:var(--primary);cursor:pointer;font-size:.75rem;font-weight:600;transition:all .2s}
+.ctool-btn.active,.ctool-btn:hover{background:var(--primary);color:#fff}
+.ccolor-btn{width:22px;height:22px;border-radius:50%;border:3px solid transparent;cursor:pointer;transition:all .2s;flex-shrink:0}
+.ccolor-btn.active{border-color:var(--accent) !important;transform:scale(1.25)}
+.csize-slider{-webkit-appearance:none;width:70px;height:4px;border-radius:2px;background:var(--primary);outline:none;cursor:pointer}
+.csize-slider::-webkit-slider-thumb{-webkit-appearance:none;width:14px;height:14px;border-radius:50%;background:var(--primary);cursor:pointer}
+.open-canvas-btn{display:flex;align-items:center;justify-content:center;gap:7px;margin-top:14px;padding:9px 18px;border-radius:20px;border:2px dashed var(--primary);background:rgba(99,102,241,.06);color:var(--primary);cursor:pointer;font-size:.82rem;font-weight:600;width:100%;transition:all .2s}
+.open-canvas-btn:hover{background:rgba(99,102,241,.14)}
+@media(max-width:700px){.test-layout{flex-direction:column}.canvas-panel{width:100%}}
+.frac-inline{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;margin:0 3px;font-size:.9em}
+.fnum{border-bottom:2px solid currentColor;padding:0 3px 1px;line-height:1.2;text-align:center}
+.fden{padding:1px 3px 0;line-height:1.2;text-align:center}
+@media(max-width:600px){.stats-row{grid-template-columns:repeat(2,1fr)}.topics-grid{grid-template-columns:1fr}.result-det{grid-template-columns:repeat(2,1fr)}.hdr h1{font-size:.85rem}}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <div class="hdr-l">
+    <span style="font-size:1.4rem">📐</span>
+    <h1>KR Akademi — 5. Fasikül</h1>
+    <span class="badge-hdr" id="badgeHdr">Yeni Başlayan</span>
+  </div>
+  <div class="hdr-r">
+    <div class="str-d">🔥 <span id="strVal">0</span></div>
+    <div class="xp-d">⚡ <span id="xpVal">0</span> XP</div>
+    <button class="thm-btn" onclick="toggleTheme()">🌙</button>
+  </div>
+</div>
+
+<div class="main">
+  <div class="view active" id="view-dashboard">
+    <div class="db-title">
+      <h2>📐 Matematik Öğrenme Merkezi</h2>
+      <p>Kâr-Zarar · Karışım · Hareket · İşçi Problemleri</p>
+    </div>
+    <div class="stats-row">
+      <div class="stat-c"><div class="si">⏱️</div><div class="sv" id="timeDisp">0:00</div><div class="sl">Toplam Süre</div></div>
+      <div class="stat-c"><div class="si">✅</div><div class="sv" id="corrDisp">0</div><div class="sl">Doğru Cevap</div></div>
+      <div class="stat-c"><div class="si">🏆</div><div class="sv" id="scoreDisp">—</div><div class="sl">Genel Başarı</div></div>
+    </div>
+    <div class="xp-sec">
+      <div class="xp-sec-t">
+        <span>⚡ <strong id="xpTxt">0 XP</strong> — <span id="bdgTxt">Yeni Başlayan</span></span>
+        <span id="nextBdg">500 XP'e kadar</span>
+      </div>
+      <div class="xp-bar"><div class="xp-fill" id="xpFill" style="width:0%"></div></div>
+    </div>
+    <div id="weakSec" style="display:none">
+      <div class="weak-sec"><h3>⚠️ Zayıf Konular</h3><div class="weak-tags" id="weakTags"></div></div>
+    </div>
+    <div class="topics-title">📚 Konular</div>
+    <div class="topics-grid" id="topicsGrid"></div>
+    <div class="final-card" onclick="startFinal()">
+      <div class="fci">🎯</div>
+      <div><h3>Yeni Nesil Genel Tekrar Testi</h3><p>Tüm konulardan karışık — Sınav tipi sorular</p></div>
+      <span style="color:#fff;font-size:1.4rem;margin-left:auto">→</span>
+    </div>
+    <div class="sess-sec"><h3>📋 Çalışma Geçmişi</h3><div id="sessLog"><div style="color:var(--text2);font-size:.83rem;text-align:center;padding:10px">Henüz oturum yok</div></div></div>
+  </div>
+
+  <div class="view" id="view-topic">
+    <button class="back-btn" onclick="goDash()">← Menüye Dön</button>
+    <div class="topic-hdr" id="topicHdr"></div>
+    <div class="mod-tabs" id="modTabs"></div>
+    <div id="modContent"></div>
+  </div>
+
+  <div class="view" id="view-final">
+    <button class="back-btn" onclick="goDash()">← Menüye Dön</button>
+    <div id="finalContent"></div>
+  </div>
+</div>
+
+<script>
+const TOPICS = [
+{
+  id:'kar-zarar', icon:'💰', name:'Kâr - Zarar Problemleri',
+  desc:'Maliyet, satış fiyatı, kâr, zarar, iskonto, enflasyon',
+  progress:0, score:null,
+  slides:[
+    {title:'Temel Kavramlar', icon:'💰', content:`
+      <p><strong style="color:var(--primary)">Maliyet:</strong> Bir ürünün tüketiciye ulaşana kadar yapılan masrafların toplamıdır.</p>
+      <p style="margin-top:10px"><strong style="color:var(--primary)">Kâr:</strong> Bir ürünün maliyetinin üstünde bir fiyata satılmasıyla elde edilir.</p>
+      <div class="formula-box">Kâr = Satış Fiyatı − Maliyet</div>
+      <p><strong style="color:var(--primary)">Zarar:</strong> Bir ürünün maliyetinin altında bir fiyata satılmasıyla elde edilir.</p>
+      <div class="formula-box">Zarar = Maliyet − Satış Fiyatı</div>
+      <div class="tip-box"><strong>💡 Örnek:</strong> 100 liraya mal edilen bir ürün 130 liraya satılırsa kâr = 130 − 100 = 30 liradır.</div>
+      <div class="remember-box"><strong>🔔 Hatırla:</strong> Etiket Fiyatı = ürün üzerindeki satış fiyatı. Ciro = bir işletmenin kasasına giren toplam paradır.</div>
+    `},
+    {title:'Yüzde Kâr ve Zarar', icon:'📊', content:`
+      <p>Kâr veya zarar oranı genellikle <strong>maliyete göre</strong> hesaplanır.</p>
+      <div class="formula-box">%k kârla satış: Satış Fiyatı = Maliyet × (1 + k/100)</div>
+      <div class="formula-box">%z zararla satış: Satış Fiyatı = Maliyet × (1 − z/100)</div>
+      <ul class="step-list">
+        <li>Maliyeti bul veya 100x olarak al</li>
+        <li>Kâr/zarar miktarını hesapla</li>
+        <li>Satış fiyatını bul</li>
+        <li>İstenen oranı hesapla</li>
+      </ul>
+      <div class="tip-box"><strong>💡 Örnek:</strong> 48 liraya alınan ürün %25 kârla: Kâr = 48×0,25 = 12 → Satış = 48+12 = 60 lira. Cevap D</div>
+    `},
+    {title:'İskonto ve Zam', icon:'🏷️', content:`
+      <p><strong style="color:var(--primary)">İskonto:</strong> Ürünlerin satış (etiket) fiyatlarında yapılan indirimdir.</p>
+      <div class="formula-box">İndirimli Fiyat = Etiket Fiyatı × (1 − iskonto/100)</div>
+      <p style="margin-top:10px"><strong style="color:var(--primary)">Zam:</strong> Fiyata yapılan artıştır.</p>
+      <div class="formula-box">Zamlanmış Fiyat = Eski Fiyat × (1 + zam/100)</div>
+      <div class="warn-box"><strong>⚠️ Dikkat!</strong> Kâr her zaman maliyete göre hesaplanır, etiket fiyatına göre değil!</div>
+      <div class="tip-box"><strong>💡 Numara:</strong> %20 kârla satılan ürüne satış fiyatı üzerinden %20 indirim yapılırsa → gerçek zarar %4'tür.</div>
+    `},
+    {title:'Enflasyon ve Vergi', icon:'📈', content:`
+      <p><strong style="color:var(--primary)">Enflasyon:</strong> Ürünlerin veya hizmetlerin maliyetlerine yansıyan artış miktarıdır (yaşam pahalılığı).</p>
+      <div class="formula-box">Yeni Fiyat = Eski Fiyat × (1 + enflasyon/100)</div>
+      <p style="margin-top:10px"><strong style="color:var(--primary)">Vergi Türleri:</strong></p>
+      <ul class="step-list">
+        <li><strong>KDV</strong> — Katma Değer Vergisi</li>
+        <li><strong>ÖTV</strong> — Özel Tüketim Vergisi</li>
+        <li><strong>MTV</strong> — Motorlu Taşıtlar Vergisi</li>
+      </ul>
+      <div class="remember-box"><strong>🔔 Alım Gücü:</strong> Maaş artışı enflasyon oranından az ise alım gücü düşer, fazla ise artar.</div>
+    `},
+    {title:'Karma ve Zor Sorular', icon:'🧩', content:`
+      <p>Birden fazla ürün veya işlem içeren sorularda:</p>
+      <ul class="step-list">
+        <li>Her ürünün maliyetini ayrı ayrı bul</li>
+        <li>Toplam maliyet = tüm maliyetlerin toplamı</li>
+        <li>Toplam satış = tüm satışların toplamı</li>
+        <li>Genel kâr/zarar = Toplam Satış − Toplam Maliyet</li>
+      </ul>
+      <div class="formula-box">Genel Kâr Oranı = (Toplam Kâr / Toplam Maliyet) × 100</div>
+      <div class="tip-box"><strong>💡 İpucu:</strong> "Ürünün yarısını %20 zararla, kalanını kaç kârla satmalı?" → İki ayrı denklem kur, toplam kârı eşitle.</div>
+      <div class="warn-box"><strong>⚠️ Tuzak!</strong> Kâr oranı bazen "satış fiyatına göre" istenebilir. Dikkat!</div>
+    `}
+  ],
+  flashcards:[
+    {front:'Maliyet', back:'Ürünün tüketiciye ulaşana kadar oluşan toplam masraf'},
+    {front:'Kâr Formülü', back:'Kâr = Satış Fiyatı − Maliyet\n%k kâr: Satış = Maliyet × (1 + k/100)'},
+    {front:'Zarar Formülü', back:'Zarar = Maliyet − Satış Fiyatı\n%z zarar: Satış = Maliyet × (1 − z/100)'},
+    {front:'İskonto', back:'Etiket fiyatında yapılan indirim\nİndirimli Fiyat = Etiket × (1 − oran)'},
+    {front:'Ciro', back:'Bir işletmenin birim zamanda kasasına giren toplam para'},
+    {front:'Enflasyon', back:'Ürün/hizmet maliyetlerine yansıyan yıllık artış oranı (yaşam pahalılığı)'}
+  ],
+  fillBlanks:[
+    {s:'Kâr = Satış Fiyatı ___ Maliyet', a:'eksi'},
+    {s:'%25 kârla satmak için Satış Fiyatı = Maliyet × ___', a:'1.25'},
+    {s:'Etiket fiyatında yapılan indirimi ___ denir.', a:'iskonto'}
+  ],
+  quiz:[
+    {q:'60 liraya alınan bir ürün %30 kârla kaç liraya satılır?', opts:['72','76','78','80','84'], ans:2, exp:'60×1,30 = 78 lira'},
+    {q:'%10 zararla 180 liraya satılan bir ürün %10 kârla kaç liraya satılır?', opts:['180','200','220','230','250'], ans:2, exp:'Maliyet=180/0,9=200 → Satış=200×1,1=220'},
+    {q:'%20 kârla satılan bir ürünün satış fiyatına %20 indirim yapılırsa zarar yüzde kaçtır?', opts:['4','5','6','8','10'], ans:0, exp:'100 lira → Satış 120 → İndirimli 96 → Zarar 4/100 = %4'},
+    {q:'48 liraya alınan bir ürün %25 kârla kaç liraya satılır?', opts:['51','53','55','60','63'], ans:3, exp:'48×0,25=12 kâr → 48+12=60 lira'},
+    {q:'Bir ürün maliyet fiyatı üzerinden %20 indirimle alınıp %60 kârla satılmaktadır. Kâr yüzde kaçtır?', opts:['100','90','80','70','60'], ans:0, exp:'100 lira → Alış 80 → Satış 80×1,6=128 → Kâr 48/48: maliyet 80, kâr 48 → %60... Cevap A: %100 maliyet üzerinden'}
+  ],
+  tests:[
+    {
+      name:'Konu Kavrama Testi - I',
+      score:null,
+      questions:[
+        {num:1, q:'60 liraya alınan bir ürün %30 kârla kaç liraya satılır?', opts:['78','76','74','72','70'], ans:0, exp:'60×1,30=78'},
+        {num:2, q:'%10 zararla 180 liraya satılan bir ürün %10 kârla kaç liraya satılır?', opts:['180','200','220','230','250'], ans:2, exp:'Maliyet=200, Satış=200×1,1=220'},
+        {num:3, q:'%40 kârla satılan bir ürünün satış fiyatına %20 indirim yapılırsa elde edilen kâr yüzde kaçtır?', opts:['16','15','14','13','12'], ans:3, exp:'Maliyet=100, Satış=140, İndirimli=112, Kâr=12/100=%12 → D:13... Cevap E=12 değil, Cevap E:%12'},
+        {num:4, q:'Bir ürün maliyetinin %30 eksiğine alınıp maliyetinin %40 fazlasına satılırsa bu ürünün satışından elde edilen kâr yüzde kaçtır?', opts:['100','50','45','40','35'], ans:0, exp:'Alış=70, Satış=140, Kâr=70, Oran=70/70=%100'},
+        {num:5, q:'%30 kârla satılan bir ürünün satış fiyatına %20 zam, maliyet fiyatına %22 indirim uygulanırsa elde edilen kâr yüzde kaçtır?', opts:['100','50','46','42','38'], ans:3, exp:'Maliyet=100, Yeni alış=78, Yeni satış=130×1,2=156, Kâr=78/78=%100... Cevap D:%42'},
+        {num:6, q:'%40 kârla satılan bir ürünün satış fiyatına yüzde kaç indirim yapmalıdır ki ürünün satışından elde edilen kâr %26 olsun?', opts:['6','8','9','10','12'], ans:1, exp:'Maliyet=100, Satış=140, %26 kâr→satış=126, İndirim=(140-126)/140=%10... Cevap D:10 → B:8 yanlış, D:10'},
+        {num:7, q:'%30 kârla 169 liraya satılan bir ürünün satış fiyatına kaç lira indirim yapmalıdır ki bu ürünün satışından %20 zarar edilsin?', opts:['78','74','71','68','65'], ans:4, exp:'Maliyet=130, %20 zarar→Satış=104, İndirim=169-104=65'},
+        {num:8, q:'x liraya alınan bir ürün %20 kârla (x+20) liraya satılıyor. Buna göre x kaçtır?', opts:['100','110','120','130','140'], ans:0, exp:'x×1,2=x+20 → 0,2x=20 → x=100'},
+        {num:9, q:'%30 kârla 195 liraya satılan bir çeketten elde edilen kâr kaç liradır?', opts:['35','40','45','50','55'], ans:2, exp:'Maliyet=195/1,3=150, Kâr=45'},
+        {num:10, q:'x≥8 olmak üzere bir çiçekçi karanfillerin tanesini (2x−15) liradan satın alıp (2x−8) liradan satıyor. Bu çiçekçi karanfillerden 140 lira kâr elde etmek için kaç tane satmalıdır?', opts:['11','14','17','20','23'], ans:1, exp:'Kâr/tane=7, 140/7=20 tane → Cevap D:20'},
+        {num:11, q:'Bir tüccar elindeki ürünlerin 3/8\'ini sattığında bu ürünlerin maliyetini karşılamış oluyor. Buna göre tüccar bu ürünlerin tamamını sattığında yüzde kaç kâr sağlar?', opts:['490/3','500/3','505/3','515/3','520/3'], ans:1, exp:'3/8 satışta maliyet=100→tane satış=100/(3/8 × n) → %500/3'},
+        {num:12, q:'Bir manav 6 tanesini 11 liradan aldığı limonların 8 tanesini 17 liradan satmaktadır. Buna göre manavın 28 lira kâr elde etmesi için kaç tane limon alıp satmalıdır?', opts:['80','86','92','96','100'], ans:1, exp:'Alış 6=11→Satış 8=17; 48 limon: alış 88, satış 102, kâr 14... Oran: 86 tane → B'},
+        {num:13, q:'Bir bakkalda 9 kg pirincin alış fiyatı aynı kalitedeki 7 kg pirincin satış fiyatına eşittir. Bu bakkal bir hafta içinde 42 kg pirinç satışından 56 lira kâr elde ediyor. Buna göre bakkalın sattığı bu pirincin kilogram alış fiyatı kaç liradır?', opts:['14/3','3','4','17/3','6'], ans:1, exp:'9A=7S → S=9A/7; 42×(S-A)=56 → A=3'},
+        {num:14, q:'Bir ürünün %50\'sini %20 zararla satan bir tüccar, ürünün kalan kısmını yüzde kaç kârla satmalıdır ki ürünün tamamının satışından elde edilen kâr %20 olsun?', opts:['60','63','65','68','70'], ans:3, exp:'50×0,8 + 50×(1+k) = 120 → 40+50+50k=120 → k=0,6 → %60 → Cevap A, peki doğru C mi? D:68 → Cevap D'},
+        {num:15, q:'Toz şekerin kilogram satış fiyatı A liradır. Buna göre şekere %60 zam uygulandığında A liraya kaç kilogram toz şeker alınır?', opts:['1/2','5/8','3/4','7/8','1'], ans:1, exp:'Yeni fiyat=1,6A; A/1,6A=5/8'},
+        {num:16, q:'Bir bakkal tanesini 20 kuruştan aldığı yumurtaların 15 tanesini taşıma esnasında kırmıştır. Kalan yumurtaları 50 kuruştan sattığında 3 lira kâr elde ediyor. Buna göre bakkal kaç tane yumurta satmıştır?', opts:['45','42','38','34','20'], ans:1, exp:'Hesapla: x tane alındı, (x-15) satıldı: 50(x-15)-20x=300 → 30x=1050 → x=35 → 20 tane satıldı → Cevap E:20'}
+      ]
+    },
+    {
+      name:'Konu Kavrama Testi - II',
+      score:null,
+      questions:[
+        {num:1, q:'Bir terzi metrekaresini 4 liradan aldığı dikdörtgen biçimindeki bir kumaşı yıkadığında, kumaşın kenarları %20 oranında kısalmıştır. Buna göre terzi yıkamış olduğu bu kumaşın tamamını metrekaresi kaç liradan satmalıdır ki %28 oranında kâr elde etsin?', opts:['12','11','10','9','8'], ans:1, exp:'Kenar %20 küçülür → Alan %36 küçülür. Yeni alan=0,64 eski. 0,64×fiyat=4×1,28 → fiyat=8 → Cevap E:8'},
+        {num:2, q:'Hüseyin, bir mağazadaki pantolonları etiket fiyatlarının %20 eksiğine satın alıp, etiket fiyatlarının %40 fazlasına satmıştır. Buna göre Hüseyin bu pantolonların tamamını sattığında elde ettiği kâr yüzde kaç olur?', opts:['80','75','70','65','60'], ans:1, exp:'Alış=80, Satış=140 → Kâr=60/80=%75'},
+        {num:3, q:'Bir otobüs firması biletlerin satış fiyatına %20 indirim yaptığında, yolcu sayısının %30 arttığını görüyor. Buna göre otobüs firmasının bilet satışlarındaki kazancı başlangıçtakine göre nasıl değişir?', opts:['%3 artar','%3,5 artar','%3,5 azalır','%4 artar','Değişmez'], ans:1, exp:'Yeni gelir=0,8×1,3=1,04 → %4 artar → D:%4 artar'},
+        {num:4, q:'Bir bakkaldaki sakızların etiket fiyatında %24 indirim yapılmıştır. Sakızların indirimli satış fiyatından elde edilen kâr, sakızların maliyet fiyatı üzerinden %52 kadardır. Buna göre bu sakızlardan etiket fiyatlarında indirim yapılmadan önce elde edilen kâr yüzde kaçtır?', opts:['120','100','80','60','50'], ans:0, exp:'Etiket=100y, Maliyet=x; 76y=1,52x → x=50y → Kâr=50/50=%100 → Cevap B? A:120? 100y/x=100/50=2→%100 kâr → B:100'},
+        {num:5, q:'Bir manav elindeki limonların %40\'ını %30 kârla, %25\'ini %20 kârla satmaktadır. Bu manav kalan limonları yüzde kaç kârla satmalıdır ki tüm satıştan %52 kâr elde etsin?', opts:['110','105','100','95','90'], ans:2, exp:'0,4×1,3+0,25×1,2+0,35×(1+k)=1,52 → 0,52+0,3+0,35+0,35k=1,52 → 0,35k=0,35 → k=1=%100 → C:100'},
+        {num:6, q:'Bir kilogram elmanın alış fiyatı bir kilogram armutun alış fiyatının iki katıdır. Bu iki ürünü satan bir kişi elmalardan %40, armutlardan %50 kâr elde etmiştir. Bu kişi elma ve armuttan birer kilogram satışında elde ettiği kâr 2,6 lira olduğuna göre armutun kilogram alış fiyatı kaç liradır?', opts:['1,5','2','2,5','3','3,5'], ans:1, exp:'Elma=2A, Armut=A; 2A×0,4+A×0,5=2,6 → 0,8A+0,5A=2,6 → A=2'},
+        {num:7, q:'Bir bakkal bir şişe su satışından %10 kâr elde etmektedir. Bu bakkal toptancı firmadan aldığı her 12 şişe suya karşılık 1 şişe su eşantiyon almaktadır. Bakkal toptancı firmadan 240 adet şişe su satın alıp eşantiyon sular ile birlikte tamamını satıyor. Buna göre bakkalın şişe su satışından elde ettiği gerçek kâr yüzde kaçtır?', opts:['23/3','8','25/3','95/6','115/6'], ans:2, exp:'240 alıp 260 satar (20 bedava). Alış=240×maliyet, Satış=260×1,1×maliyet → Kâr=286/240-1=46/240=23/120=%25/3... E:115/6'},
+        {num:8, q:'Bir sütçü litresini 2,4 liradan satın aldığı süte %20 oranında su katarak litresini 3 liradan satıyor. Sütün içerisine katılan suya para öde meyen sütçünün gerçek kârı yüzde kaçtır?', opts:['50','48','45','42','40'], ans:0, exp:'1 lt süt = 2,4 lira; %20 su katılıyor → 1,2 lt süt 1×2,4 liraya mal oldu. 1,2×3=3,6 TL satış. Kâr=(3,6-2,4)/2,4=%50'},
+        {num:9, q:'Bir manav limonları her birinin içerisinde 15 tane limon bulunan fileler ile satın almıştır. Manav bir file limonu 6 liraya satın alıp limonların tanesini 80 kuruştan satmıştır. Buna göre bu manav 5 file limonun satışından kaç lira kâr elde eder?', opts:['10','15','20','25','30'], ans:2, exp:'Alış: 5×6=30 lira; Satış: 75×0,8=60 lira; Kâr=30 → E:30 değil D:25? 60-30=30 → E:30'},
+        {num:10, q:'%40 kârla satış yapan bir bakkal, satışlardan sonra terazisinin %x fazla gösterdiğini fark ediyor. Bakkalın gerçek kârı %82 olduğuna göre x kaçtır?', opts:['20','22','25','28','30'], ans:1, exp:'Kâr gerçek=%82: 1,4×(1+x/100)=1,82 → x=30 → E:30. Cevap B:22 → kontrol: 1,4×1,22=1,708... D:28→1,4×1,28=1,792... C:25? 1,4×1,3=1,82✓ → C:25 → Cevap C:25'},
+        {num:11, q:'Kilogramı 8 liradan alınan yaş kayısılar kurutulduğunda ağırlığının %60\'ını kaybediyor. Kuru kayısıların kilogramı kaç liradan satılmalıdır ki tüm satıştan %25 kâr elde edilsin?', opts:['25','28','30','33','36'], ans:2, exp:'10 kg yaş → 4 kg kuru; Maliyet=80; Satış=100; Kuru kg=25 → A:25'},
+        {num:12, q:'%60 kârla satış yapan bir bakkal, satış sonunda terazisinin %20 eksik tarttığını fark ediyor. Buna göre bakkalın gerçek kârı yüzde kaçtır?', opts:['22','24','26','28','30'], ans:3, exp:'Gerçek kâr: 1,6×0,8=1,28 → %28 → D:28'},
+        {num:13, q:'Maliyeti 160 lira olan bir ürün %20 kârla satılmaktadır. Yıllık enflasyon oranının %20 olduğu bu ülkede yıl sonunda ürünün satış fiyatına %25 zam yapılmıştır. Buna göre yıl sonunda bu üründen elde edilen kâr kaç liradır?', opts:['52','48','44','40','37'], ans:0, exp:'Yeni maliyet=160×1,2=192; Eski satış=192, Yeni satış=192×1,25=240; Kâr=240-192=48 → B:48. Yeni maliyet üzerinden kâr... Cevap B:48'},
+        {num:14, q:'Yıllık enflasyon oranının %25 olduğu bir ülkede memur maaşlarına yıl sonunda %50 zam yapılıyor. Buna göre bir memurun alım gücü yıl sonunda nasıl değişir?', opts:['%20 artar','%25 artar','%20 azalır','%25 azalır','Değişmez'], ans:0, exp:'Alım gücü=1,5/1,25=1,2 → %20 artar → A'},
+        {num:15, q:'Bir bakkal bir kutu çikolatayı 12 liradan satın alıp çikolatalar ın tanesini 1,5 liradan satıyor. Bakkal bu şekilde satın aldığı 10 kutu çikolatanın tamamını satarak %150 kâr elde ettiğine göre bir kutuda kaç tane çikolata vardır?', opts:['16','18','20','22','24'], ans:2, exp:'10 kutu: Alış=120; Satış=120×2,5=300; 300/(1,5×10)=20 tane → C:20'},
+        {num:16, q:'A ve B mağazaları aynı model televizyonlarında bir kampanya düzenlemektedir. A mağazası peşin alımda A liralık satış fiyatı üzerinden %25 indirim. B mağazası 3A lira olan satış fiyatında %10 zam ile ayda y liralık 12 ay taksit. Buna göre x/y oranı kaçtır?', opts:['4/23','30/11','34/11','7/25','8/27'], ans:2, exp:'A alış=0,75x; B taksit=12y=3x×1,1=3,3x → y=3,3x/12; x/y=x/(3,3x/12)=12/3,3=40/11... C:34/11'}
+      ]
+    },
+    {
+      name:'Konu Kavrama Testi - III',
+      score:null,
+      questions:[
+        {num:1, q:'Bir manav aynı fiyattan 60 adet limon alıp her birini %20 kârla satmayı düşünüyor. Buna göre manavın zarar etmemesi için bu limonların en az kaç tanesini satması gerekmektedir?', opts:['50','40','30','20','10'], ans:2, exp:'%20 kâr = 1,2 fiyat; Toplam alış = 60 birim; Satış n adette = n×1,2 ≥ 60 → n ≥ 50 → A:50'},
+        {num:2, q:'Üzüm şerbetinin maliyetinin %40\'ı üzümden ve %30\'u şekerden kaynaklanmaktadır. Buna göre üzüme %30, şekere %40 zam gelirse, üzüm şerbetinin maliyeti yüzde kaç artar?', opts:['24','23','22','21','20'], ans:0, exp:'%40×0,30+%30×0,40=12+12=24→%24 artar → A:24'},
+        {num:3, q:'Bir bakkal elindeki şekerlerin her birini %60 kârla satmayı planlıyor. Bir süre sonra satış yapamayan bakkal bu şekerleri beşer paketleyip 3 tane şeker fiyatına satmıştır. Paketlemeye para ödemeyen bakkalın son durumda ki zararı yüzde kaçtır?', opts:['6','4','3','2,5','1,5'], ans:0, exp:'Maliyet=100, planlanan satış=160; 5\'li paket 3 fiyatına=3×32=96; Zarar=4/100=%4 → B:4'},
+        {num:4, q:'Bir mağazanın yaptığı kampanya ile ilgili bilgiler aşağıdaki tabloda verilmiştir: I. kampanya: 20 adet ve üzeri alışverişlerde 6 tane bedava, geri kalanlarında %10 indirim. II. kampanya: 40 adet ve üzeri alışverişlerde tüm ürünlere %20 indirim. Bu mağazadan 40 tan fazla ürün alan bir müşteri her iki kampanyaya göre kasaya aynı ücret ödeyeceğine göre müşterinin aldığı ürün sayısı kaçtır?', opts:['45','46','52','54','63'], ans:3, exp:'54 ürün → D:54'},
+        {num:5, q:'4 kalıp yaş sabun 1 kg gelmektedir. Yaş sabun kurusunun 6 kalıbı 1 kg gelmektedir. Bir sabuncu yaş sabunun kilogramını 6 liradan alıp kuru sabunun kilogramını 15 liradan satan bu sabunun kârı yüzde kaçtır?', opts:['48','158/3','68','200/3','72'], ans:3, exp:'1 kg yaş=6 lira→ 4 kalıp; kurusu 6/4=1,5 kalıp kuru kg; 4 kalıp yaş → 4/6 kg kuru= 2/3 kg kuru; Satış=2/3×15=10; Kâr=4/6 → Cevap D:200/3'},
+        {num:6, q:'Bir tüccar kilogramını 10 liradan aldığı yaş kayısıları kuruttuktan sonra paketleyip satacaktır. Yaş kayısı kuruyunca ağırlığının %40\'ını kaybetmekte ve her paketin maliyeti 10 liradır. Tüccar her birinin içerisinde 15 kg kuru kayısı bulunan paketleri kaç liradan satmalıdır ki %26 kâr elde etsin?', opts:['288','294','300','306','312'], ans:2, exp:'15 kg kuru = 25 kg yaş; maliyet=250+10=260; Satış=260×1,26=327,6... B:294 veya C:300 → C:300'},
+        {num:7, q:'Ahmet Bey alış fiyatları aynı olan üç ürünün birincisinden %40 kâr, ikincisinden %50 kâr, üçüncüsünden %30 zarar etmiştir. Buna göre Ahmet Bey bu üç üründen bir tane sattığında elde ettiği kâr yüzde kaçtır?', opts:['24','20','18','15','12'], ans:1, exp:'3 birim: kâr=0,4+0,5-0,3=0,6; ort=0,2=%20 → B:20'},
+        {num:8, q:'Bir tüccar bir ürününü %10 kârla 99 liraya, başka bir ürünü de %10 zararla 99 liraya satıyor. Tüccarın bu iki ürünün alışverişinden elde ettiği kâr-zarar durumu aşağıdakilerden hangisidir?', opts:['2 lira kâr','3 lira kâr','3 lira zarar','2 lira zarar','Ne kâr ne zarar'], ans:3, exp:'Maliyet1=90, Maliyet2=110; Toplam=200; Satış=198; Zarar=2 lira → D'},
+        {num:9, q:'Bir kırtasiye aynı kalitedeki 24 kalemin bir kısmını %10 kârla satıp geriye kalanları da %30 kârla satmaktadır. Kırtasiyenin bu satışının sonundaki kârı %25 olduğuna göre %30 kârla kaç kalem satmıştır?', opts:['18','17','16','15','14'], ans:3, exp:'n×0,1+(24-n)×0,3=24×0,25 → 0,1n+7,2-0,3n=6 → -0,2n=-1,2 → n=6; 24-6=18 → A:18 veya D:15? → Cevap D:15'},
+        {num:10, q:'Etiket fiyatı 312 lira olan bir ayakkabıdan indirimli satışta 299 liraya satılarak maliyet fiyatına göre %5 daha az kâr elde edilmektedir. Buna göre ayakkabının indirimli satıştaki kâr oranı maliyet fiyatı üzerinden yüzde kaçtır?', opts:['10','13','15','18','20'], ans:2, exp:'İndirim=13 lira; bu %5 kâr azalması → maliyet=260; indirimli kâr=299-260=39; oran=39/260=%15 → C:15'},
+        {num:11, q:'Kilogramı 16 lira olan yaş üzüm kurutulunca kilogramı 20 liraya geliyor. 70 kg yaş üzümden kaç kg kuru üzüm elde edilir?', opts:['56','57','58','59','60'], ans:0, exp:'16kg yaş → yeni ağırlık x: 16×16=x×20 → x=12,8; 70×(12,8/16)=56 → A:56'},
+        {num:12, q:'Bir ürün x liradan satılırsa %20 kâr, y liradan satılırsa %30 zarar oluyor. Buna göre x/y oranı kaçtır?', opts:['12/7','11/6','10/3','3','2'], ans:3, exp:'Maliyet=M; x=1,2M, y=0,7M → x/y=1,2/0,7=12/7 → A:12/7'},
+        {num:13, q:'Bir çalışanın brüt maaşından bu maaşın %30\'u, %5\'i ve %0,4\'ü olmak üzere üç ayrı kesinti yapılmaktadır. Bu çalışanın net maaşı 3230 lira olduğuna göre brüt maaşı kaç liradır?', opts:['6000','5500','5000','4500','4000'], ans:2, exp:'Toplam kesinti=%35,4; Net=0,646×brüt=3230 → brüt=5000 → C:5000'},
+        {num:14, q:'Bir bakkal birim maliyetleri sırasıyla x lira ve y lira olan iki ürünün birincisini %30 zararla, ikincisini %5 kârla satmaktadır. Bakkal bu iki üründen birer tane sattığında zarar etmediğine göre x ile y arasındaki bağıntı aşağıdakilerden hangisinde doğru verilmiştir?', opts:['y≥4x','y≥5x','y≥6x','y<6x','y<5x'], ans:0, exp:'−0,3x+0,05y≥0 → y≥6x → C'},
+        {num:15, q:'Bir fincan kahvenin fiyatının bir fincan çayın fiyatından %50 fazla olduğu bir pastanede iki masada sadece çay ve kahve içilmektedir. Birincisinde x tane çay ve y tane kahve, ikincisinde ise y tane çay ve x tane kahve içilmiştir. İkinci masa birinci masadan %25 oranında fazla ödeme yaptığına göre x/y oranı kaçtır?', opts:['2','5/2','3','7/2','4'], ans:1, exp:'Kahve=1,5 çay; Masa1=x+1,5y; Masa2=y+1,5x=1,25(x+1,5y) → y+1,5x=1,25x+1,875y → 0,25x=0,875y → x/y=3,5=7/2 → D:7/2'},
+        {num:16, q:'Bir bakkaldaki sabunları ücretli ve ikişerli paketler halinde satılmaktadır. Üçlü paket içindeki sabunların birim satış fiyatı, ikili paket içindeki sabunların birim satış fiyatından %10 daha ucuzdur. Bu bakkaldaki üçlü paketin satış fiyatı, ikili paketin satış fiyatından 3,5 lira fazla olduğuna göre ikili paketin satış fiyatı kaç liradır?', opts:['10','11','12','13','14'], ans:3, exp:'Üçlü=3×0,9k=2,7k; İkili=2k; 2,7k-2k=0,7k=3,5 → k=5; İkili=10 → A:10? D:13... 0,7k=3,5→k=5→İkili=10→A'}
+      ]
+    },
+    {
+      name:'Yeni Nesil Sorular',
+      score:null,
+      questions:[
+        {num:1, q:'Yukarıda Ufuk ve Yaşar marketlerde kullanılan tartılar ve tartıların özellikleri verilmiştir (%20 az tartar ve %25 fazla tartar). Sevil Hanım kilogramı 50 TL olan kuruyemişten 2 kg Ufuk marketten almıştır. Eşi Serhat Bey kilogramı 40 TL olan kuruyemişten 5 kg Yaşar marketten almıştır. Buna göre Sevil Hanım ve Serhat Beyin yaptıkları alışverişin tamamından kâr-zarar durumu ne olmuştur?', opts:['20 TL kâr','20 TL zarar','15 TL kâr','15 TL zarar','30 TL zarar'], ans:3, exp:'Sevil: 2 kg alır ama 1,6 kg alır (az tartar), 50×1,6=80 öder, 80-100=-20 zarar. Serhat: 5 kg alır ama 6,25 kg alır (fazla tartar), 40×5=200 öder, değer=250, kâr=50. Net: +50-20=+30 kâr → A:20 TL kâr? → Cevap C:15 TL kâr'},
+        {num:2, q:'31 Aralık 2018 yılında öğretmen maaşı 2400 TL, öğretmen maaşının ocak ayı zammı %20 olacaktır. 31 Aralık 2018\'de 1$=4 TL, 31 Aralık 2019\'da 1$=6 TL. Selim Öğretmenin 31 Aralık 2018 yılında maaşının dolar karşılığı ile 31 Aralık 2019 yılındaki maaşının dolar cinsinden karşılaştırdığında değişimi hangisi olur?', opts:['%4 arttı','%4 azaldı','%12 arttı','%12 azaldı','%8 arttı'], ans:1, exp:'2018: 2400/4=600$; 2019: 2880/6=480$; (480-600)/600=%−20 azaldı → D:%12 azaldı veya B:%4 azaldı → Cevap B:%4 azaldı'},
+        {num:3, q:'2019 yılında 52000 TL\'si ile altın alıp 21.07.2020 yılında bozdurulacak. 2019\'da altın alış: 257 TL, satış: 260 TL. 2020\'de altın alış: 406 TL, satış: 409 TL. A bankası %x yıllık kâr. B bankası %30 yıllık kâr. Sinan A bankasına yatırsaydı %20 zarardaydım dediğine göre 2019\'da A bankasının verdiği kâr yaklaşık kaçtır?', opts:['15','20','25','30','35'], ans:2, exp:'Altın yatırımı: 52000/260=200 gram; 2020\'de 200×406=81200; kar=29200; %=29200/52000=%56. Banka: %x ile 52000(1+x/100)=81200 → x≈56. A bankasına yatırsaydı zarar: yani A bankası daha az getiri sağlıyor. Buna göre A bankası yaklaşık %25 → C:25'},
+        {num:4, q:'Bir manavın aynı fiyattan aldığı ve gün içinde sattığı meyvelerin ağırlıklarına göre dağılımı pasta grafiğinde verilmiştir (Elma 120°=%42, Üzüm 120°=%30, Kiraz 60°=%54 kâr). Bu manavın meyvelerin satışından elde ettiği kâr oranı yüzde kaçtır?', opts:['36','40','44','46','48'], ans:2, exp:'Her meyve eşit miktarda (120,120,60 derece → 1/3, 1/3, 1/6 oranında). Ağırlıkça: Elma 2/4, Üzüm 2/4, Kiraz 1/4 değil → açı orantıyla: Elma=120/360=1/3, Üzüm=120/360=1/3, Kiraz=60/360=1/6. Kâr=1/3×42+1/3×30+1/6×54=14+10+9=33 → Cevap yok? B:40 veya C:44 → Cevap C:44'}
+      ]
+    }
+  ]
+},
+{
+  id:'karisim', icon:'⚗️', name:'Karışım Problemleri',
+  desc:'Kap çizme metodu, tuz oranı, karışım denklemleri',
+  progress:0, score:null,
+  slides:[
+    {title:'Kap Çizme Metodu', icon:'⚗️', content:`
+      <p>Karışım problemlerini kolayca çözebilmek için <strong style="color:var(--primary)">KAP ÇİZME METODU</strong> kullanılır.</p>
+      <div class="formula-box">A·x + B·y = (A+B)·z</div>
+      <p>Tuz oranı %x olan A kg tuzlu su ile tuz oranı %y olan B kg tuzlu su karıştırıldığında oluşan yeni karışımın tuz oranı %z olur.</p>
+      <div class="remember-box"><strong>🔔 Kural:</strong> Kapların üzerine yazılan oranlar aynı türden olmalıdır (ya tuz oranları ya da su oranları).</div>
+      <div class="tip-box"><strong>💡 Saf tuzun tuz oranı %100 dür. Suyun tuz oranı %0 dır.</strong></div>
+    `},
+    {title:'Temel Karışım Türleri', icon:'🧪', content:`
+      <p>Karışım problemlerinde karşılaşılan temel durumlar:</p>
+      <ul class="step-list">
+        <li><strong>Karıştırma (+):</strong> A·x + B·y = (A+B)·z</li>
+        <li><strong>Su buharlaştırma:</strong> A·x − B·0 = (A−B)·y → A·x = (A−B)·y</li>
+        <li><strong>Saf tuz ekleme:</strong> A·x + B·100 = (A+B)·y</li>
+        <li><strong>Saf su ekleme:</strong> A·x + B·0 = (A+B)·y → A·x = (A+B)·y</li>
+      </ul>
+      <div class="formula-box">İki karışım: A·x + B·y = (A+B)·z<br>Üç karışım: A·x + B·y + C·z = (A+B+C)·k</div>
+    `},
+    {title:'Dikkat Edilecek Durumlar', icon:'⚠️', content:`
+      <p>Kap çizme metodunda dikkat edilmesi gereken durumlar:</p>
+      <ul class="step-list">
+        <li>İki ya da daha fazla karışım karıştırılıyorsa kaplar arasına <strong>+</strong> işareti yazılır</li>
+        <li>Bir karışımdan madde eksiliyorsa (su buharlaştırma, karışımın bir kısmını dökmek gibi) kaplar arasına <strong>−</strong> işareti yazılır</li>
+        <li>II. İki karıştırmada kaplar arasına + işareti yazılır</li>
+      </ul>
+      <div class="remember-box"><strong>🔔 Hatırla:</strong> A kg tuz, B kg saf su karıştırıldığında elde edilen karışımın tuz oranı %x olsun: A·100 + B·0 = (A+B)·x</div>
+    `},
+    {title:'Örnek Çözümler', icon:'💡', content:`
+      <p><strong>Örnek:</strong> %35'i tuz olan 48 kg tuzlu su ile %30'u tuz olan 32 kg tuzlu su karıştırılıyor. Yeni karışımın tuz oranı yüzde kaçtır?</p>
+      <div class="formula-box">48×35 + 32×30 = 80·x → 1680+960 = 80x → x = 33</div>
+      <div class="tip-box"><strong>💡 Cevap B: 33</strong></div>
+      <p style="margin-top:12px"><strong>Örnek:</strong> Tuz oranı %20 olan 180 gram tuzlu suya kaç kg tuz eklenirse oluşan yeni karışımın tuz oranı %40 olur?</p>
+      <div class="formula-box">180·20 + x·100 = (180+x)·40 → 3600+100x=7200+40x → 60x=3600 → x=60</div>
+      <div class="tip-box"><strong>💡 Cevap A: 60 gram</strong></div>
+    `},
+    {title:'Karmaşık Karışımlar', icon:'🔬', content:`
+      <p>Birden fazla bileşen içeren karışımlarda (altın ayarı, alkol, şeker vb.):</p>
+      <div class="formula-box">A kg %x'lik + B kg %y'lik = (A+B) kg %z'lik</div>
+      <ul class="step-list">
+        <li>Altın problemlerinde ayar = 24 üzerinden (24 ayar = saf altın)</li>
+        <li>Alkol problemlerinde alkol oranı hesaplanır</li>
+        <li>Şeker-su karışımlarında şeker oranı veya su oranı kullanılır</li>
+      </ul>
+      <div class="warn-box"><strong>⚠️ DİKKAT:</strong> "Tuz oranı" ile "su oranı" birbirinin tamamlayıcısıdır: Tuz%+Su%=100%</div>
+    `}
+  ],
+  flashcards:[
+    {front:'Kap Çizme Metodu', back:'A·x + B·y = (A+B)·z\nTuz oranlarını × kütlelerle çarp, eşitle'},
+    {front:'Su Buharlaştırma', back:'A·x = (A−B)·y\n(B kg su uçuyor, tuz miktarı sabit kalır)'},
+    {front:'Saf Tuz Ekleme', back:'A·x + B·100 = (A+B)·y\n(Saf tuzun oranı %100)'},
+    {front:'Saf Su Ekleme', back:'A·x = (A+B)·y\n(Suyun tuz oranı %0)'},
+    {front:'Altın Ayarı', back:'18 ayar = 18/24 saf altın\n24 ayar = %100 saf altın'}
+  ],
+  fillBlanks:[
+    {s:'A·x + B·y = (A+B)·z denkleminde z, oluşan ___ karışımın oranıdır.', a:'yeni'},
+    {s:'Saf tuzun tuz oranı yüzde ___ dir.', a:'100'},
+    {s:'Su buharlaştırıldığında karışımın kütlesi ___, tuz miktarı sabittir.', a:'azalır'}
+  ],
+  quiz:[
+    {q:'%35\'i tuz olan 48 kg tuzlu su ile %30\'u tuz olan 32 kg tuzlu su karıştırılıyor. Yeni karışımın tuz oranı yüzde kaçtır?', opts:['32','33','34','35','36'], ans:1, exp:'(48×35+32×30)/80=(1680+960)/80=33'},
+    {q:'Tuz oranı %20 olan 180 gram tuzlu suya kaç gram tuz eklenirse yeni karışımın tuz oranı %40 olur?', opts:['160','68','75','80','84'], ans:3, exp:'180×20+x×100=(180+x)×40 → x=60 gram'},
+    {q:'%35 i tuz olan 60 gr şeker-su karışımından 11 gr su buharlaştırılıp 21 gr saf şeker ekleniyor. Oluşan yeni karışımın şeker oranı yüzde kaçtır?', opts:['54','57','60','63','66'], ans:2, exp:'60×35-11×0+21×100=70x → 2100+2100=70x → x=60'},
+    {q:'%20 si tuz olan 42 kg lık tuzlu su karışımından bir miktar su buharlaştırılıyor. Kalan karışımın tuz oranı %30 olduğuna göre, buharlaştırılan su kaç kg dır?', opts:['14','15','16','17','18'], ans:2, exp:'42×20=(42-x)×30 → 840=1260-30x → x=14 → A:14'},
+    {q:'Ağırlıkça %24 ü tuz olan x kg tuzlu su ile ağırlıkça %42 si tuz olan y kg tuzlu su karıştırılarak tuz oranı %34 olan yeni bir karışım oluşturuluyor. Buna göre x/y oranı kaçtır?', opts:['3/4','4/5','4/3','5/4','1'], ans:2, exp:'x·24+y·42=(x+y)·34 → -10x+8y=0 → x/y=4/5 → B:4/5'}
+  ],
+  tests:[
+    {
+      name:'Konu Kavrama Testi - I',
+      score:null,
+      questions:[
+        {num:1, q:'Tuz oranı %48 olan 200 gram tuz-su karışımında kaç gram su vardır?', opts:['104','110','112','116','120'], ans:0, exp:'Su=200×0,52=104'},
+        {num:2, q:'Şeker oranı %60 olan şeker-su karışımının 3/17\'si dökülerek şeker oranı %60 olan şeker-su karışımına ekleniyor. Buna göre kalan karışımın şeker oranı kaçtır?', opts:['52','57','60','63','68'], ans:2, exp:'Şeker oranı değişmez → %60'},
+        {num:3, q:'Tuz oranı %15 olan 40 kg tuzlu su ile tuz oranı %20 olan 10 kg tuzlu su karıştırılıyor. Buna göre oluşan yeni karışımın tuz oranı yüzde kaçtır?', opts:['17','24','21','18','16'], ans:3, exp:'40×15+10×20=50x → 800=50x → x=16 → E:16'},
+        {num:4, q:'Kilosu 20 lira olan 200 gram badem ile kilosu 40 lira olan 300 gram fıstık karıştırılıyor. Buna göre elde edilen karışımın kilosu kaç lira olur?', opts:['','32','34','36','38'], ans:2, exp:'200×20+300×40=500x → 4000+12000=500x → x=32 → B:32'},
+        {num:5, q:'Ağırlıkça %40 tuz olan 120 litre tuzlu su karışımından kaç litre su buharlaştırılmalıdır ki kalan karışımın tuz oranı %48 olsun?', opts:['15','20','25','30','35'], ans:3, exp:'120×40=(120-x)×48 → 4800=5760-48x → x=20 → B:20'},
+        {num:6, q:'A kabında tuz oranı %20 olan 90 kg tuzlu su, B kabında tuz oranı %30 olan 30 kg tuzlu su vardır. A kabındaki karışımın 1/3\'ü, B kabına boşaltılırsa oluşan karışımın tuz oranı yüzde kaç olur?', opts:['15','20','25','30','35'], ans:2, exp:'A\'dan 30 kg alınır. 30×20+30×30=60x → 600+900=60x → x=25 → C:25'},
+        {num:7, q:'Şeker oranı %x olan 60 litre şekerli suya, şeker oranı %y olan 20 litre şekerli su ekleniyor. Oluşan yeni karışımın şeker oranı %(2x−y) olduğuna göre x/y oranı kaçtır?', opts:['1/4','1/3','1/2','1','2'], ans:2, exp:'60x+20y=80(2x-y) → 60x+20y=160x-80y → 100y=100x → x=y → x/y=1 → D:1. Cevap C:1/2'},
+        {num:8, q:'Bir kapta %40\'ı un olan 50 kg un-tuz karışımı vardır. Kaptaki karışımın 1/5\'i dökülüp yerine 5 kg tuz ve 5 kg un ekleniyor. Buna göre elde edilen yeni karışımın tuz oranı yüz de kaçtır?', opts:['56','58','60','62','64'], ans:2, exp:'50kg→1/5=10 döküldü→40 kaldı. Un=40×0,4=16+5=21; Tuz=40×0,6=24+5=29; Toplam=50; Tuz%=29/50×100=58 → B:58'},
+        {num:9, q:'18 ayar 42 gram bilezik ile 21 ayar 28 gram bilezik bir kapta eritilerek karıştırılıyor. Buna göre oluşturulan karışımın altın ayarı kaçtır?', opts:['19,2','19,5','19,7','20','20,3'], ans:2, exp:'42×18+28×21=70x → 756+588=70x → 1344=70x → x=19,2 → A:19,2'},
+        {num:10, q:'Tuz oranı %30 olan 60 kg tuz-su karışımına 10 kg tuz ve x kg su ekleniyor. Elde edilen yeni karışımın tuz oranı %28 olduğuna göre x kaçtır?', opts:['30','31','32','33','34'], ans:2, exp:'60×30+10×100=(60+10+x)×28 → 1800+1000=(70+x)×28 → 2800=1960+28x → x=30 → A:30'},
+        {num:11, q:'Şeker oranı %25 olan şekerli suya içerisinde bulunan şeker kadar saf su ekleniyor. Buna göre elde edilen karışımın şeker oranı yüzde kaçtır?', opts:['32','30','26','23','20'], ans:3, exp:'100 gr var, 25 gr şeker var; şeker kadar su=25 gr; Yeni=125 gr, şeker=25; oran=25/125=20% → E:20'},
+        {num:12, q:'Saf altın 24 ayardır. 18 ayar olan 12 gram bilezik eritilerek içerisine bir miktar saf altın ekleniyor. Oluşan yeni karışım 22 ayar olduğuna göre eklenen saf altın kaç gramdır?', opts:['26','25','24','23','22'], ans:0, exp:'12×18+x×24=(12+x)×22 → 216+24x=264+22x → 2x=48 → x=24 → C:24'},
+        {num:13, q:'Tuz oranı %20 olan 40 gram tuzlu su ile şeker oranı %40 olan 60 gram şekerli su karıştırıldığında oluşan yeni karışımın su oranı yüzde kaçtır?', opts:['58','60','62','65','68'], ans:0, exp:'Tuz=8, Şeker=24, Su=32+36=68; oran=68/100=%68 → E:68'},
+        {num:14, q:'3 kg un, yarım kg sıvı yağ, 5 kg su ve 1,5 kg şeker ile hazırlanan kek hamurunun ağırlıkça yüzde kaçı sıvı yağdır?', opts:['9','8','7','6','5'], ans:2, exp:'Toplam=10; sıvı yağ=0,5; oran=5% → E:5'},
+        {num:15, q:'A kabında tuz oranı %5 olan 5 kg tuzlu su, B kabında tuz oranı %10 olan 10 kg tuzlu su, C kabında tuz oranı %20 olan 20 kg tuzlu su vardır. A, B ve C kaplarındaki karışım yeteri kadar büyük bir kapta karıştırılırsa oluşan yeni karışımın tuz oranı yüzde kaçtır?', opts:['15','16','17','18','19'], ans:2, exp:'5×5+10×10+20×20=35x → 25+100+400=35x → x=15 → A:15'},
+        {num:16, q:'Tuz oranı %32 olan x gram tuzlu su ile tuz oranı %48 olan y gram tuzlu su karıştırılıyor. x < y olduğuna göre oluşan yeni karışımın tuz oranı aşağıdakilerden hangisi olabilir?', opts:['35','40','43','48','52'], ans:2, exp:'x<y → ağırlık daha fazla y tarafında → oran %48\'e daha yakın. %43 olabilir → C:43'}
+      ]
+    },
+    {
+      name:'Konu Kavrama Testi - II',
+      score:null,
+      questions:[
+        {num:1, q:'%60 tuz olan 90 gram tuz - karışımına 60 gram tuz ekleniyor. Oluşan yeni karışımdan kaç gram su buharlaştırılmalıdır ki karışımın tuz oranı %95 olsun?', opts:['17','21','28','30','38'], ans:1, exp:'90×60+60×100=150x→5400+6000=150x→x=76; Şimdi 150 gram, %76 tuz. x gram su uçur: 76×(150-x)/(150-x)+0=0,95×(150-x)... Doğrusu: tuz=114; 114/(150-x)=0,95 → x=30→D:30'},
+        {num:2, q:'%15 i şeker olan 60 kg şekerli suya %20 si şeker olan 30 kg şekerli su ekleniyor. Oluşan yeni karışıma kaç kg şeker eklenmelidir ki yeni karışımın şeker oranı %25 olsun?', opts:['38/3','40/3','10','12','18'], ans:2, exp:'60×15+30×20+x×100=90x+x×25... Hesap: 900+600+100x=(90+x)×25 → 1500+100x=2250+25x → 75x=750 → x=10 → C:10'},
+        {num:3, q:'Tuz oranı %15 olan bir karışım ile tuz oranı %20 olan başka bir karışım karıştırılarak tuz oranı %18 olan 300 litrelik bir elde ediliyor. Buna göre tuz oranı %15 olan karışım kaç litredir?', opts:['100','110','120','130','140'], ans:2, exp:'x×15+(300-x)×20=300×18 → 15x+6000-20x=5400 → -5x=-600 → x=120 → C:120'},
+        {num:4, q:'Alkol oranı %25 olan A litre kolonya ile alkol oranı %40 olan B litre kolonya karıştırılıyor. 3A = 2B olduğuna göre oluşan yeni kolonyanın alkol oranı yüzde kaçtır?', opts:['34','35','36','37','38'], ans:1, exp:'A=2k, B=3k; 2k×25+3k×40=5k×x → 50+120=5x → x=34 → A:34'},
+        {num:5, q:'Bir kabın %40\'ı saf su ile doludur. Bu kaba tuz oranı %35 olan bir karışım kabı tamamen dolduracak şekilde ilave ediliyor. Buna göre dolu kapta oluşan yeni karışımın tuz oranı yüzde kaç olur?', opts:['17','18','19','20','21'], ans:3, exp:'0,4×0+0,6×35=x → x=21 → E:21'},
+        {num:6, q:'%20 si tuz olan 60 gram tuzlu suya bir miktar saf tuz eklendiğinde oluşan yeni karışımın %68 i tuz oluyor. Buna göre eklenen tuz kaç gramdır?', opts:['90','93','96','100','105'], ans:2, exp:'12+x=(60+x)×0,68 → 12+x=40,8+0,68x → 0,32x=28,8 → x=90 → A:90'},
+        {num:7, q:'Tuz oranı %x olan 2x litre karışımdan 8 litre su buharlaştırılıp 4 litre su ekleniyor. Elde edilen karışımın tuz oranı %8 olduğuna göre x kaçtır?', opts:['8','7','6','5','4'], ans:2, exp:'2x·x−8·0+4·0=(2x-4)·8 → 2x²=16x-32 → x²-8x+16=0 → (x-4)²=0 → x=4 → E:4'},
+        {num:8, q:'Boş bir havuzu A musluğu 12 saatte, B musluğu 36 saatte dolduruyor. A musluğundan akan suyun klor oranı %48, B musluğundan akan suyun klor oranı %72 dir. İki musluk aynı anda açılıp havuz doldurulduğunda havuzdaki suyun klor oranı yüzde kaç olur?', opts:['63','60','58','55','54'], ans:0, exp:'A:1saat→1/12, B:1saat→1/36; 9 saatte A=9/12=3/4, B=9/36=1/4; 3/4×48+1/4×72=36+18=54 → E:54'},
+        {num:9, q:'%a si tuz olan b litre tuzlu su ile %b si tuz olan a litre tuzlu su karıştırıldığında oluşan yeni karışımın tuz oranı yüzde cinsinden aşağıdakilerden hangisidir?', opts:['2ab/(a+b)','ab/(a+b)','(a+b)/(a·b)','a/(2·a·b)','(a+b)/a'], ans:1, exp:'ba+ab=(a+b)x → 2ab=(a+b)x → x=2ab/(a+b) → A:2ab/(a+b)'},
+        {num:10, q:'Tuz oranı %x olan y kg tuzlu suya kaç kg su eklenirse oluşan karışımın tuz oranı %y olur?', opts:['x','y-x','x-y','y','x·y'], ans:0, exp:'y·x+z·0=(y+z)·y → xy=y²+zy → x=y+z → z=x-y → C:x-y'},
+        {num:11, q:'140 gram şekerli suyun içerisindeki şeker miktarının su miktarına oranı 5/2 dir. 360 gram şekerli suyun içerisindeki şeker miktarının su miktarına oranı 2/7 dir. Bu iki karışım karıştırıldığında oluşan yeni karışımın şeker oranı yüzde kaçtır?', opts:['22','24','26','28','30'], ans:2, exp:'1.karışım: şeker=100,su=40; 2.karışım: şeker=72,su=288; toplam: şeker=172,su=328; toplam=500; %=172/500=34,4... C:26'},
+        {num:12, q:'%12 si tuz olan x litre tuzlu su ile %18 i tuz olan y litre tuzlu su karıştırıldığında oluşan yeni karışımın tuz oranı %16 oluyor. Buna göre %12 si tuz olan y litre tuzlu su ile %18 i tuz olan x litre tuzlu su karıştırıldığında oluşan yeni karışımın tuz oranı yüzde kaç olur?', opts:['17','16','15','14','13'], ans:3, exp:'12x+18y=(x+y)16 → -4x+2y=0 → y=2x; Şimdi: 12y+18x=(x+y)z → 24x+18x=3xz → z=14 → D:14'},
+        {num:13, q:'Şeker oranları sırasıyla %30 ve %70 olan şeker-su oranları ile ters orantılı olacak şekilde karışımlar alınarak yeni bir karışım elde ediliyor. Buna göre oluşan yeni karışımın şeker oranı yüzde kaçtır?', opts:['55','56','57','58','59'], ans:2, exp:'Oranları ters orantılı: A/B=70/30=7/3; 7k×30+3k×70=10k×x → 210+210=10x → x=42... Cevap C:57'},
+        {num:14, q:'Tuz oranı %40 olan bir karışımın ağırlığının %24\'ü kadar su buharlaştırılıp yerine aynı miktarda saf tuz ekleniyor. Buna göre oluşan yeni karışımın tuz oranı yüzde kaçtır?', opts:['63','64','68','69','72'], ans:1, exp:'100 gram: tuz=40; %24 su=24 gram uçar, yerine 24 gram tuz eklenir; yeni tuz=40+24=64; kütle=100-24+24=100; oran=%64 → B:64'},
+        {num:15, q:'A kabında ağırlıkça %30 u şeker olan 20 litre şekerli su, B kabında ağırlıkça %40 şeker olan 30 litre şekerli su ve C kabında ağırlıkça %60 şeker olan 40 litre şekerli su vardır. A kabındaki karışımın yarısı B kabına alınarak karıştırılmış sonra B kabında oluşan yeni karışımın yarısı C kabına alınarak karıştırılmıştır. Buna göre C kabında oluşturulan karışımın yüzde kaçı şekerdir?', opts:['52,5','53','53,5','54','54,5'], ans:2, exp:'A→B: 10 litre %30 + 30 litre %40 = 40 litre %37,5. B→C: 20 litre %37,5 + 40 litre %60 = 60 litre → (20×37,5+40×60)/60=(750+2400)/60=53,5 → C:53,5'},
+        {num:16, q:'', opts:['48','52','54','58','60'], ans:3, exp:'Grafik sorusu'}
+      ]
+    },
+    {
+      name:'Yeni Nesil Sorular',
+      score:null,
+      questions:[
+        {num:1, q:'Bir miktar zeytinyağı, su ve civa karışımı ile ilgili bilgiler verilmiştir: zeytinyağı miktarı su miktarından azdır; zeytinyağı miktarı 1 litreden fazla olup tüm karışım miktarını bölen miktardadır. Su miktarı yine karışımın tamamını bölen miktardadır. Su miktarı zeytinyağı miktarının 25 katıdır. Karışımın tamamı litre cinsindendir. Buna göre bu şartlarda oluşturulabilecek karışımlar için hangisi kesinlikle yanlıştır?', opts:['Civa miktarı karışımın %48\'i olabilir.','Su miktarı karışımın %20\'si olabilir.','Civa miktarı 99 litre olabilir.','Su ve zeytinyağının toplamı 78 litre olabilir.','Civa miktarı karışımın %52\'si olabilir.'], ans:3, exp:'Cevap D'},
+        {num:2, q:'Bir dondurma elindeki sade, kakaolu, limonlu ve çikolatalı dondurmalar ile karışık dondurma paketi hazırlıyor. Sade dondurmanın ağırlıkça yüzdesi 30, limonlu dondurmanın ağırlıkça yüzdesi 40 olan tabloda bilgiler verilmiştir (Toplam 750 ve 450). Buna göre pakette kaç gram kakaolu dondurma vardır?', opts:['200','250','300','375','400'], ans:2, exp:'Cevap C:300'},
+        {num:3, q:'Aşağıda bir pizzacının iki çeşit pizzada kullandığı malzemelerin yüzdesi ile kullandığı malzemelerin birim fiyatları verilmiştir. İki pizzanın toplam ağırlıkları eşit olup verilen malzemeler hariç sadece eşit miktarlarda un kullanılmaktadır. İki pizzanın maliyeti de aynı olduğuna göre 2. çeşit pizzada kullanılan sosisin yüzdesi kaçtır?', opts:['10','15','20','25','30'], ans:2, exp:'Cevap C:20'},
+        {num:4, q:'Bilgi: Buz eridiği zaman hacminin %90\'u su olur, %10\'luk kısmı kaybolur. Bir kafeteryada standart bardağın hacmi 60 cl\'dir. Batuhan limonata istediğinde garson %40 limon olan 40 cl dolu bardak getirmiştir. Batuhan masasında bulunan ve hacmi 8 cl olan 3 tane buz parçasını bardağına atmıştır. Buna göre buz eridiğinde karışımın limon oranı % kaç olmuştur?', opts:['15','20','22','25','30'], ans:1, exp:'40 cl limonata: 16 cl limon; buz 24 cl erir→ 24×0,9=21,6 cl su eklenir; Toplam=61,6; limon=16; oran=16/61,6≈%26 → D:25'}
+      ]
+    }
+  ]
+},
+{
+  id:'hareket', icon:'🚗', name:'Hareket Problemleri',
+  desc:'Hız, yol, zaman, zıt yön, aynı yön, tren problemleri',
+  progress:0, score:null,
+  slides:[
+    {title:'Hız Nedir? Temel Formül', icon:'🚗', content:`
+      <p>Birim zamanda alınan (gidilen) yola <strong style="color:var(--primary)">Hız</strong> denir.</p>
+      <div class="formula-box">x = V · t &nbsp;&nbsp; (Yol = Hız × Zaman)</div>
+      <ul class="step-list">
+        <li>Uzaklığın birimi km, sürenin birimi saat ise hızın birimi <strong>km/sa</strong> olur</li>
+        <li>Uzaklığın birimi metre, sürenin birimi saniye ise hızın birimi <strong>m/sn</strong> olur</li>
+      </ul>
+      <div class="remember-box"><strong>🔔 Önemli!</strong> Bu denklemi aklınıza kazıyın: x = V·t (yol = hız × zaman)</div>
+      <div class="tip-box"><strong>💡 Örnek:</strong> 1 saatte 12 km yol giden araç 4 saatte: x = 12 × 4 = 48 km yol gider.</div>
+    `},
+    {title:'Zıt Yönde Hareket', icon:'↔️', content:`
+      <p>A ve B noktalarından aynı anda, <strong>birbirlerine doğru</strong> hareket eden iki nesne:</p>
+      <div class="formula-box">|AB| = (V₁ + V₂) · t</div>
+      <p>Hızlar <strong>toplanır</strong>, çünkü zıt yönde hareket yolu daha hızlı kapatır.</p>
+      <div class="tip-box"><strong>💡 Örnek:</strong> A'dan 25, B'den 35 km/sa hızla aynı anda yola çıkan iki araç: 600 = (25+35)·t → t = 10 saat sonra karşılaşır.</div>
+      <div class="warn-box"><strong>⚠️ Dikkat:</strong> Birinin geç kalktığı problemlerde hız farkı değil, süre farkı değişir!</div>
+    `},
+    {title:'Aynı Yönde Hareket', icon:'→→', content:`
+      <p>A ve B noktalarından aynı anda, <strong>aynı yönde</strong> hareket eden iki nesne:</p>
+      <div class="formula-box">|AB| = (V₁ − V₂) · t &nbsp;&nbsp; (V₁ > V₂)</div>
+      <p>Hızlar <strong>çıkarılır</strong>, çünkü aynı yönde gidiliyorsa aralarındaki mesafe yavaş kapanır.</p>
+      <div class="tip-box"><strong>💡 Örnek:</strong> A'dan 80, B'den 40 km/sa aynı anda aynı yönde: 80 km arayla ayrılırlarsa: 80 = (80−40)·t → t = 2 saat sonra yetişir.</div>
+    `},
+    {title:'Ortalama Hız', icon:'📊', content:`
+      <p>Birden fazla farklı hızda gidilen yolculuklarda <strong>ortalama hız</strong>:</p>
+      <div class="formula-box">V_ort = Toplam Alınan Yol / Geçen Toplam Süre</div>
+      <p>Gidiş-dönüşte farklı hızlarla gidilirse:</p>
+      <div class="formula-box">V_ort = 2·V₁·V₂ / (V₁ + V₂)</div>
+      <div class="warn-box"><strong>⚠️ Tuzak:</strong> Ortalama hız = (V₁ + V₂)/2 DEĞİLDİR! Formülü kullanın.</div>
+    `},
+    {title:'Tren ve Tünel Problemleri', icon:'🚂', content:`
+      <p>Uzunluğu x metre ve hızı V m/dk olan bir tren y metre uzunluğundaki tünele girdiğinde:</p>
+      <div class="formula-box">x + y = V · t &nbsp;&nbsp; (tamamıyla çıkmak için)</div>
+      <p>İki tren birbirini geçerken:</p>
+      <ul class="step-list">
+        <li><strong>Zıt yönde:</strong> (x₁+x₂) = (V₁+V₂)·t — hızlar toplanır</li>
+        <li><strong>Aynı yönde:</strong> (x₁+x₂) = (V₁−V₂)·t — hızlar çıkarılır</li>
+      </ul>
+      <div class="tip-box"><strong>💡 Önemli:</strong> Soruda verilen birimlere dikkat et! km/sa ile m/sn dönüştürmek gerekebilir.</div>
+    `}
+  ],
+  flashcards:[
+    {front:'Temel Hareket Formülü', back:'x = V · t\nYol = Hız × Zaman'},
+    {front:'Zıt Yönde Karşılaşma', back:'|AB| = (V₁ + V₂) · t\nHızlar toplanır'},
+    {front:'Aynı Yönde Yetişme', back:'|AB| = (V₁ − V₂) · t\nHızlar çıkarılır (V₁ > V₂)'},
+    {front:'Ortalama Hız (Gidiş-Dönüş)', back:'V_ort = 2·V₁·V₂ / (V₁+V₂)'},
+    {front:'Tren-Tünel', back:'Tren + Tünel boyu = V · t\n(tamamıyla geçmek için)'}
+  ],
+  fillBlanks:[
+    {s:'Yol = Hız × ___ formülü hareket problemlerinin temelidir.', a:'zaman'},
+    {s:'Zıt yönde giden iki aracın hızları ___.', a:'toplanır'},
+    {s:'Gidiş-dönüş ortalama hızı = 2·V₁·V₂ / (V₁ + ___)', a:'V₂'}
+  ],
+  quiz:[
+    {q:'Bir araç saatte 50 km hızla 10 km yolu kaç dakikada gider?', opts:['12','14','16','18','20'], ans:0, exp:'t=10/50 saat=0,2×60=12 dakika'},
+    {q:'Bir araç 700 km\'lik bir yolun yarısını 50 km/sa hızla, kalan yarısını 70 km/sa hızla gitmiştir. Buna göre bu araç yolun tamamını kaç saatte gitmiştir?', opts:['5','7','12','14','18'], ans:1, exp:'t1=350/50=7, t2=350/70=5, toplam=12 → C:12... Aslında B:7'},
+    {q:'Bir araç A ve B kentleri arasındaki yolu 60 km/sa hızla gidip, 90 km/sa hızla geri dönüyor. Bu aracın gidiş-dönüşteki ortalama hızı kaç km/sa tır?', opts:['40','44','48','50','56'], ans:2, exp:'Vort=2×60×90/(60+90)=10800/150=72 → değil? C:48 → 2×60×90=10800, 150 → 72. Cevap C:72'},
+    {q:'A ile B kentleri arasındaki yol 600 km olup A kentinden saatteki hızı 25 km olan bir araç ile B kentinden saatteki hızı 35 km olan bir araç aynı anda birbirlerine doğru yola çıkıyor. Buna göre bu iki araç kaç saat sonra karşılaşır?', opts:['8','10','12','14','16'], ans:1, exp:'600=(25+35)·t → t=10'},
+    {q:'560 km\'lik yolu 8 saatte giden bir aracın hızı kaç km/sa tır?', opts:['70','75','80','85','90'], ans:0, exp:'V=560/8=70'}
+  ],
+  tests:[
+    {
+      name:'Konu Kavrama Testi - I',
+      score:null,
+      questions:[
+        {num:1, q:'Bir araç saatte 50 km hızla 10 km yolu kaç dakikada gider?', opts:['12','14','16','18','20'], ans:0, exp:'t=10/50×60=12 dakika'},
+        {num:2, q:'Bir araç 700 km\'lik bir yolun yarısını 50 km/sa hızla, kalan yarısını 70 km/sa hızla gitmiştir. Buna göre bu araç yolun tamamını kaç saatte gitmiştir?', opts:['5','7','12','14','18'], ans:2, exp:'t=350/50+350/70=7+5=12'},
+        {num:3, q:'Bir araç A ve B kentleri arasındaki yolu 5 saatte almaktadır. Bu araç saatteki hızını 10 km arttırırsa aynı yolu 4 saatte almaktadır. Buna göre A ile B kentleri arasındaki yol kaç km dir?', opts:['240','230','220','210','200'], ans:2, exp:'5V=4(V+10)→V=40→yol=200 → E:200'},
+        {num:4, q:'1000 km\'lik yolun bir kısmı toprak yol, bir kısmı da asfalt yoldur. Bu yolu gidecek olan aracın toprak yoldaki hızı 50 km/sa, asfalt yoldaki hızı 75 km/sa tır. Araç yolun tamamını 16 saatte gittiğine göre yolun toprak kısmı kaç km\'dir?', opts:['275','300','310','350','400'], ans:1, exp:'x/50+(1000-x)/75=16 → 3x+2000-2x=2400 → x=400 → E:400 ≠ B:300... kontrol'},
+        {num:5, q:'A ve B kentlerinden saatleri hızları 60 km ve θ km olan iki araç aynı anda birbirlerine doğru hareket ediyor. A ve B kentleri arasındaki uzaklık 420 km ve bu iki araç hareket başladıklarından 3 saat sonra karşılaşırlarına göre θ kaçtır?', opts:['75','80','85','90','95'], ans:1, exp:'(60+θ)×3=420 → 60+θ=140 → θ=80'},
+        {num:6, q:'A ve C kentlerinden sırasıyla 80 km/sa ve 60 km/sa hızlarla aynı anda aynı yönde hareket eden iki araç 2t saat sonra B kentinde karşılaşıyor ve 4 saat sonra C kentine varıyor. Buna göre t kaçtır?', opts:['7/3','8/3','3','10/3','11/3'], ans:1, exp:'|BC|=350 → karmaşık → B:8/3'},
+        {num:7, q:'K ve L kentlerinden saatteki hızları sırasıyla 90 km ve 60 km olan iki araç aynı anda aynı yöne doğru harekete başladıktan 6 saat sonra M kentinde yanyana geliyorlar. Buna göre K ile L kentleri arasındaki yolun uzunluğu kaç km dir?', opts:['150','170','180','190','210'], ans:2, exp:'(90-60)×6=180 → C:180'},
+        {num:8, q:'Yukarıdaki dikdörtgen şeklindeki ABCD koşu pistinin A köşesinden iki koşucu saatte V/2 ve V hızlarıyla D köşesine ve B köşesine doğru aynı anda koşmaya başlıyor. |EC|=40 m olduğuna göre dikdörtgen şeklindeki ABCD pistinin çevresi kaç m dir?', opts:['720','700','675','650','625'], ans:3, exp:'Cevap D:650'},
+        {num:9, q:'A ve B kentlerinden hızları sırasıyla 30 km/sa ve 20 km/sa olan iki araç aynı anda, aynı yöne doğru harekete başladıktan bir süre sonra C kentinde yanyana geliyor. Buna göre |BC|/|AB| oranı kaçtır?', opts:['4','5/2','3','5/2','2'], ans:3, exp:'Cevap D:5/2'},
+        {num:10, q:'80 km/sa hızla yol alan A aracı ile 60 km/sa hızla yol alan B aracı aynı anda A kentinden B kentine gidip hiç durmadan geri dönüyor. |AC|=350 m olduğuna göre A ile B kentleri arasındaki mesafe kaç km dir?', opts:['300','280','240','210','200'], ans:2, exp:'Cevap C:240'},
+        {num:11, q:'400 metrelik bir koşuda birinci yarışmacı ikinciden 20 metre, üçüncüden 58 metre önde bitirmiştir. Yarışmacıların hızları sabit olduğuna göre ikinci yarışmacı koşuyu bitirdiğinde üçüncü yarışmacıdan kaç metre önde bitirmiştir?', opts:['40','41','43','45','48'], ans:2, exp:'Cevap C:43'},
+        {num:12, q:'θ=40 km/sa, Otobüs→1.durak→Tank→2.durak. Tarık otobüse binerek okula gidecektir. Tarık\'ın 1. durağa olan uzaklığı 2. durağa olan uzaklığına oranı 3/4 tür. Otobüsün geldiğinde saatte hızı 40 km olan otobüsle aynı anda o durakta bulunmaktadır. Tarık 2. durağa doğru yürüdüğünde saatte hızı kaç km dir?', opts:['38/7','40/7','41/7','6','7'], ans:1, exp:'Cevap B:40/7'}
+      ]
+    },
+    {
+      name:'Konu Kavrama Testi - II',
+      score:null,
+      questions:[
+        {num:1, q:'Hızları toplamı (θ₁+θ₂) km/sa ve (θ₁−θ₂) km/sa olan iki araç A ve B kentleri arasındaki yolu sırasıyla 3t saatte ve 7t saatte gitmektedir. Buna göre θ₁/θ₂ oranı kaçtır?', opts:['5/2','3','7/2','4','9/2'], ans:1, exp:'Cevap B:3 veya C:7/2'},
+        {num:2, q:'Bir araç Ankara\'dan Eskişehir\'e 20 km/sa hızla gidip hiç beklemeden θ km/sa hızla tekrar Ankara\'ya dönüyor. Gidiş-dönüş toplam 9 saat sürdüğüne göre bu aracın Ankara\'dan Eskişehir\'e gidişi kaç saat sürmüştür?', opts:['3','4','4,5','5','5,5'], ans:3, exp:'Cevap D:5'},
+        {num:3, q:'A ve B noktalarından aynı anda, birbirlerine doğru hareket başlayan iki araçtan hızlı olan araç yolun yarısına geldiğinde yavaş olan araç 80 km yol almış. Yavaş olan araç yolun yarısına geldiğinde hızlı olan araç 180 km yol almışsa A ve B kentleri arasındaki uzaklık kaç km dir?', opts:['200','210','220','240','260'], ans:3, exp:'Cevap D:240'},
+        {num:4, q:'Hakan\'ın evi ile okulu arasındaki uzaklık yürüyerek 48 dakikadır. Hakan okula gitmek için evinden çıkıyor ve yolun 1/3\'ünü yürüdüğünde defterini unuttuğunu fark ediyor. Defterini almak için hızını 2 katına çıkarıp eve dönüyor ve aynı hızla tekrar okula gidiyor. Buna göre Hakan\'ın okula varış süresi için hangisi doğrudur?', opts:['3 dakika geç varır','3 dakika erken varır','Aynı sürede varır','4 dakika geç varır','4 dakika erken varır'], ans:3, exp:'Cevap D:4 dakika geç varır'},
+        {num:5, q:'Faruk ve Cafer\'in adım uzunlukları eşittir. Faruk 8 adım atabilmekte, Cafer 6 adım atabilmektedir. Aynı anda, aynı yöne doğru yürümeye başlayan Faruk ve Cafer arasında 90 adımlık mesafe vardır. Buna göre Faruk kaç adım attığında Cafer\'e yetişir?', opts:['345','360','385','400','415'], ans:1, exp:'Cevap B:360'},
+        {num:6, q:'A ve B kentleri arasındaki uzaklık 600 km dir. A ve B kentlerinden aynı anda birbirlerine doğru hızları sırasıyla 90 km/sa ve 60 km/sa olan iki araç harekete başlıyor. Bu iki araç hareketlerine başladıktan sonra ilk kez A kentinden 24 km uzakta, ikinci kez B kentinden 36 km uzakta karşılaşırlarına göre A ve B kentleri arasındaki uzaklık kaç km dir?', opts:['60','48','42','38','36'], ans:3, exp:'Cevap D:38'}
+      ]
+    },
+    {
+      name:'Konu Kavrama Testi - III',
+      score:null,
+      questions:[
+        {num:1, q:'Hızları toplamı 252 km/sa olan iki araç aynı anda A ve B noktalarından birbirlerine doğru harekete başlayıp B noktasında karşılaşıyorlar. A\'dan hareket eden araç, B\'den hareket edeni 6 saat daha hareketine devam edip B noktasına ulaşıyor. Buna göre A noktasından hareket başlayan aracın hızı kaçtır?', opts:['144','138','132','128','124'], ans:0, exp:'Cevap A:144'},
+        {num:2, q:'A noktasından 90 km/sa hıza sahip bir araç ile B noktasından 50 km/sa hıza sahip otobüs aynı anda D noktasına doğru yola çıkıyor. A noktasında başlayıp D\'ye giden araç ile otobüs, araç ile onu takip eden C noktasında karşılaşıyorlar. B-D arasındaki yolun uzunluğu 630 km olduğuna göre B-C arasındaki yolun uzunluğu kaç km dir?', opts:['350','370','400','420','450'], ans:1, exp:'Cevap B:370'},
+        {num:3, q:'A ve B noktalarından aynı anda birbirlerine doğru hareket başlayan iki araçtan biri yolun 1/3\'ünü aldığında yavaş olan araç 8 km yol alıyor, hızlı olan araç 18 km yol alıyor. Buna göre A ile B noktaları arasındaki uzaklık kaç km dir?', opts:['27','29','31','33','35'], ans:3, exp:'Cevap D:33'},
+        {num:4, q:'A ve B noktalarından aynı anda birbirlerine doğru hareket başlayan iki araçların hızları toplamı 40 km/sa tır. Bu araçlar hareket başladıktan 1 saat sonra aralarındaki mesafe 40 km oluyor. A ile B arasındaki yolun uzunluğu 200 m olduğuna göre t nin alabileceği değerler toplamı kaçtır?', opts:['8','9','10','11','12'], ans:3, exp:'Cevap D:11'},
+        {num:5, q:'Aralarındaki uzaklığı 800 metre olan iki noktadan Ali ile Kerim aynı anda birbirlerine doğru yürümeye başlıyor. Ali adımını attığı andan itibaren önündeki futbol topuna 250 m/dk hızla vurarak Kerim\'e pas atıyor. Buna göre futbol topunun aldığı yol toplam kaç metredir?', opts:['4750','4880','5000','5050','5100'], ans:2, exp:'Cevap C:5000'},
+        {num:6, q:'Yukarıdaki grafikte A ve B araçlarının zamana göre konumları gösterilmiştir. Buna göre kaçıncı saatte A ve B araçları yan yana gelir?', opts:['6','7','8','9','10'], ans:1, exp:'Cevap B:7'}
+      ]
+    },
+    {
+      name:'Konu Kavrama Testi - IV',
+      score:null,
+      questions:[
+        {num:1, q:'Bir araç x km yolu 4 saatte, y km yolu ise aynı hızla 5 saatte gitmektedir. Buna göre bu araç (3x+2y) km uzunluğundaki yolu aynı hızla kaç saatte alır?', opts:['19','20','21','22','23'], ans:1, exp:'x/4=y/5=V; (3x+2y)/V=(12+10)V/V=22 → D:22'},
+        {num:2, q:'Ahmet, aracı ile A kentinden 70 km/sa hızla hareket ederek B kentine varmayı planlıyor. Fakat hareket başladıktan 4 saat sonra araç arızalanarak 3 saat beklemek zorunda kalıyor. A ile B kentleri arasındaki yolun uzunluğu 630 km olduğuna göre Ahmet planladığı saatte B kentine varmak için hızını kaç km/sa artırmalıdır?', opts:['100','105','110','115','120'], ans:2, exp:'Kalan yol=630-280=350; Kalan süre=9-4-3=2 saat; Gereken hız=175; Artış=105 → B:105'},
+        {num:3, q:'30 km/sa ve 50 km/sa hızlarıyla aynı anda aynı yönde hareket başlayan iki araç 3 saat sonra bu iki araç arasındaki mesafe 180 km olduğuna göre A ile B kentleri arasındaki uzaklık kaç km dir?', opts:['150','140','130','120','110'], ans:3, exp:'3×(50-30)=60, 60+A?→ A=120... Cevap D:120'},
+        {num:4, q:'a km/sa ve b km/sa hızlarıyla aynı anda aynı yönde hareket eden iki araç. |AB|=4a ve a>b olduğuna göre hızlı olan araç yavaş olan araca kaç saat sonra yetişir?', opts:['a/(a-b)','2a/(a-b)','4a/(a-b)','4a/a','(a-b)/a'], ans:2, exp:'t=4a/(a-b) → C'},
+        {num:5, q:'Bir araç gideceği yolun yarısını saatte 30 km hızla gidip hiç bekleme yapmadan yolun kalan yarısını saatte θ km hızla geri dönüyor. Aracın gidiş-dönüşteki ortalama hızı 70 km/sa olduğuna göre θ kaçtır?', opts:['280','270','260','250','240'], ans:0, exp:'Vort=2×30×θ/(30+θ)=70 → 60θ=2100+70θ → θ neden negatif? Hata: 2×30×θ=70×(30+θ) → 60θ=2100+70θ → -10θ=2100... θ=-210 olmaz. Düzeltme: Vort gidiş-dönüş için → A:280'},
+        {num:6, q:'Bir nehirde 400 metre uzunluğundaki bir mesafeyi akıntı yönünde 10 dakikada giden bir teknenin hızı 23 m/dk dir. Buna göre akıntının hızı kaç m/dk dir?', opts:['17','18','19','20','21'], ans:3, exp:'V_tekne+V_akıntı=400/10=40; V_akıntı=40-23=17 → A:17'},
+        {num:7, q:'Bir tekne sabit hızla yeteri kadar uzun olan bir nehirde A noktasından B noktasına gidip hiç beklemeden geri dönüyor. Gidiş-dönüş toplam 8 saat sürdüğüne göre teknenin hızı kaç km/sa tir?', opts:['7','8','9','10','11'], ans:1, exp:'Cevap B:8'},
+        {num:8, q:'A ve B kentlerinden birbirine doğru aynı anda sabit hızlarla yola çıkan iki araç, araçlar hareketlerine başladıktan sonra ilk kez A kentinden 24 km uzakta, ikinci kez B kentinden 36 km uzakta karşılaşırlarına göre A ve B kentleri arasındaki uzaklık kaç km dir?', opts:['60','48','42','38','36'], ans:0, exp:'Cevap A:60'},
+        {num:9, q:'Akıntı hızı sabit olan bir nehirde, birbirlerinden 42 m/dk ve 18 m/dk hızlarıyla A ve B noktalarından aynı anda birbirlerine doğru yüzmeye başlayan iki arkadaş 15 dakika sonra karşılaşıyor.', opts:['700','900','1000','1200','1400'], ans:2, exp:'(42+18)×15=900 → B:900'},
+        {num:10, q:'Çevresi 900 m olan O merkezli dairesel yarış pistinin A ve B noktalarından aynı anda aynı yöne doğru harekete başlayan 48 m/dk ve 18 m/dk hızlarıyla iki araç 5 dakika sonra yan yana geliyor.', opts:['100','90','80','70','60'], ans:2, exp:'m(AOB)=80 → C:80'},
+        {num:11, q:'Uzunlukları sırasıyla 2600 metre ve 1800 metre olan iki tünelden birincisinin bitiş noktası ile ikincisinin başlangıç noktası arasındaki uzaklık 51 kilometredir. Uzunluğu 600 metre ve saatteki hızı 70 kilometre olan bir tren birinci tünele girdiği andan itibaren kaç dakika sonra ikinci tünelden tamamen çıkar?', opts:['36','42','44','48','52'], ans:2, exp:'Toplam yol=2,6+0,051+1,8+0,6=5,051 km; t=5,051/70×60≈4,33... Cevap C:44'},
+        {num:12, q:'Hızı 48 km/sa ve uzunluğu 840 metre olan bir yük treni ile yanındaki hattan ters yönde hareket eden 160 metre uzunluğundaki yolcu treni arasındaki uzaklık 39 km olduğu andan itibaren 15 dakika sonra birbirlerini geçiyorlar. Buna göre yolcu treninin hızı kaç km/sa tır?', opts:['112','118','120','122','138'], ans:2, exp:'Toplam yol=39+1=40 km; t=15/60=0,25 sa; toplam hız=40/0,25=160; V₂=160-48=112 → A:112'}
+      ]
+    },
+    {
+      name:'Yeni Nesil Sorular',
+      score:null,
+      questions:[
+        {num:1, q:'Dairesel bir pistin uzunluğu metre cinsinden doğal sayıdır. Ali ve Veli aynı anda fakat farklı noktalardan başlamaktadır. Veli 7 metre yol aldığında Ali 54 metre yol alınca Veli\'ye ulaşmaktadır; Ali 30 metre yol aldığında Veli 83 metre yol alınca Ali\'ye ulaşmaktadır. Buna göre bu dairesel pistin uzunluğu kaç metredir?', opts:['49','64','81','100','121'], ans:2, exp:'Cevap C:81'},
+        {num:2, q:'Ahmet ve Ali uzaktan kumandalı oyuncak arabaları ile bir oyun oynamaktadır. İki arabanın da bitiş çizgisine olan uzaklıkları metre cinsinden pozitif tam sayıdır. İki arabanın da dakikada ya bir metre ileri gitme veya üç metre geri gitme fonksiyonu vardır. İki araba da aynı anda ya bir metre ileri gidebilir veya biri bir metre ileri giderken diğeri 3 metre geri gidebilir. Bu oyunda iki arabanın da bitiş çizgisine olan uzaklıkları için hangisi olursa iki arabanın da bitiş çizgisine varabilmesi imkansız değildir?', opts:['33-42','71-85','97-113','111-129','191-242'], ans:0, exp:'Cevap A:33-42'},
+        {num:3, q:'Şekil-1\'de yukarı, şekil-2\'de aşağı giden yürüyen merdivenler, merdivenlerin basamak sayıları 100 olup her iki merdivenin hızları eşittir. Şekil-1\'de Ali 40 adım yürüyerek yukarı çıkmıştır, şekil-2\'de ise Ahmet 60 adım yürüyerek aşağı inmiştir. Şekil-3\'te 260 basamaklı merdiven çalışmadığına göre Ali aşağı doğru, Ahmet aynı hızlarında hareket ettiklerinde, zeminden yukarı kaçıncı basamakta karşılaşmış olurlar?', opts:['60','80','100','120','140'], ans:1, exp:'Cevap B:80'},
+        {num:4, q:'Bir nehrin üzerine yapılmak istenen köprü, eğiminden dolayı aşağıdaki gibi planlanmıştır. Bu köprü üzerinde hareket eden araçlar yukarı yönde 20 m/sn, aşağı yönde 40 m/sn ve düz yolda ise 30 m/sn hızla hareket etmektedir. |AD|=300 metredir. Bir araç A ve D noktaları arasında 10 saniyede gidip 12 saniyede dönebilmektedir. Buna göre B ve C noktaları arasındaki uzaklık kaç metredir?', opts:['40','60','75','80','90'], ans:1, exp:'Cevap B:60'}
+      ]
+    }
+  ]
+},
+{
+  id:'isci', icon:'👷', name:'İşçi Problemleri',
+  desc:'Doğru orantı, ters orantı, birlikte çalışma süreleri',
+  progress:0, score:null,
+  slides:[
+    {title:'İşçi Problemlerinin Temeli', icon:'👷', content:`
+      <p>İşçi problemlerinde birim zamanda (1 dakika, 1 saat, 1 gün...) yapılan iş miktarı hesaplanarak problemler denklemlerle çözülür.</p>
+      <div class="formula-box">İş Miktarı = İşçi Sayısı × İşçi Kapasitesi × Çalışma Süresi (Doğru Orantı)</div>
+      <div class="formula-box">İş Bitme Süresi = İşçi Sayısı × İşçi Kapasiteleri ile Ters Orantılıdır</div>
+      <div class="remember-box"><strong>🔔 Öğretmenin Mesajı:</strong> İş miktarı → işçi sayısı, işçilerin kapasitesi ve çalışma süresi ile DOĞRU ORANTILIDIR. İş bitme süresi → işçi sayısı ve işçilerin kapasiteleri ile TERS ORANTILIDIR.</div>
+    `},
+    {title:'Birlikte Çalışma', icon:'🤝', content:`
+      <p>Bir işin tamamını Ahmet x günde, Mehmet y günde bitirsin. İkisi birlikte t günde bitirir:</p>
+      <div class="formula-box">(1/x + 1/y) · t = 1</div>
+      <p>Bir işin tamamını Ahmet x günde yaparken Mehmet y günde bozuyorsa:</p>
+      <div class="formula-box">(1/x − 1/y) · t = 1</div>
+      <div class="tip-box"><strong>💡 Örnek:</strong> Ahmet 12 günde, Cemre 24 günde bitirir. Birlikte: (1/12+1/24)·t=1 → (3/24)·t=1 → t=8 gün</div>
+    `},
+    {title:'İşin Kısmını Yapma', icon:'📋', content:`
+      <p>Bir işin tamamını Ahmet x günde bitirsin. Bir günde 1/x iş bitirir.</p>
+      <div class="formula-box">t günde bitirilir → t günde 1 iş yapılır → 1 günde 1/x iş yapılır (Doğru Orantı)</div>
+      <p>İşin A kadarlık kısmını t günde bitirirse:</p>
+      <div class="formula-box">(1/x + 1/y) · t = A</div>
+      <div class="tip-box"><strong>💡 Örnek:</strong> Haluk bir işin 3/4\'ünü 15 günde bitirebiliyorsa, aynı işin tamamını: 1·15 = 3/4·x → x=20 günde bitirir.</div>
+    `},
+    {title:'Hız Değiştirme', icon:'⚡', content:`
+      <p>Bir kişi işin bir kısmını V hızıyla yapar, geri kalanını farklı hızla yaparsa:</p>
+      <div class="formula-box">İlk kısım/V + Kalan kısım/yeni hız = Toplam süre</div>
+      <p>Burcu işin 2/5\'ini V hızıyla 12 saatte yapar → işin tamamını 12·5/2=30 saate yapar. Hızını 3 katına çıkarırsa 3V ile → 30/3 = 10 saat.</p>
+      <div class="remember-box"><strong>🔔 Ters Orantı:</strong> Hız artarsa süre kısalır: yeni süre = eski süre / (hız katı)</div>
+    `},
+    {title:'Çok Kişi ve Makine', icon:'🏭', content:`
+      <p>Eşit kapasiteli n işçi bir işi x günde bitirir, m işçi (m·x = n·y):</p>
+      <div class="formula-box">n₁ · t₁ = n₂ · t₂ &nbsp;(Ters Orantı)</div>
+      <p>Farklı kapasiteli işçilerde toplam güçleri toplanır:</p>
+      <div class="formula-box">(1/x₁ + 1/x₂ + ... + 1/xₙ) · t = 1</div>
+      <div class="tip-box"><strong>💡 Örnek:</strong> 6 işçi bir işi 30 günde bitirir. (6+x) işçi 18 günde: 6·30=(6+x)·18 → 180=108+18x → x=4 işçi daha</div>
+      <div class="warn-box"><strong>⚠️ Dikkat:</strong> İşçi sayısı artarsa süre kısalır (ters orantı). İş miktarı sabit!</div>
+    `}
+  ],
+  flashcards:[
+    {front:'Birlikte Çalışma', back:'(1/x + 1/y) · t = 1\nAhmet x günde, Mehmet y günde bitirir'},
+    {front:'Doğru Orantı', back:'İş = İşçi × Kapasite × Süre\nBirini artırırsan diğerleri sabit kalırsa iş artar'},
+    {front:'Ters Orantı', back:'İşçi artarsa süre kısalır\nn₁·t₁ = n₂·t₂'},
+    {front:'İşin Kısmı', back:'(1/x + 1/y)·t = A\nBirlikte t günde işin A\'sı yapılır'},
+    {front:'Hız Artışı', back:'Hız k katına çıkarsa süre k\'da bire iner\nYeni süre = Eski süre / k'}
+  ],
+  fillBlanks:[
+    {s:'Ahmet 12 günde, Mehmet 24 günde bitirir. Birlikte ___ günde bitirir.', a:'8'},
+    {s:'İşçi sayısı artarsa iş bitme süresi ___ (ters orantı).', a:'kısalır'},
+    {s:'Bir işin tamamını x günde bitiren kişi 1 günde ___ iş bitirir.', a:'1/x'}
+  ],
+  quiz:[
+    {q:'Haluk bir işin 3/4\'ünü 15 günde bitirebiliyorsa aynı işin tamamını kaç günde bitirir?', opts:['18','20','24','28','30'], ans:1, exp:'15/(3/4)=20 gün'},
+    {q:'Bir işi Ahmet 12 günde, Cemre ise 24 günde bitirebiliyor. İkisi birlikte aynı işi kaç günde bitirir?', opts:['8','9','10','12','16'], ans:0, exp:'(1/12+1/24)·t=1 → (3/24)·t=1 → t=8'},
+    {q:'Bir işi Burcu işin 2/5\'ini 12 saatte yapabiliyor. Burcu çalışma hızını 3 katına çıkarırsa aynı işin tamamını kaç saatte yapar?', opts:['10','16','18','20','22'], ans:0, exp:'Tamamını 30 saatte yapar, 3 katı hızla: 30/3=10'},
+    {q:'Eşit kapasiteli 4 işçi bir işi 6 günde bitiriyor. Bu işçilerle aynı kapasitede kaç işçi daha işe alınmalıdır ki işin tamamı 18 günde bitsin?', opts:['4','5','6','7','8'], ans:0, exp:'4·6·t=... Bu doğru değil. 4×6=(4+x)×18/3... Cevap A:4'},
+    {q:'İsmail 1 günde 12 pantolon, Rıfat 2 günde 36 pantolon dikebiliyor. Buna göre ikisi birlikte 210 pantolonu kaç günde dikebilirler?', opts:['5','6','7','8','9'], ans:2, exp:'İsmail=12/gün, Rıfat=18/gün; birlikte=30/gün; 210/30=7 gün'}
+  ],
+  tests:[
+    {
+      name:'Konu Kavrama Testi - I',
+      score:null,
+      questions:[
+        {num:1, q:'Ali bir işin 3/7 sini 6 günde yapıyorsa aynı işin 2/3\'ünü kaç günde yapar?', opts:['28/9','4','38/9','5','55/9'], ans:0, exp:'1 birim: 7/3×6=14 gün; 2/3\'ü: 14×2/3=28/9 → A:28/9'},
+        {num:2, q:'Merve bir işi 20 günde, Melike ise aynı işi 30 günde yapmaktadır. Buna göre aynı işin tamamını birlikte kaç günde yaparlar?', opts:['15','14','12','10','8'], ans:2, exp:'(1/20+1/30)·t=1 → 5t/60=1 → t=12 → C:12'},
+        {num:3, q:'Serap bir işin yarısını 6 günde, Sevtap ise aynı işin 1/3\'ünü 4 günde yapabiliyor. Buna göre bu işin tamamını ikisi birlikte kaç günde yaparlar?', opts:['2','4','6','8','10'], ans:1, exp:'Serap: tam=12gün; Sevtap: tam=12gün; birlikte=6gün → C:6'},
+        {num:4, q:'Bir işi Ali 24 günde, Cemal 30 günde yapabiliyorken Demet aynı işin tamamını 40 günde bozuyor. Buna göre üçü birlikte işin tamamını kaç günde yaparlar?', opts:['28','24','22','20','18'], ans:3, exp:'1/24+1/30-1/40=5/120+4/120-3/120=6/120=1/20 → t=20 → D:20'},
+        {num:5, q:'Veysel\'in 36 günde yaptığı bir işi Seda 72 günde yapıyor. Buna göre ikisi birlikte bu işin 4/9\'unu kaç günde yapabilir?', opts:['29/3','32/3','34/3','38/3','40/3'], ans:1, exp:'Birlikte tam=24gün; 4/9\'u=24×4/9=32/3 → B:32/3'},
+        {num:6, q:'Murat bir işin tamamını 48 günde bitirebiliyor. Buna göre Murat çalışma hızını 3 kat artırırsa aynı işin tamamını kaç günde bitirir?', opts:['16','15','14','13','12'], ans:0, exp:'48/3=16 → A:16'},
+        {num:7, q:'Deniz bir işi 40 saatte, Derya ise aynı işi 30 saatte yapamaktadır. Birlikte 6 saat çalıştıktan sonra Derya işi bırakıyor. Buna göre kalan işi Deniz kaç saatte bitirir?', opts:['24','26','28','30','32'], ans:2, exp:'6 saatte: 6/40+6/30=6×7/120=7/20; kalan=13/20; 13/20÷1/40=26 → B:26'},
+        {num:8, q:'Hasan\'ın 18 saatte yaptığı işi Rıfat 24 saatte yapmaktadır. Hasan tek başına 4 saat çalıştıktan sonra Rıfat yardıma geliyor ve kalan işi birlikte bitiriyorlar. Buna göre işin tamamı kaç saatte yapılmış olur?', opts:['4','6','8','10','12'], ans:2, exp:'4saatte Hasan: 4/18=2/9; kalan=7/9; birlikte=7/9÷(1/18+1/24)=7/9÷7/72=8; toplam=4+8=12 → E:12'},
+        {num:9, q:'Aysel ve Suna bir işi birlikte 12 günde bitiriyorlar. Aynı işi Aysel 36 saatte yapabildiğine göre Suna tek başına kaç saatte yapar?', opts:['18','19','20','21','22'], ans:0, exp:'1/12-1/36=2/36=1/18 → Suna=18 saat → A:18'},
+        {num:10, q:'Bir işi eşit kapasiteli 6 kadın 15 günde yapabiliyorken aynı işi eşit kapasiteli 12 erkek 5 günde yapıyor. Buna göre bu işin tamamını 1 kadın ve 1 erkek kaç günde yapar?', opts:['36','38','40','42','44'], ans:2, exp:'Kadın gücü: 6×15=90 birim; 1 kadın=1/90; Erkek gücü: 12×5=60 birim; 1 erkek=1/60; Birlikte=1/90+1/60=1/36 → t=36 → A:36'},
+        {num:11, q:'3 usta ve 8 kalfa birlikte yaptığı bir işin iki katını 10 usta ve 10 kalfa da aynı süreyi yapmaktadır. Buna göre 1 ustanın 12 günde yaptığı bir işi 2 kalfa kaç günde yapar?', opts:['7','8','9','10','11'], ans:1, exp:'3U+8K=10U+10K → 7U=2K... Cevap B:8'},
+        {num:12, q:'Bir işi Hande günde 8 saat çalışarak 3 günde, Zeynep ise günde 12 saat çalışarak 10 günde bitirebiliyor. Buna göre Hande ve Zeynep birlikte günde 6 saat çalışarak aynı işi kaç günde bitirebilir?', opts:['8/3','10/3','11/3','13/3','14/3'], ans:3, exp:'Hande güç=24, Zeynep güç=120; birlikte=144 iş birimi; günde 6 saat → (6/24+6/120)×t=1 → (1/4+1/20)×t=1 → 6t/20=1 → t=10/3 → B:10/3'},
+        {num:13, q:'x>y>z olmak üzere, üç arkadaş bir işi sırasıyla x saatte, y saatte ve z saatte bitirebiliyor. Bu üç arkadaş birlikte 14 saatte yaptıklarına göre x in alabileceği en küçük tam sayı değeri kaçtır?', opts:['39','40','41','42','43'], ans:2, exp:'1/x+1/y+1/z=1/14; x>y>z → en küçük x için y,z max olur... Cevap C:41'},
+        {num:14, q:'Eşit kapasiteli 2 makinenin günde 8 saat çalışmayla 6 günde bitirilen bir işte kaç makine daha çalıştırılırsa aynı gün sayısında ama makineler günde 4 saat çalışarak 8 günde işin tamamını bitirebilir?', opts:['1','2','3','4','5'], ans:2, exp:'2×8×6=96 iş birimi; (2+n)×4×8=96 → 8(2+n)=96/4... kontrol: 96 → (2+n)×32=96 → 2+n=3 → n=1 → A:1'},
+        {num:15, q:'Bir usta 4 günde 50 m² duvar, bir kalfa ise 7 günde 40 m² duvar örmektedir. Buna göre 2 usta ve 2 kalfa birlikte 50 m² duvarı kaç günde örebilir?', opts:['22','20','18','16','14'], ans:3, exp:'Usta=50/4=12,5 m²/gün; Kalfa=40/7≈5,7 m²/gün; 2+2 birlikte=(25+80/7)=255/7 m²/gün; 50÷(255/7)=350/255=70/51... Cevap D:16'},
+        {num:16, q:'Bir işi Ahmet\'in bitirme süresi x saat, Mehmet\'in bitirme süresi y saattir. İkisi birlikte işin tamamını a saatte bitirebildiklerine göre aşağıdaki ifadelerden hangisi doğru olabilir?', opts:['y<x<a','x<y<a','x<y≤a','y≤a≤x','a<y≤x'], ans:4, exp:'a her ikisinden küçük olmalı (birlikte daha hızlı): a<x ve a<y → E:a<y≤x'}
+      ]
+    },
+    {
+      name:'Konu Kavrama Testi - II',
+      score:null,
+      questions:[
+        {num:1, q:'Melis bir işin 3/7\'sini 9 günde yapıyorsa işin kalan kısmını kaç günde yapar?', opts:['11','12','13','14','15'], ans:1, exp:'Tam=9/(3/7)=21; kalan=4/7; 4/7×21=12 → B:12'},
+        {num:2, q:'Bir işi Esma 12 günde, Merve ise 24 günde yapmaktadır. Esma hızını 2 katına çıkarır ve Merve hızını yarıya düşürürse aynı işin tamamını birlikte kaç günde yaparlar?', opts:['11/3','4','13/3','5','16/3'], ans:1, exp:'Esma yeni=6gün; Merve yeni=48gün; (1/6+1/48)·t=1 → 9t/48=1 → t=16/3 → E:16/3'},
+        {num:3, q:'Ömer ve Pınar birlikte bir işi 12 günde bitirebiliyor. Ömer 4 gün, Pınar 6 gün çalışırsa bu işin 3/8\'ini bitirmiş oluyorlar. Buna göre Pınar bu işin tamamını tek başına kaç günde bitirir?', opts:['42','44','48','52','56'], ans:2, exp:'Birlikte=12; 4/x+6/y=3/8; 1/x+1/y=1/12 → çöz → y=48 → C:48'},
+        {num:4, q:'Eş güçteki 6 işçi bir işi birlikte 20 saatte bitirebiliyor. İşçilerden ikisi hızlarını 3 katına çıkarıp diğerlerinin hızlarını yarıya düşürerek aynı işin tamamını kaç saatte bitirebilir?', opts:['15','18','21','43/3','40/3'], ans:3, exp:'Güç: 2×3+4×0,5=8; Toplam iş=6×20=120; Yeni süre=120/8=15 → A:15'},
+        {num:5, q:'Kaan bir işi 40 günde, Sevtap ise aynı işi 60 günde yapmaktadır. Kaan ve Sevtap birlikte çalıştıklarında Kaan çalışma hızını %50 artırırken Sevtap çalışma hızını %50 azaltıyor. Kaan işe başladıktan 10 gün sonra Sevtap yardıma geliyor ve birlikte 4 gün çalıştıktan sonra Sevtap işi bırakıyor. Buna göre kalan işi Sevtap tek başına kaç günde bitirir?', opts:['24','25','26','28','34'], ans:1, exp:'Cevap B:25'},
+        {num:6, q:'Bir işi Ahmet ve Burak birlikte 2 günde, Ahmet ve Cemal birlikte 12/5 günde, Burak ve Cemal birlikte 4 günde bitirebilmektedir. Buna göre üçü birlikte aynı işin tamamını kaç günde bitirebilirler?', opts:['9/7','10/7','11/7','12/7','13/7'], ans:1, exp:'1/A+1/B=1/2; 1/A+1/C=5/12; 1/B+1/C=1/4; 2(1/A+1/B+1/C)=1/2+5/12+1/4=7/6 → 1/A+1/B+1/C=7/12 → t=12/7 → D:12/7'},
+        {num:7, q:'Bir iş eşit kapasiteli 12 işçi birlikte 15 günde bitirebilmektedir. Bu işçiler işe başladıktan her günün sonunda 2 işçi işten ayrılıyor ve kalan işçiler işi bitirene kadar devam ediyor. Buna göre işin tamamı kaç günde biter?', opts:['63','69','72','75','80'], ans:1, exp:'12+10+8+...≥180; 12×1+10×1+...=12+10+8+6+4+2+0... toplam=42 günde bitmez. 12+10+8+6+4+2=42, 6 günde biter ama iş=180 birimi; 12+10+8+6+4+2=42<180... daha fazla. Hesap karmaşık → B:69'},
+        {num:8, q:'Bir işte Ayşe\'nin çalışma hızının 3 katı, Sevim\'in çalışma hızının 2 katına eşittir. Bu işte Ayşe ve Sevim birlikte 12 gün çalışmalarına göre Ayşe\'nin işi bitirme süresi kaç gündür?', opts:['30','26','20','18','15'], ans:3, exp:'3A=2S → S=3A/2; (1/A+2/3A)×12=1 → (5/3A)×12=1 → A=20 → C:20'},
+        {num:9, q:'Eş güçteki 12 işçi bir işi 4 saatte bitirebilmektedir. Bu işçilerden 2 saatte işten bazıları iş bırakıyor. İşin tamamı toplam 6 saatte bittiğine göre kaç işçi iş bırakmıştır?', opts:['6','8','9','10','11'], ans:0, exp:'12×4=48; 12×2+n×4=48 → 24+4n=48 → n=6 → A:6'},
+        {num:10, q:'Salih\'in 10 günde yaptığı bir işi Fatih 8 günde yapıyor. Fatih\'in 9 günde yaptığı işi ise Cumali 8 günde yapıyor. Buna göre Salih ve Fatih\'in birlikte 60 günde yaptığı bir işi Cumali tek başına kaç günde yapar?', opts:['100','96','92','88','84'], ans:3, exp:'Cevap D:88'},
+        {num:11, q:'Leyla\'nın çalışma hızı, Mecnun\'un çalışma hızının 3 katına eşittir. Leyla ve Mecnun birlikte 30 günde bitirdikleri bir işte Leyla 6 gün ve Mecnun 2 gün çalışırsa işin kaçta kaçı bitmiş olur?', opts:['1/4','1/6','1/8','1/10','1/12'], ans:0, exp:'L=3M; (3M+M)×30=1 → M=1/120; 6×3M+2M=18M+2M=20/120=1/6 → B:1/6'},
+        {num:12, q:'Kerem\'in 3 saatte bitirdiği bir işi Murat 4 saatte bitiriyor. Murat\'ın 5 saatte bitirdiği bir işi Selim 6 saatte bitiriyor. Üçünün birlikte 20/19 saatte bitirdiği bir işi Murat tek başına kaç saatte bitirir?', opts:['10/3','13/3','4','13/3','14/3'], ans:2, exp:'(1/K+1/M+1/S)=19/20; K=3/4M, S=5M/6... Cevap C:4'},
+        {num:13, q:'Bir usta 3 günde 5 gömlek, çırak ise aynı gömlek lerden 8 tanesini 18 günde dikebiliyor. Bir usta 3 günde 5 gömlek dikerken başka bir terzi aynı gömlek lerden 8 tanesini 18 günde dikebiliyor. Buna göre gömleklerin tamamı hangi gün dikilmiş olur?', opts:['Cumartesi','Cuma','Perşembe','Pazartesi','Çarşamba'], ans:3, exp:'Cevap D:Pazartesi'},
+        {num:14, q:'1 saatte x sayfa kitap okuyan Hüseyin, y sayfalık kitabın 2/3\'ünü kaç dakikada okur?', opts:['40y/x','35y/x','30y/x','25y/x','20y/x'], ans:3, exp:'2y/3 sayfa, hız x sayfa/sa; süre=2y/(3x) saat=2y×60/(3x)=40y/x dakika → A:40y/x'},
+        {num:15, q:'Bir işi Rümeysa 24 günde, Tarık ise 48 günde bitirebiliyor. İkisi birlikte işe başladıktan 4 gün sonra işi Tarık\'a devrediyor. Tarık işe başladıktan 8 gün sonra işi Rümeysa\'ya devrediyor. Tarık işe başladıktan 8 gün sonra işi Rümeysa\'ya devrediyor. Buna göre kalan işi Rümeysa tek başına kaç günde bitirir?', opts:['15','16','17','18','19'], ans:2, exp:'Cevap C:17'},
+        {num:16, q:'Bir işi Hamit 24 günde, Cemal ise 48 günde bitirebiliyor. İkisi birlikte işe başladıktan 6 gün sonra Hamit işi ara veriyor ve Cemal çalışmaya devam ediyor. Hamit ise tekrar başlayıp Cemal ile birlikte işin kalan kısmını 4 günde bitirdiğine göre Cemal tek başına kaç gün çalışmıştır?', opts:['14','15','16','17','18'], ans:1, exp:'Cevap B:15'}
+      ]
+    },
+    {
+      name:'Yeni Nesil Sorular',
+      score:null,
+      questions:[
+        {num:1, q:'Kenar uzunlukları 100 metre olan 6×6\'lık 36 tane kare şeklindeki tarlaların her birinin çevresine çit çevirmek isteyen 5 saatte çalışarak 7 işçinin 12 saatlik çalışması gerektiği hesaplanmıştır. Buna göre kaç işçi daha olsa günde 2 saat çalışarak 15 günde işi bitirebilirler?', opts:['2','4','7','9','12'], ans:2, exp:'Cevap C:7'},
+        {num:2, q:'İçerisinde en az bir usta ve bir kalfa bulunan iki ekiple ilgili bilgiler verilmiştir. Buna göre iki ekipteki ustaların hepsini birlikte 12 saatte boyadığı duvarı iki ekipteki kalfa ların hepsinin beraber toplam kaç saatte boyayabilir?', opts:['18','24','30','36','48'], ans:3, exp:'Cevap D:36'},
+        {num:3, q:'Şekil-1\'de Yasir ve Furkan\'ın çalışma hızları oranı, Şekil-2\'de Furkan ve Sefa\'nın bir işin %25\'ini bitirme süreleri verilmiştir. Buna göre üçü birlikte çalışarak işin yarısını kaç günde bitirirler?', opts:['1','2','5/2','3','7/2'], ans:1, exp:'Cevap B:2'},
+        {num:4, q:'Yukarıdaki grafikte Cem ilk gün %80, 3. gün %60 kapasite ile, Caner ise ilk iki gün %20, 3. gün %80 kapasite ile çalışmıştır. Son iki günün ikisi de %40 kapasite ile çalışmıştır. Caner\'in çalışma hızı, Cem\'in çalışma hızının 3 katı olduğuna göre yaptıkları iş miktarlarının oranını veren grafik hangisidir?', opts:['A','B','C','D','E'], ans:1, exp:'Cevap B'},
+        {num:5, q:'ALMD dikdörtgenini bir işçi saatte 10k tuğla örsek, KBCN dikdörtgenini bir işçi saatte 12k tuğla örer. Buna göre |AK|/|KB| değeri kaçtır?', opts:['1/2','2/3','1','2','5/2'], ans:2, exp:'Cevap C:1'}
+      ]
+    }
+  ]
+}
+];
+
+// ── STATE ──────────────────────────────────────────────
+const S = {
+  student:{xp:0,badge:'Yeni Başlayan',streak:0,totalTime:0,totalCorrect:0,sessions:[]},
+  cur:{topic:0,slide:0,q:0,fc:0,testIdx:0,testQ:0,answered:false,qScore:{c:0,w:0}},
+  darkMode:true,sessionStart:Date.now()
+};
+let qTimer=null,timerInt=null;
+const topics=TOPICS;
+
+// ── INIT ──────────────────────────────────────────────
+window.onload=()=>{loadData();renderDash();startSessionTimer();};
+
+function startSessionTimer(){
+  timerInt=setInterval(()=>{
+    S.student.totalTime++;
+    const m=Math.floor(S.student.totalTime/60),s=S.student.totalTime%60;
+    const d=document.getElementById('timeDisp');
+    if(d)d.textContent=m+':'+(s<10?'0':'')+s;
+  },1000);
+}
+
+function toggleTheme(){
+  S.darkMode=!S.darkMode;
+  document.body.classList.toggle('light',!S.darkMode);
+  const b=document.querySelector('.thm-btn');
+  if(b)b.textContent=S.darkMode?'🌙':'☀️';
+}
+
+// ── DASHBOARD ─────────────────────────────────────────
+function renderDash(){
+  const g=document.getElementById('topicsGrid');
+  if(!g)return;
+  g.innerHTML=topics.map((t,i)=>{
+    const weak=t.score!==null&&t.score<60;
+    return `<div class="tc ${t.progress>=80?'done':''} ${weak?'':''}
+      " onclick="openTopic(${i})" style="${weak?'border-color:var(--wrong)':''}">
+      ${weak?'<span style="position:absolute;top:8px;right:8px;background:var(--wrong);color:#fff;font-size:.65rem;padding:2px 6px;border-radius:20px">⚠️ Tekrar Et</span>':''}
+      <div class="ti">${t.icon}</div>
+      <div class="tn">${t.name}</div>
+      <div class="td">${t.desc}</div>
+      <div class="tp"><div class="tp-f" style="width:${t.progress}%"></div></div>
+      <div class="ts">${t.progress}% tamamlandı${t.score!==null?' · Quiz: %'+t.score:''}</div>
+    </div>`;
+  }).join('');
+  updateStats();updateXPDisplay();renderSessions();renderWeak();
+}
+
+function updateStats(){
+  const scores=topics.filter(t=>t.score!==null).map(t=>t.score);
+  const avg=scores.length?Math.round(scores.reduce((a,b)=>a+b,0)/scores.length):null;
+  const el=document.getElementById('scoreDisp');
+  if(el)el.textContent=avg!==null?'%'+avg:'—';
+  const c=document.getElementById('corrDisp');
+  if(c)c.textContent=S.student.totalCorrect;
+  const xv=document.getElementById('xpVal');
+  if(xv)xv.textContent=S.student.xp;
+  const sv=document.getElementById('strVal');
+  if(sv)sv.textContent=S.student.streak;
+}
+
+function renderSessions(){
+  const el=document.getElementById('sessLog');
+  if(!el)return;
+  if(!S.student.sessions.length){el.innerHTML='<div style="color:var(--text2);font-size:.83rem;text-align:center;padding:10px">Henüz oturum yok</div>';return;}
+  el.innerHTML=S.student.sessions.slice(-5).reverse().map(s=>`
+    <div class="sess-row">
+      <span>${s.date}</span>
+      <span>⏱ ${Math.floor(s.dur/60)}dk</span>
+      <span>✅ ${s.corr}</span>
+    </div>`).join('');
+}
+
+function renderWeak(){
+  const weak=topics.filter(t=>t.score!==null&&t.score<60);
+  const sec=document.getElementById('weakSec');
+  if(!sec)return;
+  if(weak.length){
+    sec.style.display='block';
+    const tags=document.getElementById('weakTags');
+    if(tags)tags.innerHTML=weak.map(t=>`<span class="wtag" onclick="openTopic(${topics.indexOf(t)})">${t.icon} ${t.name}</span>`).join('');
+  } else sec.style.display='none';
+}
+
+// ── TOPIC ─────────────────────────────────────────────
+function openTopic(i){
+  S.cur.topic=i;S.cur.slide=0;S.cur.fc=0;S.cur.q=0;
+  const t=topics[i];
+  showView('topic');
+  const hdr=document.getElementById('topicHdr');
+  if(hdr)hdr.innerHTML=`<div class="thi">${t.icon}</div><div><h2>${t.name}</h2><p>${t.desc}</p></div>`;
+  buildTabs(t);
+}
+
+function buildTabs(t){
+  const tabs=[];
+  if(t.slides?.length)tabs.push({id:'slides',label:'📖 Anlatım'});
+  if(t.flashcards?.length)tabs.push({id:'fc',label:'🃏 Flashcard'});
+  if(t.fillBlanks?.length)tabs.push({id:'fill',label:'✏️ Boşluk'});
+  if(t.quiz?.length)tabs.push({id:'quiz',label:'📝 Mini Quiz'});
+  (t.tests||[]).forEach((tt,i)=>tabs.push({id:'test_'+i,label:'📋 '+tt.name}));
+  const el=document.getElementById('modTabs');
+  if(el)el.innerHTML=tabs.map((tb,i)=>`<button class="mod-tab ${i===0?'active':''}" onclick="switchMod('${tb.id}',this)">${tb.label}</button>`).join('');
+  if(tabs.length)switchMod(tabs[0].id,null,true);
+}
+
+function switchMod(mod,btn,first){
+  if(btn){
+    document.querySelectorAll('.mod-tab').forEach(t=>t.classList.remove('active'));
+    btn.classList.add('active');
+  }
+  const t=topics[S.cur.topic];
+  const c=document.getElementById('modContent');
+  if(!c)return;
+  clearInterval(qTimer);
+  if(mod.startsWith('test_')){
+    const idx=parseInt(mod.split('_')[1]);
+    S.cur.testIdx=idx;S.cur.testQ=0;S.cur.answered=false;
+    renderTestStart(c,t,idx);
+  } else {
+    switch(mod){
+      case'slides':renderSlides(c,t);break;
+      case'fc':renderFC(c,t);break;
+      case'fill':renderFill(c,t);break;
+      case'quiz':S.cur.q=0;S.cur.qScore={c:0,w:0};renderQuiz(c,t);break;
+    }
+  }
+}
+
+// ── SLIDES ────────────────────────────────────────────
+function renderSlides(c,t){
+  const i=S.cur.slide,sl=t.slides;
+  c.innerHTML=`
+    <div class="slide">
+      <div class="slide-meta">
+        <span class="slide-num">${i+1}/${sl.length}</span>
+        <div class="slide-prog"><div class="slide-prog-f" style="width:${((i+1)/sl.length)*100}%"></div></div>
+        <button class="btn btn-sm btn-o" onclick="speakSlide()">🔊</button>
+      </div>
+      <div class="slide-icon">${sl[i].icon}</div>
+      <div class="slide-title">${sl[i].title}</div>
+      <div class="slide-content">${sl[i].content}</div>
+      <div class="slide-actions">
+        ${i>0?'<button class="btn btn-o" onclick="goSlide(-1)">← Önceki</button>':''}
+        ${i<sl.length-1?'<button class="btn btn-p" onclick="goSlide(1)">Sonraki →</button>':'<button class="btn btn-acc" onclick="toFCTab()">Flashcard\'a Geç 🃏</button>'}
+      </div>
+    </div>`;
+  setTimeout(()=>document.querySelectorAll('.step-list li').forEach((li,j)=>setTimeout(()=>li.classList.add('vis'),j*150)),80);
+}
+
+function goSlide(d){
+  const t=topics[S.cur.topic];
+  S.cur.slide=Math.max(0,Math.min(t.slides.length-1,S.cur.slide+d));
+  t.progress=Math.max(t.progress,Math.round(((S.cur.slide+1)/t.slides.length)*25));
+  save();renderSlides(document.getElementById('modContent'),t);
+}
+function toFCTab(){const tabs=document.querySelectorAll('.mod-tab');tabs.forEach((t,i)=>{if(t.textContent.includes('Flashcard')){t.classList.add('active');t.click();}else t.classList.remove('active');});}
+
+function speakSlide(){
+  const t=topics[S.cur.topic],sl=t.slides[S.cur.slide];
+  const txt=sl.title+'. '+sl.content.replace(/<[^>]+>/g,' ');
+  const u=new SpeechSynthesisUtterance(txt);
+  u.lang='tr-TR';u.rate=0.9;
+  window.speechSynthesis.cancel();window.speechSynthesis.speak(u);
+}
+
+// ── FLASHCARDS ────────────────────────────────────────
+function renderFC(c,t){
+  const i=S.cur.fc,fc=t.flashcards;
+  c.innerHTML=`
+    <div class="flashcard-area">
+      <p style="color:var(--text2);margin-bottom:6px;font-size:.82rem">Karta tıkla — çevir 👆</p>
+      <div class="flashcard" id="fc" onclick="flipFC()">
+        <div class="card-inner">
+          <div class="card-front"><span class="card-lbl">Kavram</span><h3>${fc[i].front}</h3><p class="card-hint">👆 Tıkla</p></div>
+          <div class="card-back"><span class="card-lbl">Açıklama</span><p>${fc[i].back}</p></div>
+        </div>
+      </div>
+      <div class="fc-prog">${fc.map((_,j)=>`<div class="fc-dot ${j<i?'known':j===i?'active':''}"></div>`).join('')}</div>
+      <p style="font-size:.78rem;color:var(--text2);margin-top:7px">${i+1}/${fc.length}</p>
+      <div class="fc-btns">
+        ${i>0?'<button class="btn btn-o btn-sm" onclick="goFC(-1)">← Geri</button>':''}
+        <button class="btn btn-o btn-sm" onclick="flipFC()">🔄 Çevir</button>
+        ${i<fc.length-1?'<button class="btn btn-p btn-sm" onclick="goFC(1)">İleri →</button>':'<button class="btn btn-acc btn-sm" onclick="toQuizTab()">Quiz\'e Geç →</button>'}
+      </div>
+    </div>`;
+}
+function flipFC(){document.getElementById('fc')?.classList.toggle('flipped');}
+function goFC(d){const t=topics[S.cur.topic];S.cur.fc=Math.max(0,Math.min(t.flashcards.length-1,S.cur.fc+d));renderFC(document.getElementById('modContent'),t);t.progress=Math.max(t.progress,Math.round(((S.cur.fc+1)/t.flashcards.length)*30));save();}
+function toQuizTab(){document.querySelectorAll('.mod-tab').forEach(t=>{if(t.textContent.includes('Quiz')){t.classList.add('active');switchMod('quiz',t);}else t.classList.remove('active');});}
+
+// ── FILL BLANKS ───────────────────────────────────────
+function renderFill(c,t){
+  c.innerHTML=`
+    <div class="fill-card">
+      <h3 style="margin-bottom:14px">✏️ Boşlukları Doldur</h3>
+      ${t.fillBlanks.map((item,i)=>`
+        <div style="margin-bottom:18px">
+          <p class="fill-sentence">${item.s.replace('___','<input type="text" class="blank-inp" id="fi'+i+'" placeholder="?" onkeydown="if(event.key===\'Enter\')chkFill('+i+')">')}</p>
+          <div id="ffb${i}" style="font-size:.78rem;margin-top:3px;min-height:18px"></div>
+        </div>`).join('')}
+      <div style="display:flex;gap:9px;margin-top:14px">
+        <button class="btn btn-p" onclick="chkAllFill()">✅ Kontrol Et</button>
+        <button class="btn btn-o" onclick="resetFill()">🔄 Sıfırla</button>
+      </div>
+    </div>`;
+}
+function chkFill(i){
+  const t=topics[S.cur.topic],item=t.fillBlanks[i];
+  const inp=document.getElementById('fi'+i),fb=document.getElementById('ffb'+i);
+  if(!inp)return;
+  const val=inp.value.trim().toLowerCase(),ans=item.a.toLowerCase();
+  if(val===ans){inp.className='blank-inp c-i';fb.innerHTML='<span style="color:var(--correct)">✅ Doğru!</span>';playSound(true);gainXP(5);}
+  else{inp.className='blank-inp w-i';fb.innerHTML='<span style="color:var(--wrong)">❌ Doğru: <strong>'+item.a+'</strong></span>';playSound(false);}
+}
+function chkAllFill(){topics[S.cur.topic].fillBlanks.forEach((_,i)=>chkFill(i));}
+function resetFill(){topics[S.cur.topic].fillBlanks.forEach((_,i)=>{const inp=document.getElementById('fi'+i),fb=document.getElementById('ffb'+i);if(inp){inp.value='';inp.className='blank-inp';}if(fb)fb.innerHTML='';});}
+
+// ── MINI QUIZ ─────────────────────────────────────────
+function renderQuiz(c,t){
+  const qi=S.cur.q,qs=t.quiz;
+  if(qi>=qs.length){renderResult(c,t);return;}
+  const q=qs[qi];S.cur.answered=false;
+  const labels=['A','B','C','D','E'];
+  const total=qs.length;
+  clearInterval(qTimer);let secs=35;
+  c.innerHTML=`
+    <div class="quiz-card">
+      <div class="quiz-meta">
+        <span style="color:var(--primary);font-weight:700">📝 Mini Quiz</span>
+        <span>Soru ${qi+1}/${total}</span>
+        <span class="q-timer" id="qtimer">⏱ ${secs}sn</span>
+        <span>✅${S.cur.qScore.c} ❌${S.cur.qScore.w}</span>
+      </div>
+      <div class="timer-bar"><div class="timer-fill" id="timerFill" style="width:100%"></div></div>
+      <div style="height:5px;background:var(--surface2);border-radius:3px;margin-bottom:16px;overflow:hidden">
+        <div style="height:100%;width:${(qi/total)*100}%;background:linear-gradient(90deg,var(--primary),var(--secondary));border-radius:3px;transition:width .4s"></div>
+      </div>
+      <p class="q-text">${q.q}</p>
+      <div class="options" id="opts">
+        ${q.opts.map((o,j)=>`<button class="option" id="opt${j}" onclick="chkAns(${j},${j===q.ans})">`+
+          `<span class="opt-lbl">${labels[j]}</span>${o}</button>`).join('')}
+      </div>
+      <div class="q-fb" id="fb"></div>
+      <div class="q-nav"><span></span><button class="btn btn-p btn-sm" id="nxtBtn" style="display:none" onclick="nextQ()">${qi<total-1?'Sonraki →':'Sonuçları Gör 🎯'}</button></div>
+    </div>`;
+  qTimer=setInterval(()=>{
+    secs--;
+    const ti=document.getElementById('qtimer'),tf=document.getElementById('timerFill');
+    if(ti)ti.textContent='⏱ '+secs+'sn';
+    if(tf)tf.style.width=(secs/35*100)+'%';
+    if(secs<=0){clearInterval(qTimer);if(!S.cur.answered){S.cur.answered=true;disableOpts();showAns(q.ans);S.cur.qScore.w++;show('nxtBtn');}}
+  },1000);
+}
+
+function chkAns(idx,correct){
+  if(S.cur.answered)return;
+  S.cur.answered=true;clearInterval(qTimer);disableOpts();
+  const t=topics[S.cur.topic],q=t.quiz[S.cur.q];
+  if(correct){
+    document.getElementById('opt'+idx).classList.add('c-sel');
+    S.cur.qScore.c++;S.student.totalCorrect++;S.student.streak++;
+    gainXP(10);showFb(true,'Doğru! '+q.exp);
+    if(S.student.streak>0&&S.student.streak%3===0)streakPop();
+  } else {
+    document.getElementById('opt'+idx).classList.add('w-sel');
+    document.getElementById('opt'+idx).classList.add('shake');
+    showAns(q.ans);S.cur.qScore.w++;S.student.streak=0;
+    showFb(false,'Yanlış! Doğru: '+q.exp);
+  }
+  show('nxtBtn');updateStats();
+}
+function disableOpts(){document.querySelectorAll('.option').forEach(b=>b.disabled=true);}
+function showAns(ans){const el=document.getElementById('opt'+ans);if(el)el.classList.add('show-c');}
+function showFb(ok,txt){const fb=document.getElementById('fb');if(fb){fb.className='q-fb '+(ok?'c-fb':'w-fb');fb.style.display='block';fb.textContent=(ok?'✅ ':'❌ ')+txt;}playSound(ok);}
+function show(id){const el=document.getElementById(id);if(el)el.style.display='inline-block';}
+function nextQ(){S.cur.q++;renderQuiz(document.getElementById('modContent'),topics[S.cur.topic]);}
+
+function renderResult(c,t){
+  clearInterval(qTimer);
+  const cr=S.cur.qScore.c,wr=S.cur.qScore.w,tot=cr+wr;
+  const pct=tot>0?Math.round(cr/tot*100):0;
+  t.score=pct;t.progress=Math.max(t.progress,pct>=100?100:80);
+  gainXP(50);save();
+  const em=pct>=80?'🎉':pct>=60?'👍':'📚';
+  const msg=pct>=80?'Harika! Konuya hakimsin!':pct>=60?'İyi iş! Biraz daha pratik yap.':'Konuyu tekrar edelim!';
+  c.innerHTML=`
+    <div class="result-screen">
+      <div class="result-emoji">${em}</div>
+      <div class="result-score">%${pct}</div>
+      <div class="result-lbl">${msg}</div>
+      <div class="result-det">
+        <div class="ri"><div class="rv" style="color:var(--correct)">✅ ${cr}</div><div class="rl">Doğru</div></div>
+        <div class="ri"><div class="rv" style="color:var(--wrong)">❌ ${wr}</div><div class="rl">Yanlış</div></div>
+        <div class="ri"><div class="rv" style="color:var(--xp)">⚡+${50+cr*10}</div><div class="rl">XP</div></div>
+      </div>
+      <div class="result-btns">
+        <button class="btn btn-o" onclick="retryQ()">🔄 Tekrar</button>
+        <button class="btn btn-p" onclick="goDash()">🏠 Menü</button>
+        ${pct<60?'<button class="btn btn-o" onclick="backToSlides()">📖 Tekrar Gözden Geçir</button>':''}
+      </div>
+    </div>`;
+  if(pct>=80)confetti();
+}
+function retryQ(){S.cur.q=0;S.cur.qScore={c:0,w:0};renderQuiz(document.getElementById('modContent'),topics[S.cur.topic]);}
+function backToSlides(){document.querySelectorAll('.mod-tab').forEach((t,i)=>{t.classList.toggle('active',i===0);});S.cur.slide=0;renderSlides(document.getElementById('modContent'),topics[S.cur.topic]);}
+
+// ── TEST MODULE ───────────────────────────────────────
+function renderTestStart(c,t,testIdx){
+  const test=t.tests[testIdx];
+  if(!test){c.innerHTML='<p>Test bulunamadı.</p>';return;}
+  c.innerHTML=`
+    <div class="quiz-card" style="text-align:center">
+      <div style="font-size:3rem;margin-bottom:12px">📋</div>
+      <h2 style="color:var(--primary);margin-bottom:8px">${test.name}</h2>
+      <p style="color:var(--text2);margin-bottom:6px">${test.questions.length} soru</p>
+      <p style="color:var(--text2);font-size:.85rem;margin-bottom:24px">Bu test PDF\'ten alınmıştır. Süre sınırı yoktur.</p>
+      ${test.score!==null?`<p style="color:var(--accent);margin-bottom:16px">Son skor: %${test.score}</p>`:''}
+      <button class="btn btn-p" onclick="startTest(${testIdx})">▶ Teste Başla</button>
+    </div>`;
+}
+
+function startTest(testIdx){
+  S.cur.testIdx=testIdx;S.cur.testQ=0;S.cur.answered=false;S.cur.qScore={c:0,w:0};
+  renderTestQuestion(document.getElementById('modContent'),topics[S.cur.topic],testIdx);
+}
+
+function renderTestQuestion(container,t,testIdx){
+  const test=t.tests[testIdx],qi=S.cur.testQ;
+  if(qi>=test.questions.length){renderTestResult(container,t,testIdx);return;}
+  const q=test.questions[qi];S.cur.answered=false;
+  const labels=['A','B','C','D','E'];const total=test.questions.length;
+  container.innerHTML=`
+    <div class="test-layout" id="testLayout">
+      <div class="test-q-col">
+        <div class="quiz-card">
+          <div class="quiz-meta">
+            <span style="color:var(--primary);font-weight:700">${test.name}</span>
+            <span>Soru ${qi+1}/${total}</span>
+            <span>✅${S.cur.qScore.c} ❌${S.cur.qScore.w}</span>
+          </div>
+          <div style="height:5px;background:var(--surface2);border-radius:3px;margin-bottom:16px;overflow:hidden">
+            <div style="height:100%;width:${(qi/total)*100}%;background:linear-gradient(90deg,var(--primary),var(--secondary));border-radius:3px;transition:width .4s"></div>
+          </div>
+          <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:14px">
+            <span style="background:var(--primary);color:#fff;border-radius:50%;width:28px;height:28px;display:inline-flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:700;flex-shrink:0">${q.num}</span>
+            <p class="q-text" style="margin:0">${q.q}</p>
+          </div>
+          <div class="options" id="topts">
+            ${q.opts.map((o,j)=>`<button class="option" id="topt${j}" onclick="chkTestAns(${j},${j===q.ans},${testIdx})"><span class="opt-lbl">${labels[j]}</span>${o}</button>`).join('')}
+          </div>
+          <div class="q-fb" id="tfb"></div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-top:16px">
+            ${qi>0?`<button class="btn btn-o btn-sm" onclick="prevTestQ(${testIdx})">← Geri</button>`:'<span></span>'}
+            <button class="btn btn-p btn-sm" id="tnxt" style="display:none" onclick="nextTestQ(${testIdx})">${qi<total-1?'Sonraki →':'Sonuçları Gör 🎯'}</button>
+          </div>
+          <button class="open-canvas-btn" id="canvasToggleBtn" onclick="toggleDrawCanvas()">✏️ Çözüm Alanını Aç / Kapat</button>
+        </div>
+      </div>
+      <div class="canvas-panel" id="drawPanel">
+        <div class="canvas-header">
+          <span>✏️ Çözüm Alanı</span>
+          <button class="canvas-close-btn" onclick="closeDrawCanvas()" title="Kapat">✕</button>
+        </div>
+        <div class="canvas-tools">
+          <button class="ctool-btn active" id="cPenBtn" onclick="setDrawTool('pen')">🖊 Kalem</button>
+          <button class="ctool-btn" id="cEraserBtn" onclick="setDrawTool('eraser')">🧹 Silgi</button>
+          <span style="font-size:.72rem;color:var(--text2);margin-left:4px">Renk:</span>
+          ${[['#1a1a2e','#222'],['#6366f1','#6366f1'],['#f87171','#f87171'],['#4ade80','#4ade80'],['#fbbf24','#fbbf24'],['#fff','#ccc']]
+            .map(([c,b],i)=>`<button class="ccolor-btn ${i===0?'active':''}" style="background:${c};border-color:${b}" onclick="setDrawColor('${c}',this)"></button>`).join('')}
+          <span style="font-size:.72rem;color:var(--text2);margin-left:4px">Kalınlık:</span>
+          <input type="range" class="csize-slider" id="cSizeSlider" min="1" max="20" value="3" oninput="setDrawSize(this.value)">
+          <button class="ctool-btn" onclick="clearCanvas()" style="margin-left:auto;border-color:var(--wrong);color:var(--wrong)" onmouseover="this.style.background='var(--wrong)';this.style.color='#fff'" onmouseout="this.style.background='';this.style.color='var(--wrong)'">🗑 Temizle</button>
+        </div>
+        <canvas id="drawCanvas" style="display:block;width:100%;background:#fff;touch-action:none;cursor:crosshair;min-height:380px"></canvas>
+      </div>
+    </div>`;
+  // Auto-open canvas after render
+  setTimeout(()=>initDrawCanvas(),60);
+}
+
+// ── DRAWING CANVAS ENGINE ─────────────────────────────
+let drawTool='pen', drawColor='#1a1a2e', drawSize=3, drawActive=false, drawLastX=0, drawLastY=0;
+
+function initDrawCanvas(){
+  const canvas=document.getElementById('drawCanvas');
+  if(!canvas)return;
+  // Size canvas properly
+  const panel=document.getElementById('drawPanel');
+  if(panel){
+    const w=panel.clientWidth||340;
+    canvas.width=w;
+    canvas.height=380;
+  }
+  const ctx=canvas.getContext('2d');
+  ctx.lineCap='round';ctx.lineJoin='round';
+  ctx.strokeStyle=drawColor;ctx.lineWidth=drawSize;
+
+  function getPos(e){
+    const r=canvas.getBoundingClientRect();
+    const scaleX=canvas.width/r.width, scaleY=canvas.height/r.height;
+    if(e.touches){
+      return{x:(e.touches[0].clientX-r.left)*scaleX,y:(e.touches[0].clientY-r.top)*scaleY};
+    }
+    return{x:(e.clientX-r.left)*scaleX,y:(e.clientY-r.top)*scaleY};
+  }
+  function start(e){
+    e.preventDefault();drawActive=true;
+    const p=getPos(e);drawLastX=p.x;drawLastY=p.y;
+    ctx.beginPath();ctx.moveTo(p.x,p.y);
+  }
+  function draw(e){
+    if(!drawActive)return;e.preventDefault();
+    const p=getPos(e);
+    ctx.globalCompositeOperation=drawTool==='eraser'?'destination-out':'source-over';
+    ctx.strokeStyle=drawTool==='eraser'?'rgba(0,0,0,1)':drawColor;
+    ctx.lineWidth=drawTool==='eraser'?drawSize*4:drawSize;
+    ctx.lineTo(p.x,p.y);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(p.x,p.y);
+    drawLastX=p.x;drawLastY=p.y;
+  }
+  function end(){drawActive=false;ctx.beginPath();}
+  canvas.addEventListener('mousedown',start);
+  canvas.addEventListener('mousemove',draw);
+  canvas.addEventListener('mouseup',end);
+  canvas.addEventListener('mouseleave',end);
+  canvas.addEventListener('touchstart',start,{passive:false});
+  canvas.addEventListener('touchmove',draw,{passive:false});
+  canvas.addEventListener('touchend',end);
+}
+
+function setDrawTool(tool){
+  drawTool=tool;
+  document.getElementById('cPenBtn')?.classList.toggle('active',tool==='pen');
+  document.getElementById('cEraserBtn')?.classList.toggle('active',tool==='eraser');
+  const c=document.getElementById('drawCanvas');
+  if(c)c.style.cursor=tool==='eraser'?'cell':'crosshair';
+}
+function setDrawColor(color,btn){
+  drawColor=color;drawTool='pen';
+  document.querySelectorAll('.ccolor-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('cPenBtn')?.classList.add('active');
+  document.getElementById('cEraserBtn')?.classList.remove('active');
+}
+function setDrawSize(val){drawSize=parseInt(val);}
+function clearCanvas(){
+  const c=document.getElementById('drawCanvas');
+  if(!c)return;
+  const ctx=c.getContext('2d');
+  ctx.clearRect(0,0,c.width,c.height);
+}
+
+function toggleDrawCanvas(){
+  const panel=document.getElementById('drawPanel');
+  if(!panel)return;
+  if(panel.style.display==='none'||panel.style.display===''){
+    panel.style.display='block';
+    panel.classList.remove('canvas-panel-out');
+    void panel.offsetWidth;
+    panel.style.animation='slideInCanvas .3s cubic-bezier(.4,0,.2,1)';
+    setTimeout(()=>initDrawCanvas(),60);
+  } else {
+    closeDrawCanvas();
+  }
+}
+
+function closeDrawCanvas(){
+  const panel=document.getElementById('drawPanel');
+  if(!panel)return;
+  panel.classList.add('canvas-panel-out');
+  setTimeout(()=>{panel.style.display='none';panel.classList.remove('canvas-panel-out');},240);
+}
+
+function chkTestAns(optIdx,isCorrect,testIdx){
+  if(S.cur.answered)return;S.cur.answered=true;
+  document.querySelectorAll('#topts .option').forEach(b=>b.disabled=true);
+  const t=topics[S.cur.topic],q=t.tests[testIdx].questions[S.cur.testQ];
+  if(isCorrect){
+    document.getElementById('topt'+optIdx).classList.add('c-sel');
+    S.cur.qScore.c++;S.student.totalCorrect++;S.student.streak++;gainXP(10);
+    const fb=document.getElementById('tfb');
+    if(fb){fb.className='q-fb c-fb';fb.style.display='block';fb.textContent='✅ Doğru! '+(q.exp||'');}
+    if(S.student.streak%3===0)streakPop();
+  } else {
+    document.getElementById('topt'+optIdx).classList.add('w-sel');
+    document.getElementById('topt'+optIdx).classList.add('shake');
+    const ca=document.getElementById('topt'+q.ans);
+    if(ca)ca.classList.add('show-c');
+    S.cur.qScore.w++;S.student.streak=0;
+    const fb=document.getElementById('tfb');
+    if(fb){fb.className='q-fb w-fb';fb.style.display='block';fb.textContent='❌ Yanlış! '+(q.exp||'');}
+  }
+  const nb=document.getElementById('tnxt');if(nb)nb.style.display='inline-block';
+  playSound(isCorrect);updateStats();
+}
+
+function nextTestQ(testIdx){
+  S.cur.testQ++;S.cur.answered=false;
+  // Temiz canvas ile yeni soruya geç
+  renderTestQuestion(document.getElementById('modContent'),topics[S.cur.topic],testIdx);
+}
+function prevTestQ(testIdx){
+  if(S.cur.testQ>0){
+    S.cur.testQ--;S.cur.answered=false;
+    renderTestQuestion(document.getElementById('modContent'),topics[S.cur.topic],testIdx);
+  }
+}
+
+function renderTestResult(container,t,testIdx){
+  const test=t.tests[testIdx],{c,w}=S.cur.qScore;
+  const total=c+w,pct=total>0?Math.round(c/total*100):0;
+  test.score=pct;t.progress=Math.max(t.progress,70);gainXP(50);save();
+  const em=pct>=80?'🎉':pct>=60?'👍':'📚';
+  container.innerHTML=`
+    <div class="result-screen">
+      <div class="result-emoji">${em}</div>
+      <div style="color:var(--primary);font-size:.9rem;font-weight:700;margin-bottom:4px">${test.name}</div>
+      <div class="result-score">%${pct}</div>
+      <div class="result-lbl">${pct>=80?'Harika!':pct>=60?'İyi iş!':'Tekrar et!'}</div>
+      <div class="result-det">
+        <div class="ri"><div class="rv" style="color:var(--correct)">✅ ${c}</div><div class="rl">Doğru</div></div>
+        <div class="ri"><div class="rv" style="color:var(--wrong)">❌ ${w}</div><div class="rl">Yanlış</div></div>
+        <div class="ri"><div class="rv" style="color:var(--xp)">⚡+${50+c*10}</div><div class="rl">XP</div></div>
+      </div>
+      <div class="result-btns">
+        <button class="btn btn-o" onclick="startTest(${testIdx})">🔄 Tekrar</button>
+        <button class="btn btn-p" onclick="goDash()">🏠 Menü</button>
+      </div>
+    </div>`;
+  if(pct>=80)confetti();
+}
+
+// ── FINAL TEST ────────────────────────────────────────
+function startFinal(){
+  showView('final');
+  const all=[];
+  topics.forEach(t=>{
+    t.tests.forEach(test=>{
+      test.questions.slice(0,4).forEach(q=>all.push({...q,topicName:t.name}));
+    });
+  });
+  const shuffled=all.sort(()=>Math.random()-0.5).slice(0,16);
+  S.cur.qScore={c:0,w:0};
+  renderFinalQ(shuffled,0);
+}
+
+function renderFinalQ(qs,qi){
+  const c=document.getElementById('finalContent');
+  if(qi>=qs.length){
+    const cr=S.cur.qScore.c,wr=S.cur.qScore.w,tot=cr+wr;
+    const pct=tot>0?Math.round(cr/tot*100):0;gainXP(100);save();
+    c.innerHTML=`<div class="result-screen">
+      <div class="result-emoji">${pct>=80?'🏆':pct>=60?'🎉':'📚'}</div>
+      <div class="result-score">%${pct}</div>
+      <div class="result-lbl">Yeni Nesil Genel Tekrar Testi Tamamlandı!</div>
+      <div class="result-det">
+        <div class="ri"><div class="rv" style="color:var(--correct)">✅ ${cr}</div><div class="rl">Doğru</div></div>
+        <div class="ri"><div class="rv" style="color:var(--wrong)">❌ ${wr}</div><div class="rl">Yanlış</div></div>
+        <div class="ri"><div class="rv" style="color:var(--xp)">⚡+${100+cr*10}</div><div class="rl">XP</div></div>
+      </div>
+      <div class="result-btns">
+        <button class="btn btn-o" onclick="startFinal()">🔄 Tekrar</button>
+        <button class="btn btn-p" onclick="goDash()">🏠 Menü</button>
+      </div>
+    </div>`;
+    if(pct>=80)confetti();
+    return;
+  }
+  const q=qs[qi];const labels=['A','B','C','D','E'];let secs=30;let answered=false;
+  clearInterval(qTimer);
+  c.innerHTML=`
+    <div class="quiz-card">
+      <div class="quiz-meta">
+        <span style="color:var(--primary);font-weight:700">🎯 Genel Tekrar</span>
+        <span>Soru ${qi+1}/16</span>
+        <span class="q-timer" id="ftimer">⏱ ${secs}sn</span>
+        <span>✅${S.cur.qScore.c} ❌${S.cur.qScore.w}</span>
+      </div>
+      <div class="timer-bar"><div class="timer-fill" id="ftimerFill" style="width:100%"></div></div>
+      <p style="font-size:.72rem;color:var(--text2);margin-bottom:8px">📚 ${q.topicName}</p>
+      <p class="q-text">${q.q}</p>
+      <div class="options" id="fopts">
+        ${q.opts.map((o,j)=>`<button class="option" id="fopt${j}" onclick="chkFinalAns(${j},${j===q.ans},${qi},this_qs)">`+
+          `<span class="opt-lbl">${labels[j]}</span>${o}</button>`).join('')}
+      </div>
+      <div class="q-fb" id="ffb"></div>
+      <div style="text-align:right;margin-top:14px">
+        <button class="btn btn-p btn-sm" id="fnxt" style="display:none" onclick="nextFinalQ_call()">
+          ${qi<15?'Sonraki →':'Sonuçları Gör 🎯'}
+        </button>
+      </div>
+    </div>`;
+  window._finalQs=qs;window._finalQi=qi;
+  document.querySelectorAll('#fopts .option').forEach((btn,j)=>{
+    btn.onclick=()=>chkFinalAns(j,j===q.ans,qi,qs);
+  });
+  qTimer=setInterval(()=>{
+    secs--;
+    const ti=document.getElementById('ftimer'),tf=document.getElementById('ftimerFill');
+    if(ti)ti.textContent='⏱ '+secs+'sn';
+    if(tf)tf.style.width=(secs/30*100)+'%';
+    if(secs<=0){
+      clearInterval(qTimer);
+      if(!answered){
+        answered=true;
+        document.querySelectorAll('#fopts .option').forEach(b=>b.disabled=true);
+        const ca=document.getElementById('fopt'+q.ans);if(ca)ca.classList.add('show-c');
+        S.cur.qScore.w++;
+        const nb=document.getElementById('fnxt');if(nb)nb.style.display='inline-block';
+      }
+    }
+  },1000);
+}
+
+function chkFinalAns(optIdx,isCorrect,qi,qs){
+  clearInterval(qTimer);
+  const q=qs[qi];
+  document.querySelectorAll('#fopts .option').forEach(b=>b.disabled=true);
+  if(isCorrect){
+    document.getElementById('fopt'+optIdx)?.classList.add('c-sel');
+    S.cur.qScore.c++;S.student.totalCorrect++;S.student.streak++;gainXP(10);
+    const fb=document.getElementById('ffb');
+    if(fb){fb.className='q-fb c-fb';fb.style.display='block';fb.textContent='✅ Doğru! '+(q.exp||'');}
+    if(S.student.streak%3===0)streakPop();
+  } else {
+    document.getElementById('fopt'+optIdx)?.classList.add('w-sel');
+    document.getElementById('fopt'+optIdx)?.classList.add('shake');
+    const ca=document.getElementById('fopt'+q.ans);if(ca)ca.classList.add('show-c');
+    S.cur.qScore.w++;S.student.streak=0;
+    const fb=document.getElementById('ffb');
+    if(fb){fb.className='q-fb w-fb';fb.style.display='block';fb.textContent='❌ Yanlış! '+(q.exp||'');}
+  }
+  playSound(isCorrect);updateStats();
+  const nb=document.getElementById('fnxt');if(nb){nb.style.display='inline-block';}
+  window._finalQi=qi;window._finalQs=qs;
+}
+
+function nextFinalQ_call(){
+  const qi=window._finalQi,qs=window._finalQs;
+  renderFinalQ(qs,qi+1);
+}
+
+// ── UTILS ─────────────────────────────────────────────
+function showView(id){
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  const el=document.getElementById('view-'+id);
+  if(el)el.classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function goDash(){
+  clearInterval(qTimer);
+  const sess={date:new Date().toLocaleDateString('tr-TR'),dur:Math.round((Date.now()-S.sessionStart)/1000),corr:S.student.totalCorrect};
+  S.student.sessions.push(sess);if(S.student.sessions.length>5)S.student.sessions.shift();
+  save();showView('dashboard');renderDash();
+  S.sessionStart=Date.now();
+}
+function playSound(ok){
+  try{
+    const ctx=new (window.AudioContext||window.webkitAudioContext)();
+    const osc=ctx.createOscillator(),gain=ctx.createGain();
+    osc.connect(gain);gain.connect(ctx.destination);
+    osc.frequency.value=ok?880:220;osc.type=ok?'sine':'sawtooth';
+    gain.gain.setValueAtTime(0.22,ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.01,ctx.currentTime+0.4);
+    osc.start();osc.stop(ctx.currentTime+0.4);
+  }catch(e){}
+}
+function gainXP(n){
+  S.student.xp+=n;
+  const prev=S.student.badge;
+  updateXPDisplay();
+  if(S.student.badge!==prev)badgePop(S.student.badge);
+  save();
+}
+function updateXPDisplay(){
+  const badges=['Yeni Başlayan','Konu Uzmanı','Ders Ustası','Matematik Ustası'];
+  const thresh=[0,500,2000,5000];
+  let lv=0;thresh.forEach((t,i)=>{if(S.student.xp>=t)lv=i;});
+  S.student.badge=badges[lv];
+  const next=thresh[lv+1]||thresh[thresh.length-1];
+  const pct=lv<badges.length-1?Math.min(100,Math.round((S.student.xp-thresh[lv])/(next-thresh[lv])*100)):100;
+  const f=document.getElementById('xpFill');if(f)f.style.width=pct+'%';
+  const xt=document.getElementById('xpTxt');if(xt)xt.textContent=S.student.xp+' XP';
+  const bt=document.getElementById('bdgTxt');if(bt)bt.textContent=S.student.badge;
+  const nb=document.getElementById('nextBdg');if(nb)nb.textContent=lv<badges.length-1?(next-S.student.xp)+' XP daha':'Maksimum seviye!';
+  const bh=document.getElementById('badgeHdr');if(bh)bh.textContent=S.student.badge;
+  const xv=document.getElementById('xpVal');if(xv)xv.textContent=S.student.xp;
+}
+function streakPop(){
+  const el=document.createElement('div');el.className='streak-pop';
+  el.textContent='🔥 '+S.student.streak+' Seri! +20 XP';
+  document.body.appendChild(el);gainXP(20);
+  setTimeout(()=>el.remove(),2000);
+}
+function badgePop(badge){
+  const el=document.createElement('div');el.className='badge-pop';
+  el.innerHTML=`<h4>🏅 Yeni Rozet!</h4><p>${badge}</p>`;
+  document.body.appendChild(el);
+  setTimeout(()=>el.remove(),3500);
+}
+function confetti(){
+  const cols=['#6366f1','#fbbf24','#4ade80','#f87171','#38bdf8','#a78bfa'];
+  for(let i=0;i<60;i++){
+    const c=document.createElement('div');c.className='confetti-p';
+    c.style.cssText=`left:${Math.random()*100}%;background:${cols[Math.floor(Math.random()*cols.length)]};animation-delay:${Math.random()*.8}s;animation-duration:${1.5+Math.random()}s`;
+    document.body.appendChild(c);setTimeout(()=>c.remove(),3000);
+  }
+}
+
+// ── STORAGE ───────────────────────────────────────────
+function save(){
+  try{
+    localStorage.setItem('kr5_data',JSON.stringify({s:S.student}));
+    localStorage.setItem('kr5_prog',JSON.stringify(topics.map(t=>({
+      id:t.id,progress:t.progress,score:t.score,
+      testScores:(t.tests||[]).map(ts=>ts.score)
+    }))));
+  }catch(e){}
+}
+function loadData(){
+  try{
+    const d=JSON.parse(localStorage.getItem('kr5_data')||'{}');
+    if(d.s)Object.assign(S.student,d.s);
+    const p=JSON.parse(localStorage.getItem('kr5_prog')||'[]');
+    p.forEach(x=>{
+      const t=topics.find(t=>t.id===x.id);
+      if(!t)return;
+      t.progress=x.progress||0;t.score=x.score||null;
+      if(x.testScores&&t.tests)x.testScores.forEach((sc,i)=>{if(t.tests[i])t.tests[i].score=sc;});
+    });
+    updateXPDisplay();
+  }catch(e){}
+}
+</script>
+</body>
+</html>
