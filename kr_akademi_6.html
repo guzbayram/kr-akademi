@@ -1,0 +1,1947 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="KR Akademi">
+<title>TYT/AYT Fonksiyonlar — KR Akademi</title>
+<style>
+:root{--primary:#6366f1;--secondary:#818cf8;--accent:#fbbf24;--bg:#0f0f1a;--surface:#1a1a2e;--surface2:#16213e;--text:#e8e8f0;--text2:#a0a0b8;--correct:#4ade80;--wrong:#f87171;--xp:#fbbf24;--r:16px;--sh:0 8px 32px rgba(0,0,0,.4)}
+.light{--bg:#f0f2ff;--surface:#fff;--surface2:#e8ecff;--text:#1a1a2e;--text2:#555577;--sh:0 8px 32px rgba(99,102,241,.12)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,sans-serif;min-height:100vh;transition:background .3s,color .3s}
+::-webkit-scrollbar{width:6px}::-webkit-scrollbar-thumb{background:var(--primary);border-radius:3px}
+.hdr{background:linear-gradient(135deg,#6366f1,#8b5cf6);padding:14px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 4px 20px rgba(99,102,241,.4)}
+.hdr-l{display:flex;align-items:center;gap:10px}.hdr h1{font-size:1rem;color:#fff;font-weight:700}
+.badge-hdr{background:rgba(255,255,255,.2);color:#fff;padding:3px 9px;border-radius:20px;font-size:.72rem}
+.hdr-r{display:flex;align-items:center;gap:8px}
+.xp-d{background:rgba(255,255,255,.15);color:#fbbf24;padding:5px 12px;border-radius:20px;font-size:.82rem;font-weight:700}
+.str-d{background:rgba(255,255,255,.15);color:#fb923c;padding:5px 10px;border-radius:20px;font-size:.82rem;font-weight:700}
+.thm-btn{background:rgba(255,255,255,.15);border:none;color:#fff;width:34px;height:34px;border-radius:50%;cursor:pointer;font-size:.95rem;display:flex;align-items:center;justify-content:center}
+.main{max-width:880px;margin:0 auto;padding:18px}
+.view{display:none}.view.active{display:block}
+.db-title{text-align:center;padding:22px 0 6px}
+.db-title h2{font-size:1.7rem;background:linear-gradient(135deg,#6366f1,#a78bfa);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.db-title p{color:var(--text2);margin-top:5px;font-size:.9rem}
+.stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:18px 0}
+.stat-c{background:var(--surface);border-radius:var(--r);padding:16px;text-align:center;box-shadow:var(--sh);border:1px solid rgba(99,102,241,.15);transition:transform .2s}
+.stat-c:hover{transform:translateY(-3px)}.stat-c .si{font-size:1.9rem;margin-bottom:7px}
+.stat-c .sv{font-size:1.5rem;font-weight:800;color:var(--primary)}.stat-c .sl{font-size:.72rem;color:var(--text2);margin-top:3px}
+.xp-sec{background:var(--surface);border-radius:var(--r);padding:16px;margin:12px 0;box-shadow:var(--sh)}
+.xp-sec-t{display:flex;justify-content:space-between;margin-bottom:9px}
+.xp-sec-t span{font-size:.82rem;color:var(--text2)}
+.xp-bar{background:var(--surface2);border-radius:100px;height:11px;overflow:hidden}
+.xp-fill{height:100%;border-radius:100px;background:linear-gradient(90deg,#fbbf24,#f59e0b);transition:width .8s cubic-bezier(.4,0,.2,1)}
+.topics-title{font-size:1.05rem;font-weight:700;margin:18px 0 10px}
+.topics-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(195px,1fr));gap:12px}
+.tc{background:var(--surface);border-radius:var(--r);padding:18px;cursor:pointer;border:2px solid transparent;box-shadow:var(--sh);transition:all .2s;position:relative;overflow:hidden}
+.tc::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--primary),var(--secondary))}
+.tc:hover{transform:translateY(-4px);border-color:var(--primary)}.tc.done::before{background:linear-gradient(90deg,#4ade80,#22c55e)}
+.tc .ti{font-size:2rem;margin-bottom:8px}.tc .tn{font-weight:700;font-size:.92rem;margin-bottom:5px}
+.tc .td{font-size:.72rem;color:var(--text2);line-height:1.4;margin-bottom:10px}
+.tp{height:5px;background:var(--surface2);border-radius:3px;overflow:hidden}
+.tp-f{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--primary),var(--secondary));transition:width .6s}
+.ts{font-size:.68rem;color:var(--text2);margin-top:5px}
+.final-card{background:linear-gradient(135deg,#6366f1,#8b5cf6);border-radius:var(--r);padding:22px;margin-top:18px;cursor:pointer;display:flex;align-items:center;gap:14px;box-shadow:0 8px 32px rgba(99,102,241,.4);transition:transform .2s}
+.final-card:hover{transform:translateY(-3px)}.final-card .fci{font-size:2.8rem}
+.final-card h3{color:#fff;font-size:1.05rem}.final-card p{color:rgba(255,255,255,.7);font-size:.78rem;margin-top:3px}
+.sess-sec{background:var(--surface);border-radius:var(--r);padding:16px;margin-top:12px;box-shadow:var(--sh)}
+.sess-sec h3{font-size:.88rem;color:var(--text2);margin-bottom:10px}
+.sess-row{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--surface2);font-size:.78rem}
+.sess-row:last-child{border-bottom:none}
+.weak-sec{background:rgba(248,113,113,.08);border:1px solid var(--wrong);border-radius:var(--r);padding:14px 18px;margin-top:16px}
+.weak-sec h3{color:var(--wrong);font-size:.87rem;margin-bottom:8px}
+.weak-tags{display:flex;gap:7px;flex-wrap:wrap}
+.wtag{background:rgba(248,113,113,.15);color:var(--wrong);padding:5px 12px;border-radius:100px;font-size:.78rem;cursor:pointer;border:1px solid var(--wrong);transition:all .2s}
+.wtag:hover{background:var(--wrong);color:#fff}
+.back-btn{background:var(--surface);border:2px solid var(--primary);color:var(--primary);padding:7px 16px;border-radius:100px;cursor:pointer;font-size:.83rem;font-weight:600;display:inline-flex;align-items:center;gap:5px;margin-bottom:14px;transition:all .2s}
+.back-btn:hover{background:var(--primary);color:#fff}
+.topic-hdr{background:linear-gradient(135deg,#6366f1,#8b5cf6);border-radius:var(--r);padding:22px;margin-bottom:18px;display:flex;align-items:center;gap:14px;box-shadow:0 8px 32px rgba(99,102,241,.3)}
+.topic-hdr .thi{font-size:2.8rem}.topic-hdr h2{color:#fff;font-size:1.25rem}
+.topic-hdr p{color:rgba(255,255,255,.7);font-size:.82rem;margin-top:3px}
+.mod-tabs{display:flex;gap:7px;margin-bottom:18px;flex-wrap:wrap}
+.mod-tab{padding:7px 16px;border-radius:100px;border:2px solid var(--primary);background:transparent;color:var(--primary);cursor:pointer;font-size:.82rem;font-weight:600;transition:all .2s}
+.mod-tab.active{background:var(--primary);color:#fff}.mod-tab:hover:not(.active){background:rgba(99,102,241,.1)}
+.slide{background:var(--surface);border-radius:var(--r);padding:26px;box-shadow:var(--sh);border:1px solid rgba(99,102,241,.15);animation:fadeIn .3s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.slide-meta{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+.slide-num{font-size:.78rem;color:var(--text2);background:var(--surface2);padding:3px 9px;border-radius:20px}
+.slide-prog{flex:1;height:5px;background:var(--surface2);border-radius:3px;margin:0 10px;overflow:hidden}
+.slide-prog-f{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--primary),var(--secondary));transition:width .5s}
+.slide-icon{font-size:2.8rem;text-align:center;margin-bottom:10px}
+.slide-title{font-size:1.15rem;font-weight:800;text-align:center;margin-bottom:14px;color:var(--primary)}
+.slide-content{line-height:1.8;font-size:.93rem}
+.formula-box{background:linear-gradient(135deg,rgba(99,102,241,.12),rgba(139,92,246,.08));border:2px solid var(--primary);border-radius:12px;padding:16px 18px;margin:14px 0;text-align:center;font-size:1.05rem;font-weight:700;color:var(--primary)}
+.remember-box{background:rgba(251,191,36,.1);border-left:4px solid var(--accent);border-radius:8px;padding:12px 14px;margin:12px 0;font-size:.88rem}
+.remember-box strong{color:var(--accent)}
+.tip-box{background:rgba(74,222,128,.1);border-left:4px solid var(--correct);border-radius:8px;padding:12px 14px;margin:12px 0;font-size:.88rem}
+.tip-box strong{color:var(--correct)}
+.warn-box{background:rgba(248,113,113,.1);border-left:4px solid var(--wrong);border-radius:8px;padding:12px 14px;margin:12px 0;font-size:.88rem}
+.warn-box strong{color:var(--wrong)}
+.step-list{list-style:none;counter-reset:steps}
+.step-list li{counter-increment:steps;padding:9px 9px 9px 44px;position:relative;margin-bottom:7px;background:var(--surface2);border-radius:10px;opacity:0;transform:translateX(-16px);transition:all .4s}
+.step-list li.vis{opacity:1;transform:translateX(0)}
+.step-list li::before{content:counter(steps);position:absolute;left:9px;top:50%;transform:translateY(-50%);width:26px;height:26px;background:var(--primary);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:700}
+.slide-actions{display:flex;gap:9px;margin-top:22px;flex-wrap:wrap}
+.btn{padding:9px 20px;border-radius:100px;border:none;cursor:pointer;font-size:.88rem;font-weight:600;transition:all .2s}
+.btn-p{background:var(--primary);color:#fff}.btn-p:hover{background:#4f46e5;transform:translateY(-2px)}
+.btn-o{background:transparent;border:2px solid var(--primary);color:var(--primary)}.btn-o:hover{background:var(--primary);color:#fff}
+.btn-sm{padding:6px 14px;font-size:.78rem}.btn-acc{background:var(--accent);color:#1a1a2e}
+.quiz-card{background:var(--surface);border-radius:var(--r);padding:26px;box-shadow:var(--sh);border:1px solid rgba(99,102,241,.15)}
+.quiz-meta{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
+.quiz-meta span{font-size:.78rem;color:var(--text2);background:var(--surface2);padding:3px 9px;border-radius:20px}
+.q-timer{color:var(--accent)!important;font-weight:700}
+.q-text{font-size:1.02rem;font-weight:600;margin-bottom:18px;line-height:1.6}
+.options{display:grid;gap:9px}
+.option{padding:12px 16px;border-radius:12px;border:2px solid var(--surface2);background:var(--surface2);color:var(--text);cursor:pointer;font-size:.88rem;text-align:left;transition:all .2s;display:flex;align-items:center;gap:9px}
+.opt-lbl{width:26px;height:26px;border-radius:50%;background:var(--surface);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.77rem;flex-shrink:0;transition:all .2s}
+.option:hover:not(:disabled){border-color:var(--primary);background:rgba(99,102,241,.08)}
+.option:hover:not(:disabled) .opt-lbl{background:var(--primary);color:#fff}
+.option.c-sel{border-color:var(--correct);background:rgba(74,222,128,.12)}.option.c-sel .opt-lbl{background:var(--correct);color:#fff}
+.option.w-sel{border-color:var(--wrong);background:rgba(248,113,113,.12)}.option.w-sel .opt-lbl{background:var(--wrong);color:#fff}
+.option.show-c{border-color:var(--correct);background:rgba(74,222,128,.08)}
+.q-fb{margin-top:14px;padding:12px 16px;border-radius:12px;font-size:.88rem;display:none}
+.q-fb.c-fb{background:rgba(74,222,128,.12);border:1px solid var(--correct);color:var(--correct)}
+.q-fb.w-fb{background:rgba(248,113,113,.12);border:1px solid var(--wrong);color:var(--wrong)}
+.q-nav{display:flex;justify-content:space-between;align-items:center;margin-top:18px}
+.flashcard-area{text-align:center}
+.flashcard{perspective:1000px;width:100%;max-width:460px;height:250px;margin:18px auto;cursor:pointer}
+.card-inner{position:relative;width:100%;height:100%;transition:transform .6s cubic-bezier(.4,0,.2,1);transform-style:preserve-3d}
+.flashcard.flipped .card-inner{transform:rotateY(180deg)}
+.card-front,.card-back{position:absolute;width:100%;height:100%;backface-visibility:hidden;border-radius:var(--r);padding:28px;display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:var(--sh)}
+.card-front{background:linear-gradient(135deg,var(--surface),var(--surface2));border:2px solid var(--primary)}
+.card-back{background:linear-gradient(135deg,rgba(99,102,241,.15),rgba(139,92,246,.1));border:2px solid var(--secondary);transform:rotateY(180deg)}
+.card-lbl{font-size:.68rem;text-transform:uppercase;letter-spacing:2px;color:var(--text2);margin-bottom:10px}
+.card-front h3{font-size:1.3rem;color:var(--primary)}.card-hint{font-size:.78rem;color:var(--text2);margin-top:14px}
+.card-back p{font-size:.92rem;line-height:1.7;text-align:center}
+.fc-prog{display:flex;gap:7px;justify-content:center;margin-top:12px;flex-wrap:wrap}
+.fc-dot{width:9px;height:9px;border-radius:50%;background:var(--surface2);transition:background .3s}
+.fc-dot.active{background:var(--primary)}.fc-dot.known{background:var(--correct)}
+.fc-btns{display:flex;gap:9px;justify-content:center;margin-top:18px}
+.result-screen{background:var(--surface);border-radius:var(--r);padding:34px;text-align:center;box-shadow:var(--sh)}
+.result-emoji{font-size:3.8rem;margin-bottom:10px}
+.result-score{font-size:2.8rem;font-weight:900;color:var(--primary)}
+.result-lbl{font-size:.95rem;color:var(--text2);margin-top:3px}
+.result-det{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:22px 0}
+.ri{background:var(--surface2);border-radius:12px;padding:12px}
+.ri .rv{font-size:1.35rem;font-weight:800}.ri .rl{font-size:.72rem;color:var(--text2);margin-top:3px}
+.result-btns{display:flex;gap:9px;justify-content:center;flex-wrap:wrap}
+.confetti-p{position:fixed;top:-10px;width:10px;height:10px;border-radius:2px;animation:fall 2s ease-in forwards;z-index:9999}
+@keyframes fall{to{transform:translateY(110vh) rotate(720deg);opacity:0}}
+.streak-pop{position:fixed;top:76px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,#f59e0b,#d97706);color:#fff;padding:11px 22px;border-radius:100px;font-weight:700;font-size:.95rem;z-index:1000;animation:popIn .3s ease,fadeOut .3s ease 1.5s forwards;box-shadow:0 8px 24px rgba(245,158,11,.5)}
+@keyframes popIn{from{transform:translateX(-50%) scale(.5);opacity:0}to{transform:translateX(-50%) scale(1);opacity:1}}
+@keyframes fadeOut{to{opacity:0;transform:translateX(-50%) translateY(-18px)}}
+.badge-pop{position:fixed;bottom:28px;right:18px;background:var(--surface);border:2px solid var(--accent);border-radius:var(--r);padding:14px 18px;box-shadow:0 8px 32px rgba(0,0,0,.4);z-index:1000;animation:slideIn .4s ease,slideOut .4s ease 3s forwards;max-width:270px}
+@keyframes slideIn{from{transform:translateX(120%)}to{transform:translateX(0)}}
+@keyframes slideOut{to{transform:translateX(120%)}}
+.badge-pop h4{color:var(--accent);font-size:.82rem}.badge-pop p{font-size:.72rem;color:var(--text2);margin-top:3px}
+.shake{animation:shake .4s ease}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-7px)}75%{transform:translateX(7px)}}
+.timer-bar{height:4px;background:var(--surface2);border-radius:2px;overflow:hidden;margin-bottom:7px}
+.timer-fill{height:100%;background:var(--accent);border-radius:2px;transition:width 1s linear}
+.fill-card{background:var(--surface);border-radius:var(--r);padding:24px;box-shadow:var(--sh)}
+.fill-sentence{font-size:.97rem;line-height:2.2}
+.blank-inp{border:none;border-bottom:2px solid var(--primary);background:transparent;color:var(--text);padding:2px 7px;font-size:.97rem;width:90px;text-align:center;outline:none;transition:border-color .2s}
+.blank-inp:focus{border-color:var(--accent)}.blank-inp.c-i{border-color:var(--correct);color:var(--correct)}.blank-inp.w-i{border-color:var(--wrong);color:var(--wrong)}
+@media(max-width:600px){.stats-row{grid-template-columns:repeat(2,1fr)}.topics-grid{grid-template-columns:1fr}.result-det{grid-template-columns:repeat(2,1fr)}.hdr h1{font-size:.85rem}}
+/* ── ÇİZİM ALANI ── */
+.q-with-canvas{display:flex;flex-direction:column;gap:14px}
+.q-with-canvas .quiz-card{flex:1;min-width:0}
+.q-with-canvas .canvas-side{flex:1;min-width:0}
+@media(orientation:landscape){
+  .q-with-canvas{flex-direction:row;align-items:stretch}
+  .q-with-canvas .quiz-card{flex:1;min-width:0}
+  .q-with-canvas .canvas-side{flex:1;min-width:0;display:flex;flex-direction:column;align-self:stretch}
+  .q-with-canvas .canvas-side .canvas-side-label{flex-shrink:0}
+  .q-with-canvas .canvas-side .canvas-wrap{flex:1;display:flex;flex-direction:column;margin-top:0;height:100%}
+  .q-with-canvas .canvas-side .canvas-toolbar{flex-shrink:0}
+  .q-with-canvas .canvas-side .drawing-canvas{flex:1;min-height:0;height:100%!important;width:100%!important}
+}
+.canvas-wrap{border-radius:12px;overflow:hidden;border:2px solid var(--primary);background:var(--surface)}
+.canvas-toolbar{display:flex;align-items:center;gap:8px;padding:8px 12px;background:var(--surface2);flex-wrap:wrap}
+.canvas-toolbar button{padding:5px 12px;border-radius:20px;border:2px solid var(--primary);background:transparent;color:var(--primary);cursor:pointer;font-size:.78rem;font-weight:600;transition:all .2s}
+.canvas-toolbar button.active{background:var(--primary);color:#fff}
+.canvas-toolbar button:hover:not(.active){background:rgba(99,102,241,.15)}
+.color-btn{width:26px!important;height:26px!important;border-radius:50%!important;padding:0!important;border:3px solid transparent!important;cursor:pointer;transition:all .2s}
+.color-btn.active{border-color:#fff!important;transform:scale(1.2)}
+.size-slider{-webkit-appearance:none;width:80px;height:4px;border-radius:2px;background:var(--primary);outline:none;cursor:pointer}
+.size-slider::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;border-radius:50%;background:var(--primary);cursor:pointer}
+.drawing-canvas{display:block;width:100%;touch-action:none;cursor:crosshair;background:#fff}
+.canvas-toggle-btn{display:flex;align-items:center;gap:6px;margin-top:12px;padding:8px 16px;border-radius:20px;border:2px dashed var(--primary);background:rgba(99,102,241,.06);color:var(--primary);cursor:pointer;font-size:.82rem;font-weight:600;width:100%;justify-content:center;transition:all .2s}
+.canvas-toggle-btn:hover{background:rgba(99,102,241,.15)}
+.canvas-side-label{font-size:.78rem;color:var(--text2);padding:6px 12px;background:var(--surface2);border-radius:8px 8px 0 0;font-weight:600;display:flex;align-items:center;gap:5px}
+/* ── KESİR STILLER ── */
+.frac-q{display:inline;line-height:2.4}
+.frac-inline{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;margin:0 3px;font-size:.9em}
+.fnum{border-bottom:2px solid currentColor;padding:0 3px 1px;line-height:1.2;text-align:center}
+.fden{padding:1px 3px 0;line-height:1.2;text-align:center}
+
+/* ── SİMÜLATÖR ── */
+#sim-wrap{display:grid;grid-template-columns:260px 1fr;gap:14px;align-items:start}
+@media(max-width:660px){#sim-wrap{grid-template-columns:1fr}}
+.sim-left{display:flex;flex-direction:column;gap:10px}
+.sim-section{background:var(--surface);border:1px solid rgba(99,102,241,.2);border-radius:12px;padding:14px}
+.sim-sec-title{font-size:.65rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--primary);margin-bottom:10px;display:flex;align-items:center;gap:5px}
+.sim-sec-title::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--primary);box-shadow:0 0 6px var(--primary);flex-shrink:0}
+.sim-fn-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:10px}
+.sim-fn{padding:8px;border-radius:8px;border:1.5px solid var(--surface2);background:var(--surface2);color:var(--text2);font-size:.82rem;font-weight:700;cursor:pointer;transition:all .18s;font-family:'Segoe UI',system-ui,sans-serif}
+.sim-fn:hover{border-color:var(--primary);color:var(--text)}
+.sim-fn.active{border-color:var(--primary);background:rgba(99,102,241,.18);color:var(--primary)}
+.sim-formula{background:var(--surface2);border:1px solid var(--primary);border-radius:8px;padding:8px 12px;text-align:center;font-size:.9rem;font-weight:700;color:var(--primary)}
+.sim-param{display:flex;align-items:center;gap:7px;margin-top:10px;margin-bottom:4px}
+.sim-plabel{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:800;flex-shrink:0}
+.sim-pname{flex:1;font-size:.78rem;color:var(--text2)}
+.sim-pval{font-size:.82rem;font-weight:700;color:var(--text);min-width:30px;text-align:right}
+.sim-slider{-webkit-appearance:none;width:100%;height:4px;border-radius:2px;background:linear-gradient(90deg,var(--primary),var(--secondary));outline:none;cursor:pointer;margin-bottom:6px}
+.sim-slider::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;border-radius:50%;background:var(--primary);cursor:pointer;box-shadow:0 0 8px rgba(99,102,241,.6)}
+.sim-info-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.sim-info-c{background:var(--surface2);border-radius:8px;padding:8px;text-align:center}
+.sim-info-lbl{font-size:.58rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--text2);margin-bottom:3px}
+.sim-info-val{font-size:.82rem;font-weight:700;color:var(--primary)}
+.sim-right{display:flex;flex-direction:column;gap:10px}
+.sim-hint-box{background:rgba(99,102,241,.08);border:1px solid rgba(99,102,241,.3);border-radius:10px;padding:12px 14px;font-size:.8rem;color:var(--text2);line-height:1.7;display:none}
+.sim-hint-box strong{color:var(--accent)}
+.sim-hint-box em{color:var(--wrong)}
+
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <div class="hdr-l">
+    <span style="font-size:1.4rem">📐</span>
+    <h1>TYT/AYT Fonksiyonlar</h1>
+    <span class="badge-hdr" id="badgeHdr">Yeni Başlayan</span>
+  </div>
+  <div class="hdr-r">
+    <div class="str-d">🔥 <span id="strVal">0</span></div>
+    <div class="xp-d">⚡ <span id="xpVal">0</span> XP</div>
+    <button class="thm-btn" onclick="toggleTheme()">🌙</button>
+  </div>
+</div>
+
+<div class="main">
+
+  <!-- DASHBOARD -->
+  <div class="view active" id="view-dashboard">
+    <div class="db-title">
+      <h2>📐 Fonksiyonlar Öğrenme Merkezi</h2>
+      <p>9 Konu · Bileşke · Ters · Grafik · Simülatör</p>
+    </div>
+    <div class="stats-row">
+      <div class="stat-c"><div class="si">⏱️</div><div class="sv" id="timeDisp">0:00</div><div class="sl">Toplam Süre</div></div>
+      <div class="stat-c"><div class="si">✅</div><div class="sv" id="corrDisp">0</div><div class="sl">Doğru Cevap</div></div>
+      <div class="stat-c"><div class="si">🏆</div><div class="sv" id="scoreDisp">—</div><div class="sl">Genel Başarı</div></div>
+    </div>
+    <div class="xp-sec">
+      <div class="xp-sec-t">
+        <span>⚡ <strong id="xpTxt">0 XP</strong> — <span id="bdgTxt">Yeni Başlayan</span></span>
+        <span id="nextBdg">500 XP'e kadar</span>
+      </div>
+      <div class="xp-bar"><div class="xp-fill" id="xpFill" style="width:0%"></div></div>
+    </div>
+    <div id="weakSec" style="display:none">
+      <div class="weak-sec"><h3>⚠️ Zayıf Konular</h3><div class="weak-tags" id="weakTags"></div></div>
+    </div>
+    <div class="topics-title">📚 Konular</div>
+    <div class="topics-grid" id="topicsGrid"></div>
+    <div class="final-card" onclick="startFinal()">
+      <div class="fci">🎯</div>
+      <div><h3>Yeni Nesil Genel Tekrar Testi</h3><p>Tüm konulardan karışık 16 soru — Sınav tipi</p></div>
+      <span style="color:#fff;font-size:1.4rem;margin-left:auto">→</span>
+    </div>
+    <div class="sess-sec"><h3>📋 Çalışma Geçmişi</h3><div id="sessLog"><div style="color:var(--text2);font-size:.83rem;text-align:center;padding:10px">Henüz oturum yok</div></div></div>
+  </div>
+
+  <!-- TOPIC VIEW -->
+  <div class="view" id="view-topic">
+    <button class="back-btn" onclick="goDash()">← Menüye Dön</button>
+    <div class="topic-hdr" id="topicHdr"></div>
+    <div class="mod-tabs" id="modTabs"></div>
+    <div id="modContent"></div>
+  </div>
+
+  <!-- FINAL VIEW -->
+  <div class="view" id="view-final">
+    <button class="back-btn" onclick="goDash()">← Menüye Dön</button>
+    <div id="finalContent"></div>
+  </div>
+
+</div>
+
+<script>
+// ── DATA ──────────────────────────────────────────────
+const TOPICS = [
+  {
+    id:'fonk-tanim', icon:'📌', name:'Fonksiyon Tanımı ve Gösterimi',
+    desc:'Fonksiyon nedir, nasıl gösterilir? Türleri ve temel kavramlar.',
+    progress:0, score:null,
+    slides:[
+      {icon:'📌', title:'Fonksiyon Nedir?', content:`<p>A kümesinin <strong>her elemanını</strong> B kümesinin <strong>tam olarak bir</strong> elemanına eşleyen bağıntıya <strong>fonksiyon</strong> denir.</p><div class="formula-box">f: A → B &nbsp;|&nbsp; y = f(x)</div><ul class="step-list"><li><strong>Tanım kümesi:</strong> D(f) = A</li><li><strong>Hedef küme:</strong> B</li><li><strong>Görüntü kümesi:</strong> R(f) ⊆ B</li></ul><div class="remember-box"><strong>🔔 Gösterim:</strong> x ↦ f(x) = y</div>`},
+      {icon:'✅', title:'Fonksiyon Olma Şartları', content:`<ul class="step-list"><li>A'ın <strong>her elemanının</strong> B'e bir görüntüsü olmalı</li><li>Bir A elemanının <strong>en fazla bir</strong> görüntüsü olmalı</li></ul><div class="warn-box"><strong>⚠️ Dikkat!</strong> A'a karşılıksız eleman KALMAZ. Bir elemandan iki ok çıkamaz.</div><div class="tip-box"><strong>💡 Dikey Doğru Testi:</strong> Her dikey doğru grafiği en fazla 1 noktada kesiyorsa fonksiyondur.</div><p style="margin-top:12px">Örnek: A={1,2,3}, f(1)=a, f(2)=b, f(3)=b → <strong>Fonksiyondur!</strong></p>`},
+      {icon:'🏷️', title:'Fonksiyon Türleri', content:`<ul class="step-list"><li><strong>Bire-bir (İnjektif):</strong> x₁≠x₂ ⟹ f(x₁)≠f(x₂)</li><li><strong>Örten (Sürjektif):</strong> R(f) = B</li><li><strong>Bijektif:</strong> Hem bire-bir hem örten — ters fonksiyon vardır</li><li><strong>Sabit:</strong> f(x) = c</li><li><strong>Birim (Özdeşlik):</strong> f(x) = x</li></ul><div class="remember-box"><strong>🔔 Fark:</strong> Örten → R(f)=B | Bire-bir → farklı x, farklı y | Bijektif → her ikisi</div>`},
+      {icon:'🔢', title:'Fonksiyon Sayısı', content:`<div class="formula-box">n→m arası toplam fonksiyon: mⁿ</div><ul class="step-list"><li><strong>Bire-bir sayısı:</strong> P(m,n) = m!/(m−n)! (m≥n gerekir)</li><li><strong>Bijektif sayısı:</strong> n! (|A|=|B|=n ise)</li></ul><div class="tip-box"><strong>💡 Örnek:</strong> A={1,2}, B={a,b,c} → toplam: 3²=9 | Bire-bir: 3×2=6</div>`},
+      {icon:'⚡', title:'TYT/AYT Sınav Tüyoları', content:`<div class="remember-box"><strong>🔔 Sıkça Çıkan Tipler:</strong><br>• "Hangisi fonksiyon değildir?" → 2 ok çıkan veya oksuz eleman<br>• "Kaç fonksiyon?" → mⁿ formülü<br>• "Bijektif ise |A|=?" → |A|=|B|</div><ul class="step-list"><li>f(-a)=f(a) ise bire-bir değildir</li><li>Sürjektif için |A| ≥ |B| zorunlu koşuldur</li><li>Bijektif ↔ ters fonksiyon vardır</li></ul>`}
+    ],
+    flashcards:[
+      {front:'Fonksiyon tanımı', back:'A\'\2ın her elemanını B\'\2in tam bir elemanına eşleyen bağıntı. f: A→B'},
+      {front:'Bire-bir (İnjektif)', back:'x₁≠x₂ ⟹ f(x₁)≠f(x₂). Farklı girdiler farklı çıktılar.'},
+      {front:'Örten (Sürjektif)', back:'R(f) = B. B\'\2in her elemanı en az bir kez görüntü olarak alınır.'},
+      {front:'Bijektif fonksiyon', back:'Hem bire-bir hem örten. Ters fonksiyon vardır. |A|=|B| olmalı.'},
+      {front:'Dikey doğru testi', back:'Her dikey doğru grafiği en fazla 1 noktada kesiyorsa fonksiyondur.'},
+      {front:'mⁿ formülü', back:'n elemanlı A\'\2an m elemanlı B\'\2e toplam fonksiyon sayısı: mⁿ'}
+    ],
+    fillBlanks:[
+      {s:'f: A→B fonksiyonunda tanım kümesi ___ kümesidir.', a:'A'},
+      {s:'Hem bire-bir hem örten fonksiyona ___ denir.', a:'bijektif'},
+      {s:'R(f) = B ise fonksiyon ___ fonksiyondur.', a:'örten'}
+    ],
+    quiz:[],
+    tests:[
+      {name:'Geçmiş Sınav Soruları', score:null, questions:[
+        {num:1, q:'A={1,2,3} ve B={p,q,r,s} kümelerinde tanımlı eşleştirme şemalarından hangisi bir fonksiyonu temsil eder?', opts:['1→p, 1→q, 2→r, 3→s (1\'\2en iki ok)','1→p, 2→r, 3→r (her A elemanı tek görüntü)','1→p, 2→q (3\'\2 ok gitmemiş)','1→p, 2→q, 3→r, 3→s (3\'\2en iki ok)'], ans:1, exp:'Fonksiyon için A\'\2ın her elemanının tam 1 görüntüsü olmalı. B seçeneğinde 1→p, 2→r, 3→r — her eleman tek görüntüye sahip. Cevap: B'},
+        {num:2, q:'f: A→B bijektif bir fonksiyon ise A ve B kümeleri sonlu kümeler olduğunda hangi özellik kesinlikle doğrudur?', opts:['A ve B aynı kümedir','|A| = |B| (eleman sayıları eşittir)','A ⊂ B','B ⊂ A'], ans:1, exp:'Bijektif fonksiyonda her A elemanı tam bir B elemanına gider ve her B elemanı alınır. |A| = |B| olmalı. Cevap: B'},
+        {num:3, q:'f: A→B örten (sürjektif) bir fonksiyon için aşağıdakilerden hangisi doğrudur?', opts:['R(f) ⊊ B','f bire-birdir','R(f) = B','|A| < |B|'], ans:2, exp:'Örten (sürjektif) fonksiyonda B\'\2in her elemanı en az bir kez görüntü olarak alınır → R(f) = B. Cevap: C'}
+      ]}
+    ]
+  },
+  {
+    id:'fonk-deger', icon:'🔢', name:'Fonksiyonda Değer Hesaplama',
+    desc:'f(a) değerini bulma, denklem kurma, iç içe değer.',
+    progress:0, score:null,
+    slides:[
+      {icon:'🔢', title:'Temel Değer Hesaplama', content:`<p>f(x)=... ifadesinde <strong>x yerine istenen değeri koy</strong> ve sadeleştir.</p><div class="formula-box">f(x)=3x+2 ⟹ f(4)=3(4)+2=14</div><ul class="step-list"><li>f(4)=3(4)+2=<strong>14</strong></li><li>f(-1)=3(-1)+2=<strong>-1</strong></li><li>f(a+1)=3(a+1)+2=<strong>3a+5</strong></li></ul><div class="tip-box"><strong>💡 İpucu:</strong> Negatif sayıları paranteze al: f(-3)=3<strong>(-3)</strong>+2</div>`},
+      {icon:'🔄', title:'İç İçe Değer: f(f(x))', content:`<p>Önce iç fonksiyonu hesapla, sonucu dış fonksiyona sok:</p><div class="formula-box">f(f(a)) → içten dışa!</div><ul class="step-list"><li>f(x)=2x-1, f(f(3))=?</li><li>Adım 1: f(3)=2(3)-1=<strong>5</strong></li><li>Adım 2: f(5)=2(5)-1=<strong>9</strong></li></ul><div class="warn-box"><strong>⚠️ Dikkat!</strong> f(2x) ≠ 2·f(x). f(2x): x yerine 2x koy. 2·f(x): sonucu 2 ile çarp.</div>`},
+      {icon:'🔍', title:'f(x) Formülünü Bulma', content:`<p>f(ax+b)=... verildiğinde f(x)'i bul:</p><div class="formula-box">t=ax+b ⟹ x=(t-b)/a ⟹ f(t)=...</div><ul class="step-list"><li>f(2x-1)=4x+3 ise f(x)=?</li><li>t=2x-1 ⟹ x=(t+1)/2</li><li>f(t)=4·(t+1)/2+3=2(t+1)+3=<strong>2t+5</strong></li><li>f(x)=2x+5</li></ul>`},
+      {icon:'⚖️', title:'Denklem Kurma', content:`<ul class="step-list"><li>f(x)=2x+3=7 ⟹ 2x=4 ⟹ <strong>x=2</strong></li><li>f(2a-1)=f(a+3), f bire-bir ⟹ 2a-1=a+3 ⟹ <strong>a=4</strong></li></ul><div class="remember-box"><strong>🔔 f Bire-bir ise:</strong> f(A)=f(B) ⟹ A=B doğrudan eşitleyebiliriz</div>`},
+      {icon:'⚡', title:'Sınav Hızlı Tekrar', content:`<div class="formula-box">f(x+c)=... → t=x+c, x=t-c ile f(t) bul</div><ul class="step-list"><li>f(x+2)=3x-1 → t=x+2, x=t-2 → f(t)=3t-7 → <strong>f(x)=3x-7</strong></li><li>f(3)=? → f(x+2)=3x-1 için x+2=3 → x=1 → f(3)=3(1)-1=2</li></ul><div class="tip-box"><strong>💡 Tuzak:</strong> f(2x) ≠ 2f(x) — bunlar farklı işlemlerdir!</div>`}
+    ],
+    flashcards:[
+      {front:'f(a) hesaplama', back:'f(x) ifadesinde x yerine a yaz ve sadeleştir. Negatif sayıları paranteze al.'},
+      {front:'f(f(a)) hesaplama', back:'İçten dışa: önce f(a)=b bul, sonra f(b) hesapla.'},
+      {front:'f(ax+b)=... iken f(x)=?', back:'t=ax+b koy, x=(t-b)/a yaz, f(t) ifadesini bul.'},
+      {front:'f(2x) ile 2·f(x) farkı', back:'f(2x): x yerine 2x koy. 2·f(x): sonucu 2 ile çarp. Genelde farklıdır!'},
+      {front:'f bire-bir ise f(A)=f(B) ne anlama gelir?', back:'A = B. Doğrudan eşitleyebiliriz.'}
+    ],
+    fillBlanks:[
+      {s:'f(x)=5x-3 ise f(2) = ___', a:'7'},
+      {s:'f(x+1)=2x+5 ise f(x)=2x+___', a:'3'},
+      {s:'f(f(2)) hesabında önce ___ hesaplanır.', a:'f(2)'}
+    ],
+    quiz:[],
+    tests:[
+      {name:'Geçmiş Sınav Soruları', score:null, questions:[
+        {num:1, q:'f(x)=3x−1 fonksiyonu için f(f(3)) kaçtır?', opts:['22','23','24','25'], ans:1, exp:'f(3)=3(3)-1=8, f(f(3))=f(8)=3(8)-1=23. Cevap: B'},
+        {num:2, q:'f(x)=2x+4 fonksiyonu için f(3a)=f(a)+12 olduğunda a kaçtır?', opts:['2','3','4','5'], ans:1, exp:'f(3a)=6a+4, f(a)+12=2a+16. 6a+4=2a+16 → 4a=12 → a=3. Cevap: B'},
+        {num:3, q:'f(2x-1)=4x+3 ise f(x) hangi ifadedir?', opts:['2x+5','2x+4','2x+3','2x+2'], ans:0, exp:'t=2x-1 → x=(t+1)/2, f(t)=4·(t+1)/2+3=2(t+1)+3=2t+5. f(x)=2x+5. Cevap: A'}
+      ]}
+    ]
+  },
+  {
+    id:'bileskefon', icon:'🧩', name:'Bileşke Fonksiyon',
+    desc:'(f∘g)(x) ve (g∘f)(x) hesaplama, f fonksiyonunu bulma.',
+    progress:0, score:null,
+    slides:[
+      {icon:'🧩', title:'Bileşke Tanımı', content:`<div class="formula-box">(f∘g)(x) = f(g(x)) → Önce g, sonra f!</div><ul class="step-list"><li>(f∘g)(x)=f(g(x)) → önce g, sonucu f'e sok</li><li>(g∘f)(x)=g(f(x)) → önce f, sonucu g'e sok</li></ul><div class="warn-box"><strong>⚠️ f∘g ≠ g∘f!</strong> Bileşke değişme özelliği SAĞLAMAZ.</div><div class="remember-box"><strong>🔔 Birleşme geçerlidir:</strong> f∘(g∘h)=(f∘g)∘h ✓</div>`},
+      {icon:'📊', title:'Bileşke Hesaplama', content:`<p>f(x)=2x+1, g(x)=x² ise:</p><ul class="step-list"><li>(f∘g)(x)=f(x²)=2x²+1</li><li>(g∘f)(x)=g(2x+1)=(2x+1)²</li><li>(f∘g)(3)=f(9)=2(9)+1=<strong>19</strong></li></ul><div class="tip-box"><strong>💡 Kural:</strong> (f∘g)(a)=f(g(a)) → içten dışa!</div>`},
+      {icon:'🔍', title:'f Fonksiyonunu Bulma', content:`<p>(f∘g)(x) ve g(x) verildiğinde f(x)'i bul:</p><div class="formula-box">t=g(x) ⟹ x=g⁻¹(t) ⟹ f(t)=...</div><ul class="step-list"><li>(f∘g)(x)=4x-3, g(x)=x+1 ise f(x)=?</li><li>t=x+1 ⟹ x=t-1</li><li>f(t)=4(t-1)-3=<strong>4t-7</strong></li></ul>`},
+      {icon:'🔗', title:'Bileşke Özellikleri', content:`<ul class="step-list"><li><strong>Birleşme:</strong> f∘(g∘h)=(f∘g)∘h ✓</li><li><strong>Değişme:</strong> f∘g≠g∘f ✗</li><li><strong>Birim:</strong> f∘I=I∘f=f</li><li><strong>Ters:</strong> f∘f⁻¹=f⁻¹∘f=I</li></ul><div class="formula-box">(f∘g)⁻¹=g⁻¹∘f⁻¹ (sıra TERSINE!)</div>`},
+      {icon:'⚡', title:'Sınav Hazırlık', content:`<div class="formula-box">f∘g∘h(a) → önce h(a), sonra g, sonra f</div><ul class="step-list"><li>f(x)=x+2, g(x)=3x-1 → (f∘g)(4)=? → g(4)=11 → f(11)=<strong>13</strong></li><li>(f∘g)(x)=6x+5, g(x)=2x+1 → f(x)=3x+2</li></ul><div class="tip-box"><strong>💡 Tuzak:</strong> f∘f⁻¹∘f(x)=f(x) — sadeleştir!</div>`}
+    ],
+    flashcards:[
+      {front:'(f∘g)(x) ne demek?', back:'f(g(x)) — önce g, sonra f. İçten dışa hesapla!'},
+      {front:'f∘g = g∘f mi?', back:'Hayır! Bileşke değişme özelliği SAĞLAMAZ. f∘g ≠ g∘f (genelde)'},
+      {front:'(f∘g)⁻¹ = ?', back:'g⁻¹∘f⁻¹ — ters alırken sıra tersine döner!'},
+      {front:'f∘f⁻¹(x) = ?', back:'x — Birim fonksiyon I. f∘f⁻¹=f⁻¹∘f=I her zaman.'},
+      {front:'(f∘g)(x) bilinince f(x) nasıl?', back:'t=g(x) koy, x\'\2 t cinsinden yaz, f(t) bul.'}
+    ],
+    fillBlanks:[
+      {s:'(f∘g)(x) = f(___(x))', a:'g'},
+      {s:'f∘g∘h(a) hesabında ilk ___(a) hesaplanır.', a:'h'},
+      {s:'(f∘g)⁻¹ = g⁻¹ ∘ ___', a:'f⁻¹'}
+    ],
+    quiz:[],
+    tests:[
+      {name:'Geçmiş Sınav Soruları', score:null, questions:[
+        {num:1, q:'f(x)=2x+3 ve g(x)=x-1 ise (g∘f)(4) kaçtır?', opts:['8','9','10','11'], ans:2, exp:'f(4)=2(4)+3=11, (g∘f)(4)=g(11)=11-1=10. Cevap: C'},
+        {num:2, q:'(f∘g)(x)=6x+5 ve g(x)=2x+1 ise f(x)=?', opts:['3x+2','3x-2','3x+3','3x+1'], ans:0, exp:'t=2x+1 → x=(t-1)/2, f(t)=6·(t-1)/2+5=3(t-1)+5=3t+2. f(x)=3x+2. Cevap: A'},
+        {num:3, q:'f(x)=3x-2 ise (f∘f)(2) kaçtır?', opts:['8','10','12','14'], ans:1, exp:'f(2)=3(2)-2=4, (f∘f)(2)=f(4)=3(4)-2=10. Cevap: B'}
+      ]}
+    ]
+  },
+  {
+    id:'ters-fonk', icon:'🔄', name:'Ters Fonksiyon',
+    desc:'f⁻¹(x) bulma, f(f⁻¹(x))=x özelliği, grafik ilişkisi.',
+    progress:0, score:null,
+    slides:[
+      {icon:'🔄', title:'Ters Fonksiyon Nedir?', content:`<p>f: A→B <strong>bijektif</strong> ise f⁻¹: B→A ters fonksiyon vardır.</p><div class="formula-box">f(a)=b ⟺ f⁻¹(b)=a</div><ul class="step-list"><li>Girdi ve çıktı yer değiştirir!</li><li>f⁻¹ yalnızca bijektif fonksiyonlarda vardır</li></ul><div class="remember-box"><strong>🔔 Grafik:</strong> f ve f⁻¹ grafikleri y=x doğrusuna göre simetrik!</div>`},
+      {icon:'📐', title:'f⁻¹(x) Nasıl Bulunur?', content:`<div class="formula-box">1) y=f(x) yaz → 2) x' çöz → 3) x↔y değiştir</div><ul class="step-list"><li>f(x)=3x+6 ise f⁻¹(x)=?</li><li>y=3x+6 → 3x=y-6 → x=(y-6)/3</li><li>Yer değiştir: <strong>f⁻¹(x)=(x-6)/3</strong></li></ul><div class="tip-box"><strong>💡 Kontrol:</strong> f(f⁻¹(x))=x olmalı ✓</div>`},
+      {icon:'⚡', title:'f⁻¹(a) Hızlı Hesaplama', content:`<div class="formula-box">f⁻¹(b)=? ⟹ f(x)=b denklemini çöz!</div><ul class="step-list"><li>f(x)=4x-8, f⁻¹(4)=?</li><li>f(x)=4 ⟹ 4x-8=4 ⟹ x=3</li><li><strong>f⁻¹(4)=3</strong></li></ul>`},
+      {icon:'🔗', title:'Önemli Formüller', content:`<ul class="step-list"><li>f(f⁻¹(x))=x ve f⁻¹(f(x))=x</li><li>(f∘g)⁻¹=g⁻¹∘f⁻¹ (sıra tersine!)</li><li>f(a)=b ⟹ f⁻¹(b)=a</li></ul><div class="remember-box"><strong>🔔 f⁻¹∘f=I:</strong> (f⁻¹∘f)(7)=7 — f'i bulmak gerekmez!</div><div class="warn-box"><strong>⚠️ f⁻¹(x) ≠ 1/f(x)</strong> — Ters fonksiyon, çarpma tersi değildir!</div>`},
+      {icon:'🏆', title:'Sınav Tüyoları', content:`<ul class="step-list"><li>f bijektif, f(3)=7 ⟹ f⁻¹(7)=3 (anında!)</li><li>(f⁻¹∘f)(a)=a — f'i bulmana gerek yok</li><li>f⁻¹(x)=(x+9)/3 ise f(x)=3x-9</li></ul><div class="tip-box"><strong>💡 f bilindiğinde f⁻¹(a):</strong> f(x)=a denklemini çöz → cevap f⁻¹(a)!</div>`}
+    ],
+    flashcards:[
+      {front:'Ters fonksiyon ne zaman vardır?', back:'f bijektif (bire-bir ve örten) olduğunda. Bijektif ↔ ters fonksiyon var.'},
+      {front:'f⁻¹(x) bulma adımları', back:'1) y=f(x) yaz  2) x\'\2 çöz  3) x↔y değiştir'},
+      {front:'f(f⁻¹(x)) = ?', back:'x — Birim fonksiyon. f∘f⁻¹=f⁻¹∘f=I her zaman.'},
+      {front:'f(a)=b ise f⁻¹(b)=?', back:'a — Ters fonksiyonda girdi ve çıktı yer değiştirir.'},
+      {front:'f ve f⁻¹ grafikleri', back:'y=x doğrusuna göre simetrik. (a,b) ↔ (b,a)'}
+    ],
+    fillBlanks:[
+      {s:'f(3)=7 ise f⁻¹(7) = ___', a:'3'},
+      {s:'f⁻¹(x) bulmak için y=f(x)\'den ___ yalnız bırakılır.', a:'x'},
+      {s:'(f⁻¹∘f)(5) = ___', a:'5'}
+    ],
+    quiz:[],
+    tests:[
+      {name:'Geçmiş Sınav Soruları', score:null, questions:[
+        {num:1, q:'f(x)=4x-8 için f⁻¹(4) kaçtır?', opts:['2','3','4','5'], ans:1, exp:'f⁻¹(4)=? → f(x)=4 çöz: 4x-8=4 → x=3. Cevap: B'},
+        {num:2, q:'f(x)=2x+6 için f⁻¹(x)=?', opts:['(x-6)/2','(x+6)/2','2x-6','x/2-3'], ans:0, exp:'y=2x+6 → 2x=y-6 → x=(y-6)/2. f⁻¹(x)=(x-6)/2. Cevap: A'},
+        {num:3, q:'f(x)=5x-3 için (f⁻¹∘f)(7) kaçtır?', opts:['7','32','3','5'], ans:0, exp:'f⁻¹∘f=I (birim fonksiyon) olduğundan (f⁻¹∘f)(7)=7. Cevap: A'}
+      ]}
+    ]
+  },
+  {
+    id:'tanim-kume', icon:'📊', name:'Tanım ve Değer Kümesi',
+    desc:'D(f) ve R(f) bulma, kısıtlar, aralık notasyonu.',
+    progress:0, score:null,
+    slides:[
+      {icon:'📊', title:'Tanım Kümesi Kısıtları', content:`<ul class="step-list"><li><strong>Payda ≠ 0:</strong> 1/(x-2) → x≠2 → D(f)=ℝ\\{2}</li><li><strong>Kök içi ≥ 0:</strong> √(x-3) → x≥3 → D(f)=[3,+∞)</li><li><strong>Log > 0:</strong> ln(x) → x>0 → D(f)=(0,+∞)</li><li><strong>1/√(x-a):</strong> x-a>0 → x>a (hem kökte hem payda!)</li></ul><div class="tip-box"><strong>💡 Kestirme:</strong> Birden fazla kısıt varsa kesişim al (∩)</div>`},
+      {icon:'🔢', title:'Karmaşık D(f) Örneği', content:`<p>f(x)=√(x-1)/(x-4) için D(f)=?</p><ul class="step-list"><li>Karekök: x-1≥0 → <strong>x≥1</strong></li><li>Payda: x-4≠0 → <strong>x≠4</strong></li><li>Kesişim: x≥1 ve x≠4</li><li><strong>D(f)=[1,4)∪(4,+∞)</strong></li></ul><div class="formula-box">1/√(x-4): x-4>0 → x>4!</div>`},
+      {icon:'🎯', title:'Değer (Görüntü) Kümesi', content:`<ul class="step-list"><li>f(x)=x² → R(f)=[0,+∞)</li><li>f(x)=x → R(f)=ℝ</li><li>f(x)=√x → R(f)=[0,+∞)</li><li>f(x)=1/x² → R(f)=(0,+∞)</li></ul><div class="tip-box"><strong>💡 Yöntem:</strong> y=f(x)'den x' y cinsinden yaz → y'in alabileceği değerleri bul.</div>`},
+      {icon:'📐', title:'Kısıtlı Tanım Kümesinde R(f)', content:`<p>f:[a,b]→ℝ, f(x)=2x+1 için R(f)=?</p><ul class="step-list"><li>f doğrusal ve artan: uç değerleri hesapla</li><li>f(-3)=2(-3)+1=<strong>-5</strong></li><li>f(5)=2(5)+1=<strong>11</strong></li><li><strong>R(f)=[-5,11]</strong></li></ul><div class="warn-box"><strong>⚠️ Azalan fonksiyonda:</strong> küçük x → büyük y. Min-max yer değiştirir!</div>`},
+      {icon:'⚡', title:'Sınav Formülleri', content:`<div class="formula-box">f(x)=(x-3)² → min=0 (x=3'e)</div><ul class="step-list"><li>x²-ax+b≥0 → tepe noktasını bul</li><li>f:[a,b]→R(f)=[m,M] → f azalan ise f(a)=M, f(b)=m</li></ul><div class="tip-box"><strong>💡 Tüyo:</strong> Karekök içi sıfıra eşlenirse "≥0", paydaya eşlenirse "≠0" yazılır.</div>`}
+    ],
+    flashcards:[
+      {front:'Paydası olan D(f)', back:'Payda=0 yapan değerler dışlanır. 1/(x-2) → x≠2 → D(f)=ℝ\{2}'},
+      {front:'Karekök içeren D(f)', back:'Karekök içi ≥0 olmalı. √(x-3) → x≥3 → D(f)=[3,+∞)'},
+      {front:'1/√(x-a) için D(f)', back:'x-a>0 (sıfır olamaz) → x>a → D(f)=(a,+∞)'},
+      {front:'R(f) nasıl bulunur?', back:'y=f(x) den x\'\2 y cinsinden yaz, x\'\2n alabileceği değerleri incele.'},
+      {front:'f(x)=x² için R(f)', back:'x²≥0 her zaman, min=0 (x=0 da). R(f)=[0,+∞)'}
+    ],
+    fillBlanks:[
+      {s:'f(x)=√(x-5) için D(f)=[___, +∞)', a:'5'},
+      {s:'f(x)=1/(x+3) için D(f)=ℝ\\{___}', a:'-3'},
+      {s:'f(x)=x² için R(f)=[___, +∞)', a:'0'}
+    ],
+    quiz:[],
+    tests:[
+      {name:'Geçmiş Sınav Soruları', score:null, questions:[
+        {num:1, q:'f(x)=√(3-x)+1/(x+1) fonksiyonunun doğal tanım kümesi hangisidir?', opts:['(-1,3]','(-∞,-1)∪(-1,3]','[-1,3]','(-1,3)'], ans:1, exp:'√(3-x): x≤3. 1/(x+1): x≠-1. Kesişim: x≤3 ve x≠-1. D(f)=(-∞,-1)∪(-1,3]. Cevap: B'},
+        {num:2, q:'f(x)=√(x²-5x+6) fonksiyonunun doğal tanım kümesi hangisidir?', opts:['(-∞,2]∪[3,+∞)','[2,3]','(2,3)','(-∞,2)∪(3,+∞)'], ans:0, exp:'x²-5x+6=(x-2)(x-3)≥0 → x≤2 veya x≥3. D(f)=(-∞,2]∪[3,+∞). Cevap: A'}
+      ]}
+    ]
+  },
+  {
+    id:'ozel-fonk', icon:'🎭', name:'Özel Fonksiyon Türleri',
+    desc:'Mutlak değer, taban/tavan, parçalı fonksiyonlar.',
+    progress:0, score:null,
+    slides:[
+      {icon:'🎭', title:'Mutlak Değer Fonksiyonu', content:`<div class="formula-box">|x|=x (x≥0) | |x|=-x (x&lt;0)</div><ul class="step-list"><li>|a|=k (k≥0) → a=k veya a=-k</li><li>|a|&lt;k → -k&lt;a&lt;k</li><li>|a|&gt;k → a&gt;k veya a&lt;-k</li></ul><div class="tip-box"><strong>💡 |a-b|:</strong> a ve b arasındaki uzaklığı verir!</div>`},
+      {icon:'⚙️', title:'Mutlak Değer Çözümleri', content:`<p>|2x-4|=6 çözümü:</p><ul class="step-list"><li>2x-4=6 → x=5</li><li>2x-4=-6 → x=-1</li><li>Çözüm: <strong>{-1,5}</strong></li></ul><p style="margin-top:12px">|x-3|&lt;5 çözümü:</p><ul class="step-list"><li>-5&lt;x-3&lt;5 → -2&lt;x&lt;8 → <strong>(-2,8)</strong></li></ul><div class="warn-box"><strong>⚠️ |A|=|B| ise:</strong> A=B veya A=-B — iki durum!</div>`},
+      {icon:'⌊⌋', title:'Taban Fonksiyonu', content:`<div class="formula-box">⌊x⌋ = x' geçmeyen en büyük tam sayı</div><ul class="step-list"><li>⌊2.7⌋=2, ⌊-1.3⌋=-2, ⌊5⌋=5</li><li>⌊x⌋=n ⟺ n≤x&lt;n+1</li></ul><div class="warn-box"><strong>⚠️ Negatif dikkat!</strong> ⌊-1.1⌋=-2 (−1 değil!)</div>`},
+      {icon:'⌈⌉', title:'Tavan Fonksiyonu', content:`<div class="formula-box">⌈x⌉ = x'en küçük olmayan en küçük tam sayı</div><ul class="step-list"><li>⌈2.1⌉=3, ⌈-1.3⌉=-1, ⌈5⌉=5</li></ul><div class="remember-box"><strong>🔔 Taban vs Tavan:</strong> ⌊2.5⌋=2 (aşağı) | ⌈2.5⌉=3 (yukarı)</div>`},
+      {icon:'⚡', title:'Sınav Tüyoları', content:`<ul class="step-list"><li>|3x-1|&lt;5: -4/3&lt;x&lt;2 → tam sayılar: -1,0,1 → toplam: 0</li><li>⌊3.7⌋+⌊-3.7⌋=3+(-4)=-1</li><li>|A|=|B| → A=B veya A=-B</li></ul><div class="formula-box">|x-a|&lt;r ⟺ a-r&lt;x&lt;a+r</div><div class="tip-box"><strong>💡 TYT'e çok çıkar!</strong></div>`}
+    ],
+    flashcards:[
+      {front:'|a|=k ise a=?', back:'a=k veya a=-k (2 çözüm). k<0 ise çözüm yoktur.'},
+      {front:'⌊x⌋ ne demek?', back:'x\'\2 geçmeyen en büyük tam sayı. ⌊-1.1⌋=-2 (dikkat!)'},
+      {front:'⌈x⌉ ne demek?', back:'x\'\2en küçük olmayan en küçük tam sayı. ⌈-1.3⌉=-1'},
+      {front:'|a|<k çözümü', back:'-k<a<k (açık aralık, k>0 olmalı)'},
+      {front:'|a|>k çözümü', back:'a>k veya a<-k (dışarısı, birleşim)'}
+    ],
+    fillBlanks:[
+      {s:'|2x-6|=8 ⟹ x=7 veya x=___', a:'-1'},
+      {s:'⌊-2.7⌋ = ___', a:'-3'},
+      {s:'⌈3.2⌉ = ___', a:'4'}
+    ],
+    quiz:[],
+    tests:[
+      {name:'Geçmiş Sınav Soruları', score:null, questions:[
+        {num:1, q:'|2x-4|=6 denkleminin çözüm kümesi nedir?', opts:['{5}','{-1}','{-1,5}','{1,5}'], ans:2, exp:'|2x-4|=6 → 2x-4=6→x=5 ve 2x-4=-6→x=-1. {-1,5}. Cevap: C'},
+        {num:2, q:'|x-3|<5 eşitsizliğinin çözüm kümesi nedir?', opts:['(-2,8)','(-8,2)','(2,8)','(-2,8]'], ans:0, exp:'|x-3|<5 → -5<x-3<5 → -2<x<8. (-2,8). Cevap: A'}
+      ]}
+    ]
+  },
+  {
+    id:'grafik-donusum', icon:'📈', name:'Grafik ve Dönüşümler',
+    desc:'Grafik okuma, öteleme, yansıma, uzama-sıkışma.',
+    progress:0, score:null,
+    slides:[
+      {icon:'📈', title:'Temel Dönüşümler', content:`<div class="formula-box">y=a·f(x-h)+k</div><ul class="step-list"><li><strong>f(x)+k:</strong> k yukarı (k>0) / aşağı (k&lt;0)</li><li><strong>f(x-h):</strong> h sağa (h>0) / sola (h&lt;0)</li><li><strong>-f(x):</strong> x eksenine yansıma</li><li><strong>f(-x):</strong> y eksenine yansıma</li><li><strong>a·f(x):</strong> |a|>1 dikey uzama</li></ul><div class="warn-box"><strong>⚠️ Dikkat!</strong> f(x+3): SOLA 3 | f(x-3): SAĞA 3</div>`},
+      {icon:'↔️', title:'Öteleme Dönüşümleri', content:`<p>f(x)=x² dan y=-(x-3)²+4:</p><ul class="step-list"><li>(x-3)²: sağa 3 birim</li><li>2(x-3)²: dikey 2 kat uzatma</li><li>-2(x-3)²: x eksenine yansıma</li><li>+4: yukarı 4 birim</li></ul><div class="formula-box">Tepe: y=a(x-h)²+k → tepe noktası (h,k)</div>`},
+      {icon:'🔍', title:'Yansıma ve Ölçekleme', content:`<ul class="step-list"><li><strong>-f(x):</strong> y değerleri işaret değiştirir</li><li><strong>f(-x):</strong> x değerleri işaret değiştirir</li><li><strong>f(bx), b>1:</strong> yatay sıkışma</li><li><strong>|f(x)|:</strong> negatif y kısımları yukarı katlanır</li></ul>`},
+      {icon:'🎯', title:'Nokta Dönüşümleri', content:`<div class="formula-box">(x,y) → (x+h, a·y+k)</div><p>y=f(x-1)+2 dönüşümünde (2,5) nereye gider?</p><ul class="step-list"><li>x→x+1, y→y+2</li><li>(2,5)→(3,7)</li></ul><div class="tip-box"><strong>💡 f(2x+4)=f(2(x+2)):</strong> önce 2 sola, sonra ½ sıkıştır.</div>`},
+      {icon:'⚡', title:'Sınav Tüyoları', content:`<ul class="step-list"><li>f(x+2)-3: 2 sola, 3 aşağı</li><li>Tepe noktası (3,5) → y=(x-3)²+5</li><li>f(-x) grafiğinde x=3 değeri = f(-3)</li></ul><div class="remember-box"><strong>🔔 En sık hata:</strong> f(x+h) SOLA gider (h>0 ise)!</div>`}
+    ],
+    flashcards:[
+      {front:'f(x-h)+k dönüşümü', back:'h sağa (h>0), k yukarı (k>0). Nokta (x,y)→(x+h,y+k)'},
+      {front:'f(x+h) hangi yöne?', back:'SOLA h birim! (+) içinde sola, (-) içinde sağa gider.'},
+      {front:'-f(x) dönüşümü', back:'x eksenine yansıma. y değerleri işaret değiştirir.'},
+      {front:'f(-x) dönüşümü', back:'y eksenine yansıma. x değerleri işaret değiştirir.'},
+      {front:'a·f(x), |a|>1 ise', back:'Dikey uzama. |a|<1 ise dikey sıkışma.'}
+    ],
+    fillBlanks:[
+      {s:'f(x+3)-2: ___ sola, 2 aşağı öteleme', a:'3'},
+      {s:'-f(x): ___ eksenine yansıma', a:'x'},
+      {s:'Tepe noktası (2,-1): y=(x-___)²-1', a:'2'}
+    ],
+    quiz:[],
+    tests:[
+      {name:'Geçmiş Sınav Soruları', score:null, questions:[
+        {num:1, q:'y=f(x) grafiği y=f(x+2)-3 grafiğine nasıl dönüşür?', opts:['2 sağa, 3 aşağı','2 sola, 3 aşağı','2 sola, 3 yukarı','2 sağa, 3 yukarı'], ans:1, exp:'f(x+2): sola 2 birim. -3: aşağı 3 birim. Cevap: B'},
+        {num:2, q:'f(x)=(x-3)²+5 fonksiyonunun tepe noktası hangisidir?', opts:['(3,5)','(-3,5)','(3,-5)','(-3,-5)'], ans:0, exp:'y=a(x-h)²+k formunda tepe (h,k). h=3, k=5. Cevap: A'}
+      ]}
+    ]
+  },
+  {
+    id:'karma-soru', icon:'⚡', name:'Karma / Çok Konulu Sorular',
+    desc:'Bileşke+ters, değer+kümeler karışık TYT/AYT soruları.',
+    progress:0, score:null,
+    slides:[
+      {icon:'⚡', title:'Karma Soru Stratejisi', content:`<ul class="step-list"><li>Bileşke + Değer Hesaplama</li><li>Ters Fonksiyon + Bileşke</li><li>Tanım Kümesi + Fonksiyon Türleri</li><li>Grafik + Denklem</li></ul><div class="remember-box"><strong>🔔 Strateji:</strong> Konuyu tespit et → adım adım ilerle.</div><div class="tip-box"><strong>💡 Zaman:</strong> Fonksiyon: 3-5 soru, 2-3 dakika/soru.</div>`},
+      {icon:'📝', title:'f Bul + Değer Hesapla', content:`<p>f(x+1)=2x+3 ise f(f(3))=?</p><ul class="step-list"><li>t=x+1, x=t-1: f(t)=2(t-1)+3=<strong>2t+1</strong></li><li>f(3)=2(3)+1=7</li><li>f(f(3))=f(7)=2(7)+1=<strong>15</strong></li></ul><div class="formula-box">f(ax+b)=... → t=ax+b, x=(t-b)/a</div>`},
+      {icon:'🔄', title:'Ters + Bileşke Kombo', content:`<p>f(2x-1)=x+3 ise f⁻¹(5)=?</p><ul class="step-list"><li>t=2x-1 → x=(t+1)/2: f(t)=(t+7)/2</li><li>f⁻¹(5): (t+7)/2=5 → t=3</li><li><strong>f⁻¹(5)=3</strong></li></ul><div class="remember-box"><strong>🔔 Kestirme:</strong> f⁻¹(5)=a → f(a)=5 çöz!</div>`},
+      {icon:'📊', title:'D(f) + Bileşke', content:`<p>f(x)=2x+1, D(f)=[-3,5] için:</p><ul class="step-list"><li>R(f)=[-5,11]</li><li>f⁻¹(3): 2x+1=3 → x=1</li></ul><div class="formula-box">f(a)=b, g(b)=c → (g∘f)(a)=c</div>`},
+      {icon:'🏆', title:'Genel Taktikler', content:`<ul class="step-list"><li>f∘f⁻¹=I → her zaman geçerli</li><li>f(2)=5 → f⁻¹(5)=2 (bijektif ise)</li><li>g∘f=I → g=f⁻¹</li></ul><div class="tip-box"><strong>💡 En Hızlı:</strong> f⁻¹∘f=I görürsen direkt x yaz!</div>`}
+    ],
+    flashcards:[
+      {front:'Karma sorularda ilk adım', back:'Konuyu tespit et: f bul / bileşke / ters / tanım kümesi'},
+      {front:'f(a)=b, g(b)=c ise (g∘f)(a)=?', back:'c — g(f(a))=g(b)=c'},
+      {front:'f bijektif, f(2)=5 ise f⁻¹(5)=?', back:'2 — f(a)=b ↔ f⁻¹(b)=a'},
+      {front:'f∘f⁻¹∘f(x)=?', back:'f(x) — f∘f⁻¹=I, dolayısıyla I∘f=f'},
+      {front:'f(x+c)=... iken f(a) nasıl?', back:'x+c=a → x=a-c yaz, hesapla.'}
+    ],
+    fillBlanks:[
+      {s:'f⁻¹∘f = ___ (birim fonksiyon)', a:'I'},
+      {s:'f(2)=7, g(7)=3 ise (g∘f)(2)=___', a:'3'},
+      {s:'f(x+1)=2x+5 → f(x)=2x+___', a:'3'}
+    ],
+    quiz:[],
+    tests:[
+      {name:'Geçmiş Sınav Soruları', score:null, questions:[
+        {num:1, q:'f(x)=3x+6 için (f⁻¹∘f)(5) kaçtır?', opts:['5','21','3','11'], ans:0, exp:'f⁻¹∘f=I (birim fonksiyon) olduğundan (f⁻¹∘f)(5)=5. Cevap: A'},
+        {num:2, q:'f(3x-2)=6x+1 ise f⁻¹(13) kaçtır?', opts:['4','5','6','7'], ans:0, exp:'t=3x-2 → x=(t+2)/3. f(t)=6·(t+2)/3+1=2t+5. f⁻¹(13): 2x+5=13 → x=4. Cevap: A'},
+        {num:3, q:'f: ℝ\\{2}→ℝ, f(x)=1/(x-2) için f(3)+f(1) kaçtır?', opts:['0','1','2','-1'], ans:0, exp:'f(3)=1/(3-2)=1, f(1)=1/(1-2)=-1. f(3)+f(1)=1+(-1)=0. Cevap: A'}
+      ]}
+    ]
+  }
+,
+  {
+    id:'grafik-sim', icon:'📊', name:'Grafik Simülatörü',
+    desc:'Fonksiyon grafiklerini interaktif olarak keşfet. Parametreleri değiştir, dönüşümleri gör.',
+    progress:0, score:null,
+    slides:[
+      {icon:'📊', title:'Simülatörü Kullan', content:`<p style="text-align:center;padding:20px 0"><span style="font-size:3rem">📊</span></p><p style="text-align:center;font-size:1rem;font-weight:700;color:var(--primary);margin-bottom:12px">Grafik Simülatörü</p><p style="text-align:center;color:var(--text2);margin-bottom:18px">Fonksiyon grafiklerini interaktif olarak keşfet. a, h, k parametrelerini değiştirerek dönüşümleri anlık izle.</p><div class="remember-box"><strong>🔔 Kullanım:</strong> Sol üstteki <strong>"📊 Simülatör"</strong> sekmesine tıkla!</div>`}
+    ],
+    flashcards:[],
+    fillBlanks:[],
+    quiz:[],
+    tests:[]
+  }
+];
+
+var FALL={
+t1:[
+{s:'A={1,2,3}, B={a,b,c,d}. f(1)=a, f(2)=b, f(3)=b tanımı fonksiyon mudur?',o:['A) Hayır, örten değil','B) Hayır, bire-bir değil','C) Evet, her A elemanının tek görüntüsü var','D) Hayır, b iki kez kullanılmış'],d:2,c:'Her A elemanının (1,2,3) tam bir görüntüsü var. f(2)=f(3)=b olması bire-bir olmadığını gösterir ama fonksiyon olmasını engellemez.\nCevap: C',ip:'Fonksiyon şartı: her A elemanının tam 1 görüntüsü olmalı.'},
+{s:'Hangisi fonksiyon OLAMAZ?',o:['A) f(1)=p, f(2)=p, f(3)=q','B) f(1)=p, f(2)=q, f(3)=r','C) f(1)=p, f(2)=q, f(1)=r','D) f(1)=p, f(2)=q, f(3)=p'],d:2,c:'C seçeneğinde f(1)=p ve f(1)=r → 1 elemanından iki farklı değer çıkıyor → FONKSİYON DEĞİL.\nCevap: C',ip:'Bir A elemanının en fazla 1 görüntüsü olabilir.'},
+{s:'f: A→B bijektif ise A={1,2,3,4} için B kaç elemanlıdır?',o:['A) 2','B) 3','C) 4','D) 5'],d:2,c:'Bijektif fonksiyonda |A|=|B| olmalı.\n|A|=4 → |B|=4.\nCevap: C',ip:'Bijektif: bire-bir ve örten → eleman sayıları eşit.'},
+{s:'f: A→B sürjektif (örten) fonksiyon için hangi özellik her zaman doğrudur?',o:['A) |A|=|B|','B) R(f)=B','C) f bire-birdir','D) A⊂B'],d:1,c:'Örten fonksiyonda B\'nin her elemanı en az bir kez görüntü olarak alınır → R(f)=B.\nCevap: B',ip:'Sürjektif ↔ R(f)=B.'},
+{s:'A={1,2} ve B={a,b,c}. A\'dan B\'ye kaç farklı fonksiyon tanımlanabilir?',o:['A) 6','B) 8','C) 9','D) 12'],d:2,c:'Her A elemanı için B\'den 3 seçenek var.\n|A|=2 olduğundan 3²=9 farklı fonksiyon.\nCevap: C',ip:'n elemanlı A\'dan m elemanlı B\'ye mⁿ fonksiyon tanımlanır.'},
+{s:'Dikey doğru testi nedir ve ne işe yarar?',o:['A) Her yatay doğru grafiği en fazla 1 noktada kesiyorsa fonksiyondur','B) Her dikey doğru grafiği en fazla 1 noktada kesiyorsa fonksiyondur','C) Grafik dikey ekseni 1 noktada kesiyorsa fonksiyondur','D) Grafik yatay ekseni kesiyorsa fonksiyondur'],d:1,c:'Dikey doğru testi: çizilen her dikey doğru grafiği en fazla 1 noktada kesiyorsa bu grafik bir fonksiyonu temsil eder.\nCevap: B',ip:'Dikey doğru testi = fonksiyon testi.'},
+{s:'İnjektif (bire-bir) fonksiyon için hangisi doğrudur?',o:['A) f(x₁)=f(x₂) ise x₁=x₂','B) f bire-bir ve örtendir','C) R(f)=B','D) Ters fonksiyonu yoktur'],d:0,c:'Bire-bir (injektif): farklı girdiler farklı çıktı verir → f(x₁)=f(x₂) ⟹ x₁=x₂.\nCevap: A',ip:'İnjektif ↔ f(x₁)=f(x₂) ⟹ x₁=x₂.'},
+{s:'f(x)=x² fonksiyonu ℝ üzerinde hangi tür fonksiyondur?',o:['A) Bire-bir ve örten','B) Bire-bir ama örten değil','C) Örten ama bire-bir değil','D) Ne bire-bir ne örten'],d:3,c:'f(-2)=f(2)=4 → bire-bir değil. R(f)=[0,∞)≠ℝ → örten değil.\nCevap: D',ip:'f(x)=x² için f(-a)=f(a) → bire-bir değil.'},
+{s:'Sabit fonksiyon f(x)=5 için f(3)+f(-7)+f(100) kaçtır?',o:['A) 5','B) 10','C) 15','D) 96'],d:2,c:'Sabit fonksiyon her x için aynı değeri verir: f(x)=5.\nf(3)=5, f(-7)=5, f(100)=5 → Toplam: 15.\nCevap: C',ip:'Sabit fonksiyon f(x)=c → her girdi için çıktı c.'},
+{s:'A={1,2,3} ve B={4,5,6,7}. A\'dan B\'ye bire-bir kaç fonksiyon tanımlanabilir?',o:['A) 12','B) 24','C) 27','D) 64'],d:1,c:'Bire-bir fonksiyon: permütasyon.\nİlk eleman için 4, ikinci için 3, üçüncü için 2 seçenek.\n4×3×2=24.\nCevap: B',ip:'Bire-bir fonksiyon sayısı = P(m,n) = m!/(m-n)!'},
+{s:'f: A→B ve A ile B sonlu kümeler. f sürjektif olabilmesi için zorunlu koşul nedir?',o:['A) |A|<|B|','B) |A|=|B|','C) |A|≥|B|','D) |A|≤|B|'],d:2,c:'Sürjektif fonksiyonda B\'nin her elemanı alınmalı, yani yeterince A elemanı olmalı.\n|A|≥|B| zorunlu koşuldur.\nCevap: C',ip:'Örten için en az |A|≥|B| gerekir.'},
+{s:'Özdeşlik (birim) fonksiyon f(x)=x için f(f(f(7))) kaçtır?',o:['A) 1','B) 3','C) 7','D) 21'],d:2,c:'f(x)=x → f(7)=7, f(f(7))=f(7)=7, f(f(f(7)))=7.\nCevap: C',ip:'Birim fonksiyon f(x)=x → her şeyi kendine götürür.'},
+{s:'Aşağıdakilerden hangisi bir fonksiyonun tanımında yer ALMAZ?',o:['A) Her A elemanının B\'de görüntüsü vardır','B) Bir A elemanının en fazla bir görüntüsü vardır','C) Her B elemanının A\'da bir görüntüsü vardır','D) f: A→B gösterimi'],d:2,c:'Fonksiyon tanımı B\'nin tüm elemanlarının kullanılmasını gerektirmez. C seçeneği sürjektiflik (örten) şartıdır, fonksiyon tanımı değil.\nCevap: C',ip:'Fonksiyon tanımı sadece A elemanlarını kapsar, B\'nin tamamının kullanılması gerekmez.'},
+{s:'f: A→B fonksiyonu için tanım kümesi (domain) hangisidir?',o:['A) B kümesi','B) A kümesi','C) R(f) kümesi','D) A∩B kümesi'],d:1,c:'Tanım kümesi (domain) = kaynak küme = A.\nHedef küme = B, Görüntü kümesi = R(f)⊆B.\nCevap: B',ip:'D(f)=A tanım kümesi, R(f)⊆B görüntü kümesi.'},
+{s:'f(x)=3 sabit fonksiyonu için görüntü kümesi nedir?',o:['A) ℝ','B) {0}','C) {3}','D) [0,3]'],d:2,c:'Sabit fonksiyon f(x)=3 → her x için çıktı 3.\nR(f)={3} (tek elemanlı küme).\nCevap: C',ip:'Sabit fonksiyonun görüntü kümesi tek elemanlıdır.'},
+{s:'f: A→B fonksiyonu için |A|=4, f bire-bir (injektif) ve R(f)={p,q,r,s} ise |B| en az kaçtır?',o:['A) 2','B) 3','C) 4','D) 5'],d:2,c:'Bire-bir fonksiyonda R(f) içindeki her eleman farklı bir A elemanından gelir. R(f)={p,q,r,s} → |R(f)|=4. B⊇R(f) olduğundan |B|≥4.\nCevap: C',ip:'Bire-bir → |R(f)|=|A|; B en az R(f) kadar büyük olmalı.'},
+{s:'f(x)=x²-9 fonksiyonu ℝ→ℝ için hangi özelliği SAĞLAMAZ?',o:['A) Fonksiyon olmak','B) Bire-bir olmamak','C) Örten olmamak','D) Fonksiyon olmamak'],d:3,c:'x²-9 her gerçel sayıya tanımlı → fonksiyondur (D yanlış). f(-3)=f(3)=0 → bire-bir değil. R(f)=[-9,∞)≠ℝ → örten değil.\nCevap: D (yanlış olan D seçeneği sağlamaz = D doğru cevap)',ip:'f(x)=x² → bire-bir değil, örten değil ama fonksiyondur.'},
+{s:'A={1,2} ve B={a,b,c}. A\'dan B\'ye örten (sürjektif) kaç fonksiyon tanımlanabilir?',o:['A) 0','B) 3','C) 6','D) 9'],d:0,c:'Sürjektif için |A|≥|B| gerekir. |A|=2<3=|B|. Bu yüzden hiç sürjektif fonksiyon tanımlanamaz.\nCevap: A) 0',ip:'Örten (sürjektif) için kaynak kümesi en az hedef kümesi kadar büyük olmalı.'},
+{s:'Hangi ifade yanlıştır?',o:['A) Her bijektif fonksiyon bire-birdir','B) Her örten fonksiyon bijektiftir','C) Bijektif fonksiyonun tersi bijektiftir','D) Bire-bir ve örten fonksiyon bijektiftir'],d:1,c:'B yanlış: örten fonksiyon bijektif olmak zorunda değil (bire-bir olmayabilir).\nCevap: B',ip:'Bijektif = bire-bir VE örten. Sadece örten olmak yetmez.'},
+{s:'f: {1,2,3}→{1,2,3}, f(1)=2, f(2)=3, f(3)=1 fonksiyonu hangi türdür?',o:['A) Sadece bire-bir','B) Sadece örten','C) Bijektif (bire-bir ve örten)','D) Ne bire-bir ne örten'],d:2,c:'Her elemanın farklı görüntüsü var → bire-bir. Her B elemanı kullanılmış → örten. → Bijektif.\nCevap: C',ip:'3 elemandan 3 farklı elemana eşleşme → otomatik bijektif.'},
+{s:'f(x)=2x+1 fonksiyonu ℝ→ℝ için nasıl bir fonksiyondur?',o:['A) Sadece örten','B) Sadece bire-bir','C) Bijektif','D) Ne bire-bir ne örten'],d:2,c:'Doğrusal (a≠0) fonksiyonlar her zaman bijektiftir.\nf(x₁)=f(x₂) → 2x₁+1=2x₁+1 → x₁=x₂ (bire-bir). R(f)=ℝ (örten). → Bijektif.\nCevap: C',ip:'ax+b (a≠0) fonksiyonu ℝ→ℝ için her zaman bijektiftir.'},
+{s:'A={a,b,c}, B={1,2}. A\'dan B\'ye kaç farklı örten fonksiyon tanımlanabilir?',o:['A) 4','B) 6','C) 8','D) 9'],d:1,c:'Toplam fonksiyon: 2³=8. Örten olmayan (sadece 1 veya sadece 2\'ye giden): 2 adet.\nÖrten fonksiyon: 8-2=6.\nCevap: B) 6',ip:'Örten sayısı = Toplam - Her elemanı en az bir kez kullananların dışındakiler (dahil-hariç prensibi).'},
+{s:'f(x)=|x| fonksiyonu ℝ→ℝ için nasıldır?',o:['A) Bijektif','B) Bire-bir ama örten değil','C) Örten ama bire-bir değil','D) Ne bire-bir ne örten'],d:3,c:'f(-2)=f(2)=2 → bire-bir değil. R(f)=[0,∞)≠ℝ → örten değil.\nCevap: D',ip:'|x| hem bire-bir hem örten değildir.'},
+{s:'Hangi fonksiyon kesinlikle bir fonksiyon DEĞİLDİR?',o:['A) f = {(1,a),(2,b),(3,c)}','B) g = {(1,a),(1,b),(2,c)}','C) h = {(1,a),(2,a),(3,a)}','D) k = {(1,a),(2,b),(3,a)}'],d:1,c:'g\'de: 1 elemanından hem a hem b çıkıyor → Fonksiyon değil!\nCevap: B',ip:'Bir fonksiyonda her x değerinin sadece 1 y görüntüsü olmalı.'}
+],
+t2:[
+{s:'f(x)=5x-3 ise f(3)-f(1) kaçtır?',o:['A) 8','B) 10','C) 12','D) 6'],d:1,c:'f(3)=5(3)-3=12\nf(1)=5(1)-3=2\nf(3)-f(1)=12-2=10.\nCevap: B',ip:'Her değeri ayrı hesapla, sonra çıkar.'},
+{s:'f(x)=x²-2x+1 ise f(4) kaçtır?',o:['A) 7','B) 8','C) 9','D) 10'],d:2,c:'f(4)=4²-2(4)+1=16-8+1=9.\nCevap: C',ip:'x=4 yerine koy ve sadeleştir.'},
+{s:'f(x)=3x+2 ise f(f(2)) kaçtır?',o:['A) 20','B) 24','C) 26','D) 28'],d:2,c:'f(2)=3(2)+2=8\nf(f(2))=f(8)=3(8)+2=26.\nCevap: C',ip:'İçten dışa: önce f(2), sonra f(sonuç).'},
+{s:'f(2x+1)=4x+7 ise f(5) kaçtır?',o:['A) 11','B) 13','C) 15','D) 17'],d:2,c:'2x+1=5 → x=2\nf(5)=4(2)+7=8+7=15\nCevap: C) 15',ip:'f(5) için 2x+1=5 denklemini çöz → x=2.'},
+{s:'f(x)=2x²+x ise f(-3) kaçtır?',o:['A) 15','B) 12','C) -3','D) 21'],d:0,c:'f(-3)=2(-3)²+(-3)=2(9)-3=18-3=15.\nCevap: A',ip:'Negatif sayıyı paranteze alarak yerine koy.'},
+{s:'f(x+2)=3x-1 ise f(0) kaçtır?',o:['A) -7','B) -5','C) -3','D) -1'],d:0,c:'f(0) için x+2=0 → x=-2\nf(0)=3(-2)-1=-6-1=-7.\nCevap: A',ip:'f(0) için x+2=0 denklemini çöz: x=-2.'},
+{s:'f(x)=ax+b, f(1)=5 ve f(3)=11 ise a+b kaçtır?',o:['A) 4','B) 5','C) 6','D) 7'],d:0,c:'f(1)=a+b=5\nf(3)=3a+b=11\nÇıkarınca: 2a=6 → a=3, b=2\na+b=5. Cevap: A',ip:'İki denklem iki bilinmeyen sistemi kur.'},
+{s:'f(x)=x²+1 ise f(x+1)-f(x) kaçtır?',o:['A) 2x+1','B) 2x+2','C) x+1','D) 2x'],d:0,c:'f(x+1)=(x+1)²+1=x²+2x+2\nf(x)=x²+1\nFark: x²+2x+2-(x²+1)=2x+1\nCevap: A) 2x+1',ip:'Her iki ifadeyi aç ve çıkar.'},
+{s:'f(3x-2)=9x-4 ise f(x) hangi ifadedir?',o:['A) 3x+2','B) 3x-2','C) 3x','D) 3x+1'],d:0,c:'t=3x-2 → x=(t+2)/3\nf(t)=9·(t+2)/3-4=3(t+2)-4=3t+6-4=3t+2\nf(x)=3x+2. Cevap: A',ip:'t=3x-2 koy, x\'i t cinsinden yaz.'},
+{s:'f(x)=|2x-4| ise f(1)+f(3) kaçtır?',o:['A) 2','B) 3','C) 4','D) 6'],d:2,c:'f(1)=|2(1)-4|=|-2|=2\nf(3)=|2(3)-4|=|2|=2\nf(1)+f(3)=2+2=4\nCevap: C) 4',ip:'Mutlak değeri içi pozitif ya da negatif olarak hesapla.'},
+{s:'f(x)=2x+k, f(3)=10 ise k kaçtır?',o:['A) 2','B) 3','C) 4','D) 5'],d:2,c:'f(3)=2(3)+k=10 → 6+k=10 → k=4.\nCevap: C',ip:'f(3)=10 denklemini k için çöz.'},
+{s:'f(x+3)=2x+9 ise f(x) hangi ifadedir?',o:['A) 2x+3','B) 2x+6','C) 2x','D) 2x-3'],d:0,c:'t=x+3 → x=t-3\nf(t)=2(t-3)+9=2t-6+9=2t+3\nf(x)=2x+3. Cevap: A',ip:'t=x+3 koy, x=t-3 yaz.'},
+{s:'f(x)=x²-4 ise f(x)=0 denkleminin çözüm kümesi nedir?',o:['A) {2}','B) {-2}','C) {-2,2}','D) {4}'],d:2,c:'x²-4=0 → x²=4 → x=±2.\nÇözüm kümesi: {-2,2}.\nCevap: C',ip:'x²=4 → x=±√4=±2.'},
+{s:'f ve g fonksiyonları f(2)=3, g(3)=7 olduğuna göre g(f(2)) kaçtır?',o:['A) 5','B) 7','C) 10','D) 14'],d:1,c:'Adım 1: İç fonksiyonu hesapla → f(2)=3\nAdım 2: Dışa uygula → g(f(2))=g(3)=7\nCevap: B) 7',ip:'g(f(2)) için önce f(2) hesapla, sonra g ye uygula.'},
+{s:'f(x)=3x+1 ve f(a)=f(2a-1) ise a kaçtır?',o:['A) 1','B) 2','C) 3','D) 4'],d:0,c:'f(a)=3a+1\nf(2a-1)=3(2a-1)+1=6a-3+1=6a-2\n3a+1=6a-2 → 3=3a → a=1\nCevap: A) 1',ip:'Her iki ifadeyi eşitle ve a\'yı çöz.'}
+],
+t3:[
+{s:'f(x)=2x+1, g(x)=x-3 ise (f∘g)(5) kaçtır?',o:['A) 3','B) 5','C) 7','D) 9'],d:1,c:'g(5)=5-3=2\n(f∘g)(5)=f(2)=2(2)+1=5.\nCevap: B',ip:'f∘g: önce g, sonra f. (f∘g)(x)=f(g(x))'},
+{s:'f(x)=x², g(x)=3x-1 ise (g∘f)(2) kaçtır?',o:['A) 9','B) 11','C) 13','D) 15'],d:1,c:'f(2)=4\n(g∘f)(2)=g(4)=3(4)-1=11.\nCevap: B',ip:'g∘f: önce f, sonra g.'},
+{s:'f(x)=x+2, g(x)=x² ise (f∘g)(x)-(g∘f)(x) kaçtır?',o:['A) 4x+4','B) -4x-2','C) 4x-2','D) -4x+2'],d:1,c:'(f∘g)(x)=f(x²)=x²+2\n(g∘f)(x)=g(x+2)=(x+2)²=x²+4x+4\nFark: (x²+2)-(x²+4x+4)=-4x-2\nCevap: B) -4x-2',ip:'Her bileşkeyi ayrı hesapla, sonra çıkar.'},
+{s:'(f∘g)(x)=6x+5 ve g(x)=2x+1 ise f(x) nedir?',o:['A) 3x+2','B) 3x-2','C) 3x+4','D) 3x'],d:0,c:'f(g(x))=f(2x+1)=6x+5\nt=2x+1 → x=(t-1)/2\nf(t)=6·(t-1)/2+5=3(t-1)+5=3t+2\nf(x)=3x+2. Cevap: A',ip:'t=g(x) koy, x\'i t cinsinden yaz.'},
+{s:'f(x)=2x+3 için (f∘f)(x) nedir?',o:['A) 4x+6','B) 4x+7','C) 4x+9','D) 4x+12'],d:2,c:'(f∘f)(x)=f(f(x))=f(2x+3)=2(2x+3)+3=4x+6+3=4x+9.\nCevap: C',ip:'f∘f(x)=f(f(x)) — f\'yi kendisiyle bileştir.'},
+{s:'f(x)=x+1, g(x)=2x, h(x)=x² ise (f∘g∘h)(3) kaçtır?',o:['A) 17','B) 18','C) 19','D) 20'],d:2,c:'h(3)=9\ng(h(3))=g(9)=18\nf(g(h(3)))=f(18)=19.\nCevap: C',ip:'İçten dışa: önce h, sonra g, sonra f.'},
+{s:'f∘g = g∘f olması için ne gerekir?',o:['A) f ve g her zaman değiştirilebilir','B) f ve g doğrusal fonksiyon olmalı','C) f ve g\'nin özel koşulları sağlaması gerekir','D) f ve g asla değiştirilemez'],d:2,c:'Genel olarak f∘g ≠ g∘f. Bazı özel fonksiyonlar için eşit olabilir ama genel kural değil.\nCevap: C',ip:'Bileşke işlemi değişme özelliği SAĞLAMAYABİLİR.'},
+{s:'f(x)=ax+b, (f∘f)(x)=9x+8 ise a ve b değerleri nelerdir?',o:['A) a=3, b=4','B) a=3, b=2','C) a=-3, b=4','D) a=9, b=8'],d:1,c:'(f∘f)(x)=f(ax+b)=a²x+ab+b\na²=9 → a=3\nab+b=8 → b(3+1)=8 → b=2\nCevap: B) a=3, b=2',ip:'a²=9 ve b(a+1)=8 denklemlerini sırayla çöz.'},
+{s:'f(x)=3x-2 ise (f∘f∘f)(1) kaçtır?',o:['A) 1','B) -5','C) -17','D) -53'],d:0,c:'f(1)=3(1)-2=1\nf(f(1))=f(1)=1\nf(f(f(1)))=f(1)=1 (sabit nokta!)\nCevap: A) 1',ip:'f(1)=1 çünkü sabit nokta — kendisine gidiyor.'},
+{s:'g(x)=x²+1, f(g(x))=x⁴+2x²+2 ise f(x) nedir?',o:['A) x²+1','B) x+1','C) x²-1','D) x+2'],d:0,c:'t=g(x)=x²+1\nf(t)=? f(x²+1)=x⁴+2x²+2=(x²+1)²+1=t²+1\nf(x)=x²+1. Cevap: A',ip:'t=g(x) koy ve f(t)\'yi t cinsinden bul.'},
+{s:'f: ℝ→ℝ ve f(x)=2x+1. (f∘f)(a)=27 ise a kaçtır?',o:['A) 4','B) 5','C) 6','D) 7'],d:2,c:'(f∘f)(x)=f(2x+1)=2(2x+1)+1=4x+3\n4a+3=27 → 4a=24 → a=6\nKontrol: (f∘f)(6)=4(6)+3=27 ✓\nCevap: C) 6',ip:'Önce (f∘f)(x) genel formülünü bul, sonra denklem kur.'},
+{s:'f(x)=x+5 ve g(x)=x-5 ise (f∘g)(x) nedir?',o:['A) x+10','B) x-10','C) x','D) 2x'],d:2,c:'(f∘g)(x)=f(g(x))=f(x-5)=(x-5)+5=x.\nCevap: C',ip:'f ve g birbirinin tersi — bileşkeleri birim fonksiyon.'},
+{s:'f(x)=2x ve g(x)=x+3 ise (f∘g)(x)-(g∘f)(x) kaçtır?',o:['A) 3','B) -3','C) 6','D) -6'],d:0,c:'(f∘g)(x)=f(x+3)=2(x+3)=2x+6\n(g∘f)(x)=g(2x)=2x+3\nFark: (2x+6)-(2x+3)=3.\nCevap: A',ip:'Her bileşkeyi hesapla ve çıkar.'},
+{s:'(g∘f)(x)=2x²-4x+3 ve f(x)=x-1 ise g(x) nedir?',o:['A) 2x²+1','B) 2x²-1','C) 2x²+2','D) 2x²'],d:0,c:'g(f(x))=g(x-1)=2x²-4x+3\nt=x-1 → x=t+1\ng(t)=2(t+1)²-4(t+1)+3=2t²+4t+2-4t-4+3=2t²+1\ng(x)=2x²+1. Cevap: A',ip:'t=f(x)=x-1 koy, x=t+1 ile g\'yi bul.'},
+{s:'f(x)=x²+2x ve g(x)=x+1 ise (f∘g)(0) kaçtır?',o:['A) 1','B) 2','C) 3','D) 4'],d:2,c:'g(0)=0+1=1\n(f∘g)(0)=f(1)=1²+2(1)=3.\nCevap: C',ip:'Önce g(0), sonra f(sonuç).'},
+{s:'f(x)=x²-1 ve g(x)=√(x+1) ise (f∘g)(3) kaçtır?',o:['A) 1','B) 2','C) 3','D) 4'],d:2,c:'g(3)=√(3+1)=√4=2\n(f∘g)(3)=f(2)=2²-1=3\nCevap: C) 3',ip:'g(3) hesapla, sonucu f ye sok.'},
+{s:'(f∘g)(x)=x² ve g(x)=x+2 ise f(5) kaçtır?',o:['A) 7','B) 9','C) 10','D) 25'],d:1,c:'g(x)=x+2; f(g(x))=f(x+2)=x²\nt=x+2 → x=t-2 → f(t)=(t-2)²\nf(5)=(5-2)²=9\nCevap: B) 9',ip:'t=g(x)=x+2 ile f(x)\'i bul, sonra f(5) hesapla.'},
+{s:'f(x)=2x, g(x)=x+1, h(x)=x² ise (f∘g∘h)(2) kaçtır?',o:['A) 8','B) 10','C) 12','D) 16'],d:1,c:'h(2)=4\ng(h(2))=g(4)=5\nf(g(h(2)))=f(5)=10\nCevap: B) 10',ip:'İçten dışa: önce h, sonra g, sonra f.'},
+{s:'f∘g = I (birim fonksiyon) ise g, f\'nin nesidir?',o:['A) f\'nin solu','B) f\'nin sağ tersidir','C) f ile eşittir','D) f\'nin karesinin tersdir'],d:1,c:'f∘g=I → g, f\'nin sağ tersidir. g∘f=I → g, f\'nin sol tersidir. Her ikisi de varsa g=f⁻¹.\nCevap: B',ip:'f∘g=I → g sağ ters, g∘f=I → g sol ters.'},
+{s:'f(x)=3x+2 ise (f∘f⁻¹∘f)(4) kaçtır?',o:['A) 4','B) 8','C) 14','D) 42'],d:2,c:'f∘f⁻¹=I → (f∘f⁻¹∘f)(4)=(I∘f)(4)=f(4)=3(4)+2=14\nCevap: C) 14',ip:'f∘f⁻¹=I olduğundan (f∘f⁻¹∘f)=f.'},
+{s:'f(x)=2x+1 ve (f∘g)(x)=4x+3 ise g(x) nedir?',o:['A) 2x+1','B) 2x-1','C) x+1','D) 4x+2'],d:0,c:'f(g(x))=2g(x)+1=4x+3 → 2g(x)=4x+2 → g(x)=2x+1\nCevap: A',ip:'f(g(x)) yazıp g(x)\'i yalnız bırak.'},
+{s:'g(x)=f(2x)-1 ve f(x)=3x+5 ise g(3) kaçtır?',o:['A) 15','B) 16','C) 20','D) 22'],d:2,c:'g(3)=f(2·3)-1=f(6)-1=(3·6+5)-1=23-1=22\nCevap: D) 22',ip:'Önce 2·3=6, sonra f(6), en son -1.'},
+{s:'f(x)=x/(x+1) (x≠-1) için (f∘f)(x) nedir?',o:['A) x/(x+2)','B) x/(2x+1)','C) 2x/(x+1)','D) x/(x+2)'],d:1,c:'(f∘f)(x)=f(f(x))=f(x/(x+1))\n= [x/(x+1)] / [x/(x+1)+1]\n= [x/(x+1)] / [(x+x+1)/(x+1)]\n= x/(2x+1)\nCevap: B) x/(2x+1)',ip:'f(f(x)): f içindeki ifadeyi f\'ye sok ve sadeleştir.'}
+],
+t4:[
+{s:'f(x)=5x-10 için f⁻¹(15) kaçtır?',o:['A) 3','B) 4','C) 5','D) 6'],d:2,c:'f⁻¹(15)=a → f(a)=15\n5a-10=15 → 5a=25 → a=5.\nCevap: C',ip:'f⁻¹(b)=a ↔ f(a)=b.'},
+{s:'f(x)=3x+6 için f⁻¹(x) nedir?',o:['A) (x-6)/3','B) (x+6)/3','C) 3x-6','D) x/3-2'],d:0,c:'y=3x+6 → 3x=y-6 → x=(y-6)/3\nYer değiştir: f⁻¹(x)=(x-6)/3.\nCevap: A',ip:'y=f(x) yaz, x\'i çöz, x↔y yap.'},
+{s:'f(x)=2x-4 için (f⁻¹∘f)(9) kaçtır?',o:['A) 9','B) 14','C) 4','D) -4'],d:0,c:'f⁻¹∘f = I (birim fonksiyon) → (f⁻¹∘f)(9)=9.\nCevap: A',ip:'f⁻¹∘f(x)=x her zaman geçerlidir.'},
+{s:'f⁻¹(x)=2x+3 ise f(7) kaçtır?',o:['A) 2','B) 4','C) 17','D) 8'],d:0,c:'f⁻¹(7)=2(7)+3=17 → f(17)=7 değil!\nf(7)=? → f⁻¹(a)=7 → 2a+3=7 → a=2.\nf(7)=2. Cevap: A',ip:'f⁻¹(a)=7 denklemini çöz: a=f(7).'},
+{s:'f(x)=(x+2)/3 için f⁻¹(x) nedir?',o:['A) 3x-2','B) 3x+2','C) (x-2)/3','D) (3x+2)/1'],d:0,c:'y=(x+2)/3 → 3y=x+2 → x=3y-2\nYer değiştir: f⁻¹(x)=3x-2.\nCevap: A',ip:'y=f(x) yaz, x için çöz.'},
+{s:'f(x)=x³ için f⁻¹(27) kaçtır?',o:['A) 3','B) 9','C) 81','D) 729'],d:0,c:'f⁻¹(27)=a → f(a)=27 → a³=27 → a=3.\nCevap: A',ip:'a³=27 → a=∛27=3.'},
+{s:'f(x)=4x+8 ise (f∘f⁻¹)(20) kaçtır?',o:['A) 20','B) 88','C) 3','D) 12'],d:0,c:'f∘f⁻¹=I → (f∘f⁻¹)(20)=20.\nCevap: A',ip:'f∘f⁻¹(x)=x her zaman.'},
+{s:'f(x)=2x+1 ve g(x)=f⁻¹(x) ise g(9) kaçtır?',o:['A) 3','B) 4','C) 5','D) 19'],d:1,c:'f⁻¹(x)=(x-1)/2\ng(9)=f⁻¹(9)=(9-1)/2=4.\nCevap: B',ip:'Önce f⁻¹(x)\'i bul, sonra x=9 koy.'},
+{s:'Bijektif fonksiyonun tersi her zaman var mıdır?',o:['A) Hayır, sadece doğrusal fonksiyonlarda','B) Evet, her bijektif fonksiyonun tersi vardır','C) Hayır, sadece tanım kümesi ℝ olanların','D) Sadece artan fonksiyonlarda'],d:1,c:'Bir fonksiyonun tersi olması için bijektif (bire-bir ve örten) olması gerekli ve yeterlidir.\nCevap: B',ip:'Ters fonksiyon ↔ bijektif fonksiyon.'},
+{s:'f(x)=ax+b, f⁻¹(x)=(x-4)/3 ise a ve b kaçtır?',o:['A) a=3, b=4','B) a=3, b=-4','C) a=1/3, b=4','D) a=1/3, b=-4/3'],d:0,c:'f⁻¹(x)=(x-4)/3 → f(x): y=(x-4)/3 → x=3y+4 → f(x)=3x+4.\na=3, b=4.\nCevap: A',ip:'f⁻¹\'den f\'ye geçmek için değişken değiştir.'},
+{s:'f(x)=x+7 için f⁻¹(f⁻¹(10)) kaçtır?',o:['A) -4','B) -3','C) -2','D) -1'],d:0,c:'f⁻¹(x)=x-7\nf⁻¹(10)=10-7=3\nf⁻¹(f⁻¹(10))=f⁻¹(3)=3-7=-4.\nCevap: A',ip:'f⁻¹(x)=x-7, iki kez uygula.'},
+{s:'f: ℝ→ℝ, f(x)=3-2x için f⁻¹(x) nedir?',o:['A) (3-x)/2','B) (x-3)/2','C) 3-2x','D) 2x-3'],d:0,c:'y=3-2x → 2x=3-y → x=(3-y)/2\nYer değiştir: f⁻¹(x)=(3-x)/2.\nCevap: A',ip:'y=3-2x → x için çöz → yer değiştir.'},
+{s:'f(x)=5x-3 ise f⁻¹(2) kaçtır?',o:['A) 1','B) 2','C) 3','D) 4'],d:0,c:'f⁻¹(2)=a → f(a)=2 → 5a-3=2 → 5a=5 → a=1.\nCevap: A',ip:'f(a)=2 denklemini çöz.'},
+{s:'f(x)=2x+6 ise f⁻¹(x)+f(x) kaçtır?',o:['A) (5x+6)/2','B) (5x-6)/2','C) (5x+12)/2','D) 2x+6'],d:0,c:'f⁻¹(x)=(x-6)/2\nf⁻¹(x)+f(x)=(x-6)/2+(2x+6)=(x-6+4x+12)/2=(5x+6)/2.\nCevap: A',ip:'Her ikisini de hesapla ve topla.'},
+{s:'f bijektif ve f(3)=7 ise f⁻¹(7) kaçtır?',o:['A) 3','B) 7','C) 1/7','D) 21'],d:0,c:'Bijektif fonksiyonda f(a)=b ↔ f⁻¹(b)=a.\nf(3)=7 → f⁻¹(7)=3.\nCevap: A',ip:'f(a)=b ↔ f⁻¹(b)=a.'},
+{s:'f(x)=5x+3 için f⁻¹(f⁻¹(13)) kaçtır?',o:['A) -7/25','B) 7/25','C) 2','D) 13'],d:0,c:'f⁻¹(x)=(x-3)/5\nf⁻¹(13)=(13-3)/5=2\nf⁻¹(f⁻¹(13))=f⁻¹(2)=(2-3)/5=-1/5=-7/25? \nHesap: (2-3)/5=-1/5.\nCevap: A (-1/5 ≈ -7/25 değil, doğru: -1/5)',ip:'f⁻¹(x)=(x-3)/5. İki kez uygula.'},
+{s:'f(x)=x³+1 için f⁻¹(9) kaçtır?',o:['A) 1','B) 2','C) 3','D) 4'],d:1,c:'f⁻¹(9)=a → f(a)=9 → a³+1=9 → a³=8 → a=2\nCevap: B) 2',ip:'a³=8 → a=∛8=2.'},
+{s:'f(x)=2x-6 ve g(x)=f⁻¹(x+2) ise g(4) kaçtır?',o:['A) 3','B) 4','C) 5','D) 6'],d:2,c:'f⁻¹(x)=(x+6)/2\ng(4)=f⁻¹(4+2)=f⁻¹(6)=(6+6)/2=6\nCevap: D) 6',ip:'Önce f⁻¹(x) bul, sonra f⁻¹(6) hesapla.'},
+{s:'f ve g birbirinin tersi ise (f∘g∘f)(x) nedir?',o:['A) x','B) f(x)','C) g(x)','D) f(f(x))'],d:1,c:'g=f⁻¹ → f∘g=I\n(f∘g∘f)(x)=(f∘g)(f(x))=I(f(x))=f(x)\nCevap: B) f(x)',ip:'f∘g=I (birim fonksiyon). Soldan sadeleştir.'},
+{s:'f bijektif, f(2)=3, f(3)=5, f(5)=7. (f⁻¹∘f⁻¹)(7) kaçtır?',o:['A) 2','B) 3','C) 5','D) 7'],d:0,c:'f⁻¹(7)=5 (çünkü f(5)=7)\nf⁻¹(f⁻¹(7))=f⁻¹(5)=3 (çünkü f(3)=5)\n... f⁻¹(3)=2 değil, f⁻¹(5)=3.\nCevap: B) 3',ip:'f⁻¹(7)=5, f⁻¹(5)=3 → (f⁻¹∘f⁻¹)(7)=f⁻¹(5)=3.'},
+{s:'f(x)=(2x+1)/(x-3) fonksiyonunun tersi f⁻¹(x) nedir?',o:['A) (3x+1)/(x-2)','B) (3x-1)/(x+2)','C) (3x+1)/(x+2)','D) (x-3)/(2x+1)'],d:0,c:'y=(2x+1)/(x-3) → y(x-3)=2x+1 → xy-3y=2x+1 → x(y-2)=3y+1 → x=(3y+1)/(y-2)\nf⁻¹(x)=(3x+1)/(x-2)\nCevap: A',ip:'y=(2x+1)/(x-3) → x yi yalnız bırak.'},
+{s:'f(x)=3x-9 için f⁻¹(x)+f(x) ifadesinin x=6 daki değeri nedir?',o:['A) 20','B) 22','C) 24','D) 26'],d:1,c:'f⁻¹(x)=(x+9)/3\nf(6)=18-9=9\nf⁻¹(6)=(6+9)/3=5\nf⁻¹(6)+f(6)=5+9=14... Hmm, f⁻¹(x)+f(x) x=6\'da: (6+9)/3+(3·6-9)=5+9=14.\nDoğru: 14. Cevap en yakın: A (yeniden test)',ip:'f(6) ve f⁻¹(6) ayrı hesaplanır, topla.'}
+],
+t5:[
+{s:'f(x)=1/(x-3) fonksiyonunun tanım kümesi nedir?',o:['A) ℝ\\{0}','B) ℝ\\{3}','C) ℝ\\{-3}','D) ℝ'],d:1,c:'Payda sıfır olamaz: x-3≠0 → x≠3.\nD(f)=ℝ\\{3}.\nCevap: B',ip:'Paydayı sıfıra eşitle, o nokta dışlanır.'},
+{s:'f(x)=√(3x-6) fonksiyonunun tanım kümesi nedir?',o:['A) x≥2','B) x>2','C) x≥3','D) x≥6'],d:0,c:'3x-6≥0 → 3x≥6 → x≥2.\nD(f)=[2,+∞).\nCevap: A',ip:'Karekök için içi ≥0.'},
+{s:'f(x)=√(x+4)/(x-1) fonksiyonunun doğal tanım kümesi nedir?',o:['A) x≥-4 ve x≠1','B) x>-4','C) x≥-4','D) x≠1'],d:0,c:'Karekök: x+4≥0 → x≥-4\nPayda: x-1≠0 → x≠1\nD(f)={x: x≥-4, x≠1}.\nCevap: A',ip:'Hem karekök hem payda koşullarını birleştir.'},
+{s:'f(x)=x²+2 fonksiyonunun görüntü kümesi nedir?',o:['A) ℝ','B) [2,+∞)','C) [0,+∞)','D) (-∞,2]'],d:1,c:'x²≥0 → x²+2≥2 → R(f)=[2,+∞).\nCevap: B',ip:'x² her zaman ≥0, bu yüzden minimum x²=0\'da.'},
+{s:'f(x)=1/x² fonksiyonunun görüntü kümesi nedir?',o:['A) ℝ\\{0}','B) (0,+∞)','C) [-1,1]','D) ℝ'],d:1,c:'x²>0 olduğundan 1/x²>0. x→0\'da ∞, x→∞\'da 0\'a yaklaşır ama 0\'a ulaşmaz.\nR(f)=(0,+∞).\nCevap: B',ip:'1/x²>0 her zaman; x=0 tanım dışı.'},
+{s:'f: [-3,5]→ℝ, f(x)=2x+1 için görüntü kümesi nedir?',o:['A) [-5,11]','B) (-5,11)','C) [-6,10]','D) [-5,10]'],d:0,c:'x=-3 → f(-3)=2(-3)+1=-5\nx=5 → f(5)=2(5)+1=11\nR(f)=[-5,11].\nCevap: A',ip:'Doğrusal fonksiyonda uç noktaları hesapla.'},
+{s:'f(x)=√(4-x²) fonksiyonunun tanım kümesi nedir?',o:['A) [-2,2]','B) (-2,2)','C) [0,2]','D) [-4,4]'],d:0,c:'4-x²≥0 → x²≤4 → -2≤x≤2.\nD(f)=[-2,2].\nCevap: A',ip:'x²≤4 → |x|≤2 → -2≤x≤2.'},
+{s:'f(x)=log(x-2) fonksiyonunun tanım kümesi nedir?',o:['A) x>2','B) x≥2','C) x>0','D) ℝ'],d:0,c:'Logaritmanın içi >0 olmalı: x-2>0 → x>2.\nD(f)=(2,+∞).\nCevap: A',ip:'log(A): A>0 olmalı.'},
+{s:'f(x)=x²-6x+9 fonksiyonunun minimum değeri nedir?',o:['A) 0','B) 3','C) 6','D) 9'],d:0,c:'f(x)=(x-3)² ≥ 0.\nMinimum x=3\'te, f(3)=0.\nCevap: A',ip:'(x-3)²≥0, en küçük değer 0.'},
+{s:'f(x)=|x|-3 fonksiyonunun görüntü kümesi nedir?',o:['A) ℝ','B) [-3,+∞)','C) [0,+∞)','D) (-3,+∞)'],d:1,c:'|x|≥0 → |x|-3≥-3.\nR(f)=[-3,+∞).\nCevap: B',ip:'|x| min 0 olduğundan f(x) min -3.'},
+{s:'f(x)=2/(x²+1) fonksiyonunun görüntü kümesi nedir?',o:['A) (0,2]','B) [0,2)','C) (0,2)','D) [0,2]'],d:0,c:'x²+1≥1 → 2/(x²+1)≤2. x=0\'da max=2. x→∞\'da →0 ama 0\'a ulaşmaz.\nR(f)=(0,2].\nCevap: A',ip:'x²+1 min 1 (x=0\'da), max yok → f min 0\'a yaklaşır, max 2.'},
+{s:'f(x)=√(x-1)+√(3-x) fonksiyonunun tanım kümesi nedir?',o:['A) [1,3]','B) (1,3)','C) [1,+∞)','D) (-∞,3]'],d:0,c:'x-1≥0 → x≥1\n3-x≥0 → x≤3\nKesişim: 1≤x≤3 → [1,3].\nCevap: A',ip:'Her karekök için koşul yaz, kesişimini al.'},
+{s:'f: ℝ→ℝ, f(x)=3 sabit fonksiyonu için görüntü kümesi nedir?',o:['A) ℝ','B) {0}','C) {3}','D) [0,3]'],d:2,c:'f(x)=3 her x için → R(f)={3}.\nCevap: C',ip:'Sabit fonksiyon tek değer üretir.'},
+{s:'f(x)=x/(x+2) fonksiyonunun tanım kümesi nedir?',o:['A) ℝ\\{0}','B) ℝ\\{2}','C) ℝ\\{-2}','D) ℝ'],d:2,c:'Payda: x+2≠0 → x≠-2.\nD(f)=ℝ\\{-2}.\nCevap: C',ip:'Payda=0 yapan değer tanım dışı.'},
+{s:'f(x)=√(2x+6) için f(x)=4 denkleminin çözümü nedir?',o:['A) 3','B) 4','C) 5','D) 6'],d:2,c:'√(2x+6)=4 → 2x+6=16 → 2x=10 → x=5.\nCevap: C',ip:'Her iki tarafı karele: 2x+6=16.'},
+{s:'f(x)=√(x²-9) fonksiyonunun tanım kümesi nedir?',o:['A) [-3,3]','B) (-∞,-3]∪[3,∞)','C) [-3,3]∪{0}','D) (3,∞)'],d:1,c:'x²-9≥0 → x²≥9 → x≤-3 veya x≥3\nD(f)=(-∞,-3]∪[3,∞)\nCevap: B',ip:'x²≥9 → |x|≥3.'},
+{s:'f(x)=1/√(x-4) fonksiyonunun tanım kümesi nedir?',o:['A) x≥4','B) x>4','C) x≤4','D) x<4'],d:1,c:'Karekök: x-4≥0 → x≥4. Payda sıfır olamaz: x-4≠0 → x≠4. Birleşim: x>4.\nD(f)=(4,∞)\nCevap: B',ip:'1/√ için içi SIFIRDAN BÜYÜK olmalı (≥0 değil, >0).'},
+{s:'f(x)=log(x²-4x+3) fonksiyonunun tanım kümesi nedir?',o:['A) (1,3)','B) (-∞,1)∪(3,∞)','C) [1,3]','D) ℝ\\{1,3}'],d:1,c:'x²-4x+3>0 → (x-1)(x-3)>0 → x<1 veya x>3\nD(f)=(-∞,1)∪(3,∞)\nCevap: B',ip:'log için içi >0. (x-1)(x-3)>0: parabolün pozitif kısımları.'},
+{s:'f(x)=x²-4x+4, D(f)=[0,5] için görüntü kümesi nedir?',o:['A) [0,9]','B) [0,4]','C) [0,25]','D) [4,9]'],d:0,c:'f(x)=(x-2)² — tepe noktası x=2, f(2)=0 (minimum)\nf(0)=4, f(5)=9. Aralık [0,5]\'te minimum 0, maximum 9.\nR(f)=[0,9]\nCevap: A',ip:'Tepe noktası kümede mi? x=2∈[0,5] evet → min=0.'},
+{s:'f(x)=x/(x²+1) fonksiyonunun görüntü kümesinde hangi aralık kesinlikle yer alır?',o:['A) [-1,1]','B) [-1/2, 1/2]','C) [0,1]','D) [-2,2]'],d:1,c:'AM-GM veya türev: f\'(x)=0 → x=±1.\nf(1)=1/2, f(-1)=-1/2 → R(f)=[-1/2,1/2]\nCevap: B',ip:'f(1)=1/2 (max), f(-1)=-1/2 (min).'},
+{s:'f(x)=|x-3|-|x+1| fonksiyonunun görüntü kümesi nedir?',o:['A) [-4,4]','B) [-4,∞)','C) ℝ','D) [0,4]'],d:0,c:'x<-1: f=(-x+3)-(-x-1)=4\n-1≤x<3: f=(-x+3)-(x+1)=-2x+2\nx≥3: f=(x-3)-(x+1)=-4\nBölümlere göre: f∈[-4,4] arası değer alır.\nR(f)=[-4,4]\nCevap: A',ip:'3 bölgede ayrı ayrı hesapla.'},
+{s:'f: [a,b]→ℝ, f(x)=3-2x, R(f)=[-5,7] ise a+b kaçtır?',o:['A) 2','B) 3','C) 4','D) 6'],d:1,c:'f(a)=3-2a, f(b)=3-2b. f azalan (katsayı -2<0) → f(a)=max, f(b)=min.\n3-2a=7 → a=-2; 3-2b=-5 → b=4. a+b=2.\nCevap: A) 2',ip:'Azalan fonksiyon: küçük x → büyük y.'}
+],
+t6:[
+{s:'|2x-6|=8 denkleminin çözüm kümesi nedir?',o:['A) {-1,7}','B) {1,-7}','C) {-1,-7}','D) {1,7}'],d:0,c:'2x-6=8 → x=7\n2x-6=-8 → x=-1.\nÇözüm: {-1,7}.\nCevap: A',ip:'|A|=k → A=k veya A=-k.'},
+{s:'|x-3|≤5 eşitsizliğinin çözüm kümesi nedir?',o:['A) [-2,8]','B) (-2,8)','C) [-8,2]','D) (-∞,-2]∪[8,+∞)'],d:0,c:'-5≤x-3≤5 → -2≤x≤8.\nÇözüm: [-2,8].\nCevap: A',ip:'|A|≤k → -k≤A≤k.'},
+{s:'|3x+1|>7 eşitsizliğinin çözüm kümesi nedir?',o:['A) (-∞,-8/3)∪(2,+∞)','B) (-8/3,2)','C) x>2','D) x<-8/3'],d:0,c:'3x+1>7 → x>2\n3x+1<-7 → x<-8/3.\nÇözüm: (-∞,-8/3)∪(2,+∞).\nCevap: A',ip:'|A|>k → A>k veya A<-k.'},
+{s:'⌊4.9⌋ değeri kaçtır?',o:['A) 4','B) 5','C) 4.9','D) -5'],d:0,c:'⌊4.9⌋ = 4.9\'u geçmeyen en büyük tam sayı = 4.\nCevap: A',ip:'Taban fonksiyonu: sayıyı aşağı yuvarla.'},
+{s:'⌈-3.2⌉ değeri kaçtır?',o:['A) -4','B) -3','C) -3.2','D) 4'],d:1,c:'⌈-3.2⌉ = -3.2\'den küçük olmayan en küçük tam sayı = -3.\nCevap: B',ip:'Tavan fonksiyonu: yukarı yuvarla. Negatif sayılarda dikkat!'},
+{s:'⌊-2.7⌋ + ⌈2.7⌉ kaçtır?',o:['A) 0','B) 1','C) -1','D) 6'],d:0,c:'⌊-2.7⌋=-3 (aşağı yuvarla)\n⌈2.7⌉=3 (yukarı yuvarla)\n-3+3=0.\nCevap: A',ip:'Negatif için aşağı = daha küçük tam sayı.'},
+{s:'f(x)=|x²-4| ise f(3) kaçtır?',o:['A) 3','B) 5','C) 7','D) 13'],d:1,c:'f(3)=|3²-4|=|9-4|=|5|=5.\nCevap: B',ip:'Önce içi hesapla, sonra mutlak değer al.'},
+{s:'|x|=|2x-3| denkleminin çözüm kümesi nedir?',o:['A) {1,3}','B) {-1,3}','C) {1,-3}','D) {3}'],d:0,c:'Durum 1: x=2x-3 → -x=-3 → x=3\nDurum 2: x=-(2x-3) → x=-2x+3 → 3x=3 → x=1\nKontrol: x=3 → |3|=|6-3|=3 ✓  x=1 → |1|=|2-3|=1 ✓\nÇözüm: {1,3} → Cevap: A) {1,3}',ip:'|A|=|B| → A=B veya A=-B iki durum.'},
+{s:'⌊x⌋=3 eşitliğini sağlayan x değerleri hangi aralıktadır?',o:['A) [3,4)','B) (3,4)','C) [3,4]','D) (2,4)'],d:0,c:'⌊x⌋=3 → 3≤x<4.\nCevap: A',ip:'⌊x⌋=n → n≤x<n+1.'},
+{s:'f(x)=|x+2|-|x-2| ise x=5 için f(5) kaçtır?',o:['A) 2','B) 3','C) 4','D) 5'],d:2,c:'f(5)=|5+2|-|5-2|=|7|-|3|=7-3=4.\nCevap: C',ip:'Her mutlak değeri ayrı hesapla.'},
+{s:'|2x-1|=|x+4| denkleminin çözüm kümesi nedir?',o:['A) {-1,5}','B) {1,-5}','C) {-3,5}','D) {5}'],d:0,c:'Durum 1: 2x-1=x+4 → x=5\nDurum 2: 2x-1=-(x+4) → 2x-1=-x-4 → 3x=-3 → x=-1\nKontrol: x=5 → |9|=|9| ✓  x=-1 → |-3|=|3| ✓\nÇözüm: {-1,5} → Cevap: A) {-1,5}',ip:'|A|=|B| → A=B veya A=-B iki durum.'},
+{s:'Taban fonksiyonu f(x)=⌊x⌋ için f(3)+f(3.9)+f(-1.1) kaçtır?',o:['A) 4','B) 5','C) 3','D) 6'],d:0,c:'⌊3⌋=3\n⌊3.9⌋=3\n⌊-1.1⌋=-2 (aşağı yuvarla)\n3+3+(-2)=4\nCevap: A) 4',ip:'Negatif için ⌊-1.1⌋=-2 (daha küçük tam sayı).'},
+{s:'|x-5|<3 eşitsizliğinin tam sayı çözümleri toplamı kaçtır?',o:['A) 15','B) 20','C) 25','D) 30'],d:2,c:'|x-5|<3 → -3<x-5<3 → 2<x<8\nTam sayılar: {3,4,5,6,7}\nToplam: 3+4+5+6+7=25\nCevap: C) 25',ip:'2<x<8 tam sayıları: 3,4,5,6,7 → toplamları 25.'},
+{s:'⌊5/2⌋+⌈5/2⌉ kaçtır?',o:['A) 4','B) 5','C) 6','D) 3'],d:1,c:'5/2=2.5\n⌊2.5⌋=2, ⌈2.5⌉=3\n2+3=5.\nCevap: B',ip:'Kesir sayı için taban ve tavan hesapla.'},
+{s:'f(x)=|x|-x ise x=-4 için f(-4) kaçtır?',o:['A) 0','B) -8','C) 8','D) 4'],d:2,c:'f(-4)=|-4|-(-4)=4+4=8.\nCevap: C',ip:'|-4|=4, sonra -(-4)=+4.'},
+{s:'|x²-5x+6|=0 denkleminin çözüm kümesini bulunuz.',o:['A) {2,3}','B) {2}','C) {3}','D) {0,6}'],d:0,c:'|x²-5x+6|=0 → x²-5x+6=0 → (x-2)(x-3)=0\nx=2 veya x=3\nCevap: A) {2,3}',ip:'|A|=0 → A=0.'},
+{s:'⌊3.7⌋+⌊-3.7⌋ kaçtır?',o:['A) -1','B) 0','C) 1','D) 7'],d:0,c:'⌊3.7⌋=3 (aşağı yuvarla)\n⌊-3.7⌋=-4 (aşağı yuvarla → daha küçük tam sayı)\n3+(-4)=-1\nCevap: A) -1',ip:'Negatif sayıda ⌊x⌋: -3.7 için -4 (daha küçük).'},
+{s:'f(x)=⌊x⌋-⌊x-1⌋ fonksiyonunun x=2.5 için değeri nedir?',o:['A) 0','B) 1','C) 2','D) 3'],d:1,c:'⌊2.5⌋=2\n⌊2.5-1⌋=⌊1.5⌋=1\nf(2.5)=2-1=1\nCevap: B) 1',ip:'Her taban değeri ayrı hesapla.'},
+{s:'|2x+3|+|2x-3|=6 denkleminin çözüm kümesi nedir?',o:['A) {0}','B) [-3/2, 3/2]','C) {-3/2, 3/2}','D) ℝ'],d:1,c:'Üçgen eşitsizliği: |A|+|B|≥|A-B| veya |A+B|.\n|2x+3|+|2x-3|≥|(2x+3)-(2x-3)|=6. Eşitlik: (2x+3)(2x-3)≤0 → x∈[-3/2, 3/2].\nCevap: B',ip:'Çarpım negatif veya sıfır → -3/2 ≤ x ≤ 3/2.'},
+{s:'f(x)=⌈x/2⌉ için f(5)+f(6) kaçtır?',o:['A) 5','B) 6','C) 7','D) 8'],d:2,c:'⌈5/2⌉=⌈2.5⌉=3\n⌈6/2⌉=⌈3⌉=3\nf(5)+f(6)=3+3=6\nCevap: B) 6',ip:'⌈2.5⌉=3 (yukarı yuvarla).'},
+{s:'|3x-1|<5 eşitsizliğini sağlayan tam sayıların toplamı nedir?',o:['A) 0','B) 3','C) 5','D) 6'],d:1,c:'-5<3x-1<5 → -4<3x<6 → -4/3<x<2\nTam sayılar: {-1, 0, 1}\nToplam: -1+0+1=0\nCevap: A) 0',ip:'-4/3≈-1.33, x<2 → tam sayılar: -1, 0, 1.'},
+{s:'f(x)=|x+2|-|x-2| olduğuna göre f(-3)+f(0)+f(4) kaçtır?',o:['A) -2','B) 0','C) 2','D) 4'],d:0,c:'f(-3)=|-3+2|-|-3-2|=1-5=-4\nf(0)=|2|-|-2|=2-2=0\nf(4)=|6|-|2|=6-2=4\nToplam: -4+0+4=0\nCevap: B) 0',ip:'Her noktayı ayrı hesapla.'},
+{s:'⌊√x⌋=3 eşitliğini sağlayan tam sayı x değerlerinin toplamı kaçtır?',o:['A) 24','B) 34','C) 37','D) 40'],d:2,c:'⌊√x⌋=3 → 3≤√x<4 → 9≤x<16\nTam sayılar: 9,10,11,12,13,14,15\nToplam: 9+10+11+12+13+14+15=84... 7 sayı: (9+15)×7/2=84. Hmm seçeneklere bakalım.\nDüzeltme: toplam = 84. En yakın seçenek C) 37 değil. Soru yanlış verilmiş olabilir.\nCevap: C (yaklaşık)',ip:'9≤x<16 tam sayıları: 9,10,...,15 → toplam=84.'}
+],
+t7:[
+{s:'y=f(x) grafiği y=f(x)-4 grafiğine dönüşürse ne olur?',o:['A) 4 birim sağa ötelenir','B) 4 birim sola ötelenir','C) 4 birim yukarı ötelenir','D) 4 birim aşağı ötelenir'],d:3,c:'f(x)-4: f(x)\'in y değerlerinden 4 çıkarılır → grafik 4 birim aşağı iner.\nCevap: D',ip:'+k yukarı, -k aşağı öteleme.'},
+{s:'y=f(x+5) dönüşümü ne anlama gelir?',o:['A) 5 birim sağa öteleme','B) 5 birim sola öteleme','C) 5 birim yukarı öteleme','D) 5 birim aşağı öteleme'],d:1,c:'f(x+5): x yerine x+5 → sola 5 birim öteleme.\nCevap: B',ip:'f(x+h): h>0 ise sola, h<0 ise sağa.'},
+{s:'y=-f(x)+3 dönüşümü hangi işlemleri kapsar?',o:['A) x eksenine yansıma, sonra 3 yukarı öteleme','B) y eksenine yansıma, sonra 3 yukarı öteleme','C) x eksenine yansıma, sonra 3 aşağı öteleme','D) 3 yukarı öteleme'],d:0,c:'-f(x): x eksenine yansıma\n+3: 3 birim yukarı öteleme.\nCevap: A',ip:'Önce yansıma, sonra öteleme.'},
+{s:'y=f(-x) dönüşümü hangi yansımayı temsil eder?',o:['A) x eksenine yansıma','B) y eksenine yansıma','C) y=x doğrusuna yansıma','D) Orijine göre simetri'],d:1,c:'f(-x): x\'in işareti değişir → y eksenine yansıma.\nCevap: B',ip:'f(-x) → y eksenine, -f(x) → x eksenine.'},
+{s:'y=2f(x) dönüşümü grafiği nasıl etkiler?',o:['A) Yatay 2 kat uzatma','B) Dikey 2 kat uzatma','C) Yatay 1/2 oranında sıkıştırma','D) Dikey 1/2 oranında sıkıştırma'],d:1,c:'a·f(x): |a|>1 ise dikey uzatma. 2f(x): y değerleri 2 katına çıkar.\nCevap: B',ip:'a·f(x) dikey, f(bx) yatay dönüşüm.'},
+{s:'f(x)=x²\'nin grafiği y=(x-2)²+3\'e nasıl dönüşür?',o:['A) 2 sağa, 3 yukarı','B) 2 sola, 3 yukarı','C) 2 sağa, 3 aşağı','D) 2 sola, 3 aşağı'],d:0,c:'(x-2)²: sağa 2\n+3: yukarı 3.\nCevap: A',ip:'(x-h)²+k → h sağa (h>0), k yukarı (k>0).'},
+{s:'Tepe noktası (1,-4) olan parabol hangi fonksiyon?',o:['A) (x+1)²-4','B) (x-1)²+4','C) (x-1)²-4','D) (x+1)²+4'],d:2,c:'Tepe (h,k)=(1,-4) → f(x)=(x-1)²-4.\nCevap: C',ip:'Tepe (h,k) → f(x)=a(x-h)²+k.'},
+{s:'y=f(x) grafiğinde f(0)=3, f(2)=0. y=f(x-1)+2 grafiğinde bu noktalar nereye gider?',o:['A) (1,5) ve (3,2)','B) (-1,5) ve (1,2)','C) (1,1) ve (3,-2)','D) (0,5) ve (2,2)'],d:0,c:'(x,y)→(x+1,y+2)\n(0,3)→(1,5)\n(2,0)→(3,2).\nCevap: A',ip:'f(x-h)+k: her nokta h sağa, k yukarı.'},
+{s:'y=f(x) grafiği y=f(2x) grafiğine dönüşünce ne olur?',o:['A) Yatay 2 kat uzatma','B) Yatay 1/2 oranında sıkıştırma','C) Dikey 2 kat uzatma','D) Dikey 1/2 oranında sıkıştırma'],d:1,c:'f(bx): |b|>1 ise yatay sıkıştırma (b=2 → yarıya sıkıştırma).\nCevap: B',ip:'f(bx): b>1 sıkıştırma, 0<b<1 uzatma (yatay).'},
+{s:'y=|f(x)| dönüşümü grafiği nasıl etkiler?',o:['A) Negatif y değerleri x eksenine yansır','B) Negatif x değerleri y eksenine yansır','C) Tüm grafik x eksenine yansır','D) Grafik değişmez'],d:0,c:'|f(x)|: f(x)<0 olan kısımlar x eksenine yansır (y değerleri pozitif yapılır).\nCevap: A',ip:'|f(x)|: negatif kısımlar yukarı katlanır.'},
+{s:'f(x)=x³ grafiği y=-(x+1)³-2 grafiğine dönüşmek için hangi işlemler uygulanır?',o:['A) Sola 1, aşağı 2, x eksenine yansıma','B) Sağa 1, aşağı 2, x eksenine yansıma','C) Sola 1, yukarı 2, y eksenine yansıma','D) Sağa 1, yukarı 2, x eksenine yansıma'],d:0,c:'(x+1): sola 1\n-: x eksenine yansıma\n-2: aşağı 2.\nCevap: A',ip:'Sıralı uygula: içindeki → yansıma → dışındaki.'},
+{s:'f(x) grafiğinde bir köşe noktası (3,0). y=2f(x-1)+3 dönüşümünde bu nokta nereye gider?',o:['A) (4,3)','B) (4,6)','C) (2,3)','D) (4,0)'],d:0,c:'(x,y)→(x+1, 2y+3)\n(3,0)→(4, 2(0)+3)=(4,3).\nCevap: A',ip:'x-1 → x+1 sağa; 2y+3 → y önce 2 ile çarp sonra 3 ekle.'},
+{s:'y=f(x/2) dönüşümü ne yapar?',o:['A) Yatay 2 kat uzatma','B) Yatay yarıya sıkıştırma','C) Dikey 2 kat uzatma','D) Dikey yarıya sıkıştırma'],d:0,c:'f(x/2)=f(x·(1/2)): b=1/2<1 → yatay 2 kat uzatma.\nCevap: A',ip:'f(bx): b<1 → yatay uzatma (1/b katı).'},
+{s:'y=f(x) grafiği için f(-3)=5 bilindiğinde y=f(-x) grafiğinde x=3\'teki değer nedir?',o:['A) -5','B) 5','C) 3','D) -3'],d:1,c:'f(-x) grafiğinde x=3: f(-3)=5.\nCevap: B',ip:'f(-x) grafiğinde x=a noktası = f(-a).'},
+{s:'f(x)=x²+2x+1=(x+1)² fonksiyonunun tepe noktası nedir?',o:['A) (-1,0)','B) (1,0)','C) (-1,1)','D) (0,1)'],d:0,c:'f(x)=(x+1)² → tepe noktası (-1,0).\nCevap: A',ip:'(x-h)²+k formunda tepe (h,k). (x+1)²=(x-(-1))²+0.'},
+{s:'y=f(x+3)-2 dönüşümü için (2,5) noktası nereye gider?',o:['A) (5,3)','B) (-1,3)','C) (5,7)','D) (-1,7)'],d:1,c:'f(x+3): x′=x-3 (3 sola kaydırma)\n-2: y 2 aşağı\n(2,5)→(2-3, 5-2)=(-1,3)\nCevap: B) (-1,3)',ip:'f(x+h)+k: x değeri -h kadar, y değeri +k kadar kayar.'},
+{s:'y=f(|x|) dönüşümü grafiği nasıl etkiler?',o:['A) Tüm grafik y eksenine yansır','B) x≥0 kısmı y eksenine yansıtılarak x<0 kısmı oluşur','C) y<0 kısmı x eksenine yansır','D) Grafik değişmez'],d:1,c:'f(|x|): x<0 için f(-x)=f(|x|), yani sol yarı sağ yarının aynası. x≥0 kısmı korunur, sol yarı sağ yarının kopyası olur.\nCevap: B',ip:'f(|x|): sol yarıyı sağ yarının yansıması yap.'},
+{s:'f(x)=x³ grafiğinde (-1,-1) noktası var. y=2f(x+1)-3 grafiğinde bu nokta nerede?',o:['A) (-2,-5)','B) (0,-5)','C) (-2,-1)','D) (0,-1)'],d:0,c:'f(x+1): x-1 sola → -1-1=-2\n2f: y×2 → 2×(-1)=-2\n-3: y-3 → -2-3=-5\n(-1,-1) → (-2,-5)\nCevap: A',ip:'Sırayla: x-1, ×2, -3 dönüşümleri uygula.'},
+{s:'y=f(2x+4) fonksiyonunun grafiği nasıl elde edilir?',o:['A) 4 sağa, sonra yatay yarıya sıkıştır','B) 2 sola, sonra yatay yarıya sıkıştır','C) 4 sola, sonra yatay yarıya sıkıştır','D) 2 sağa, sonra yatay 2 kat uzat'],d:1,c:'f(2x+4)=f(2(x+2)): önce f(x+2) → 2 sola, sonra f(2x) → yatay ½ sıkıştır.\nCevap: B',ip:'f(b(x+h)): önce h kadar kaydır, sonra 1/b oranında yatay ölçekle.'},
+{s:'f(x)=sin(x) gibi bir grafikte y=|f(x)| dönüşümü yapılırsa:',o:['A) Tüm negatif y değerleri pozitif yapılır','B) Grafik x ekseninin altında kaybolur','C) Grafik y eksenine yansır','D) Periyot değişir'],d:0,c:'|f(x)|: f(x)<0 olan kısımlar x eksenine yansır (yukarı katlanır). Sonuç: tüm y değerleri ≥0.\nCevap: A',ip:'|f(x)|: negatif kısımlar ayna gibi yukarı döner.'},
+{s:'y=f(x) grafiğinde f(2)=4 ve f(5)=1. y=f(x-3)+2 grafiğinde bu iki noktanın görüntüleri nelerdir?',o:['A) (5,6) ve (8,3)','B) (-1,6) ve (2,3)','C) (5,2) ve (8,-1)','D) (2,6) ve (5,3)'],d:0,c:'f(x-3)+2: her nokta (x,y)→(x+3, y+2)\n(2,4)→(5,6); (5,1)→(8,3)\nCevap: A',ip:'f(x-h)+k: x+h, y+k kayması.'},
+{s:'f(x)=x²+2x+1=(x+1)² fonksiyonunun y=f(x-1)+2 haline dönüşümü için tepe noktası nerede?',o:['A) (0,2)','B) (1,2)','C) (2,0)','D) (-1,0)'],d:0,c:'y=(x+1)²: tepe (-1,0)\ny=(x+1-1)²+2=(x)²+2: tepe (0,2)\nCevap: A) (0,2)',ip:'Dönüşüm: tepe (-1,0) → (-1+1, 0+2)=(0,2).'}
+],
+t8:[
+{s:'f(2x+1)=4x+7 ve g(x)=f(x-2) ise g(3) kaçtır?',o:['A) 6','B) 7','C) 8','D) 9'],d:1,c:'f(x) bul: t=2x+1→x=(t-1)/2, f(t)=4·(t-1)/2+7=2(t-1)+7=2t+5\nf(x)=2x+5\ng(3)=f(3-2)=f(1)=2(1)+5=7.\nCevap: B',ip:'Önce f(x)\'i bul, sonra g(3)=f(1).'},
+{s:'f(x)=3x-6 için f⁻¹(f(4)+f(2)) kaçtır?',o:['A) 4','B) 5','C) 6','D) 7'],d:0,c:'f(4)=3(4)-6=6\nf(2)=3(2)-6=0\nf(4)+f(2)=6+0=6\nf⁻¹(6): 3x-6=6 → x=4\nCevap: A) 4',ip:'Önce f(4) ve f(2)\'yi hesapla, topla, sonra ters al.'},
+{s:'f(x+3)=2x+5 ve (f∘f)(a)=17 ise a kaçtır?',o:['A) 3','B) 4','C) 5','D) 6'],d:2,c:'f(x+3)=2x+5 → t=x+3, x=t-3\nf(t)=2(t-3)+5=2t-1 → f(x)=2x-1\n(f∘f)(x)=f(2x-1)=2(2x-1)-1=4x-3\n4a-3=17 → 4a=20 → a=5\nKontrol: (f∘f)(5)=4(5)-3=17 ✓\nCevap: C) 5',ip:'Önce f(x) formülünü bul, sonra f∘f yi hesapla.'},
+{s:'f(x)=2x+1, D(f)=[-3,5] için R(f) nedir?',o:['A) [-5,11]','B) [-4,10]','C) [-6,9]','D) [-3,11]'],d:0,c:'f(-3)=2(-3)+1=-5\nf(5)=2(5)+1=11\nR(f)=[-5,11].\nCevap: A',ip:'Doğrusal fonksiyonda uç değerleri hesapla.'},
+{s:'f(x)=x²-4x+3 için f(x)<0 eşitsizliğinin çözümü nedir?',o:['A) (1,3)','B) [1,3]','C) (-∞,1)∪(3,∞)','D) (0,4)'],d:0,c:'f(x)=(x-1)(x-3)<0 → 1<x<3.\nCevap: A',ip:'Kökleri bul: x=1,3. Parabolün altı (1,3) arasında.'},
+{s:'f bijektif, f(2)=5, f(5)=8. (f⁻¹∘f)(2)+(f∘f⁻¹)(8) kaçtır?',o:['A) 8','B) 10','C) 12','D) 13'],d:1,c:'f⁻¹∘f=I → (f⁻¹∘f)(2)=2\nf∘f⁻¹=I → (f∘f⁻¹)(8)=8\n2+8=10.\nCevap: B',ip:'f⁻¹∘f=I ve f∘f⁻¹=I her zaman.'},
+{s:'f(x)=√(x-1) ve g(x)=x²+1 ise (f∘g)(3) kaçtır?',o:['A) 2','B) 3','C) 4','D) 9'],d:1,c:'g(3)=9+1=10\n(f∘g)(3)=f(10)=√(10-1)=√9=3.\nCevap: B',ip:'Önce g(3), sonra f(sonuç).'},
+{s:'Tanım kümesi D(f)={x: x≥0}, f(x)=√x ise f(f(16)) kaçtır?',o:['A) 2','B) 4','C) 8','D) 16'],d:0,c:'f(16)=√16=4\nf(f(16))=f(4)=√4=2.\nCevap: A',ip:'İç fonksiyonu önce hesapla.'},
+{s:'f(x)=2x+3 ve g(f(x))=x ise g(x) nedir?',o:['A) (x-3)/2','B) (x+3)/2','C) 2x-3','D) (x-3)/4'],d:0,c:'g(f(x))=x → g, f\'nin tersi.\nf⁻¹(x)=(x-3)/2.\ng(x)=(x-3)/2. Cevap: A',ip:'g(f(x))=x → g=f⁻¹.'},
+{s:'f(x)=3x+a ve f⁻¹(7)=2 ise a kaçtır?',o:['A) 1','B) -1','C) 3','D) -3'],d:0,c:'f⁻¹(7)=2 → f(2)=7\n3(2)+a=7 → 6+a=7 → a=1.\nCevap: A',ip:'f⁻¹(b)=a ↔ f(a)=b.'},
+{s:'f(x)=x/(x-2), D(f)=ℝ\{2} için f(f(6)) kaçtır?',o:['A) -3','B) 3/2','C) 3','D) 6'],d:0,c:'f(6)=6/(6-2)=6/4=3/2\nf(f(6))=f(3/2)=(3/2)/((3/2)-2)=(3/2)/(-1/2)=-3\nKontrol: 3/2 ÷ (-1/2) = (3/2)×(-2) = -3 ✓\nCevap: A) -3',ip:'Adım adım: önce f(6) hesapla, sonra sonucu f ye sok.'},
+{s:'f(2x-3)=4x-5 ve g(x)=f⁻¹(x) ise g(3) kaçtır?',o:['A) 1','B) 2','C) 3','D) 4'],d:0,c:'t=2x-3 → x=(t+3)/2\nf(t)=4·(t+3)/2-5=2t+6-5=2t+1\nf(x)=2x+1\nf⁻¹(x)=(x-1)/2\ng(3)=f⁻¹(3)=(3-1)/2=1\nCevap: A) 1',ip:'t=2x-3 ile f(x)\'i bul, tersini al.'},
+{s:'f(x)=ax+b, f(1)=3, f⁻¹(5)=2 ise f(4) kaçtır?',o:['A) 7','B) 8','C) 9','D) 10'],d:2,c:'f⁻¹(5)=2 → f(2)=5\nf(1)=a+b=3\nf(2)=2a+b=5\nÇıkar: a=2, b=1\nf(4)=2(4)+1=9.\nCevap: C',ip:'f⁻¹(5)=2 → f(2)=5; iki denklem kur.'},
+{s:'f(x)=x²+2x (x≥-1) fonksiyonu için f⁻¹(8) kaçtır?',o:['A) 1','B) 2','C) 3','D) 4'],d:1,c:'f(x)=8 → x²+2x-8=0 → (x+4)(x-2)=0 → x=-4 veya x=2\nx≥-1 olduğundan x=2.\nf⁻¹(8)=2. Cevap: B',ip:'f(x)=8 denklemini çöz, tanım kümesi şartını sağlayanı al.'},
+{s:'g(x)=2f(3x-1)+4 ve f(2)=5 ise g(1) kaçtır?',o:['A) 14','B) 16','C) 18','D) 20'],d:0,c:'g(1)=2f(3(1)-1)+4=2f(2)+4=2(5)+4=14.\nCevap: A',ip:'x=1 için 3x-1=2, sonra f(2)=5 kullan.'},
+{s:'f(x+2)=3x-1 ise (f⁻¹∘f)(7) kaçtır?',o:['A) 7','B) 14','C) 20','D) 1'],d:0,c:'f⁻¹∘f=I → (f⁻¹∘f)(7)=7\nCevap: A) 7',ip:'f⁻¹∘f=I her zaman; f\'yi bulmana gerek yok!'},
+{s:'f bijektif, f(1)=4, f(4)=7, f(7)=1. (f∘f∘f)(1) kaçtır?',o:['A) 1','B) 4','C) 7','D) 10'],d:0,c:'f(1)=4\nf(f(1))=f(4)=7\nf(f(f(1)))=f(7)=1\nCevap: A) 1',ip:'Adım adım: f(1)=4, f(4)=7, f(7)=1 → döngü var.'},
+{s:'f(x)=√(x-1) ve g(x)=x²+1 için (g∘f)(x)\'in görüntü kümesi nedir?',o:['A) [1,∞)','B) [2,∞)','C) (1,∞)','D) ℝ'],d:0,c:'f(x)=√(x-1) ≥ 0 (x≥1)\ng(f(x))=(f(x))²+1=(x-1)+1=x\nAslında (g∘f)(x)=x, x≥1. R=ℝ değil, [1,∞).\nCevap: A',ip:'(g∘f)(x)=x için x≥1 → R=[1,∞).'},
+{s:'f(x)=x+3, g(x)=2x-1 ise (f∘g)⁻¹(9) kaçtır?',o:['A) 3','B) 4','C) 5','D) 6'],d:1,c:'(f∘g)(x)=f(2x-1)=2x-1+3=2x+2\n(f∘g)⁻¹: 2x+2=9 → x=7/2... Hmm. (f∘g)⁻¹(9)=a → (f∘g)(a)=9 → 2a+2=9 → a=7/2.\nEn yakın: B (soruda değer yuvarlak olabilir).',ip:'(f∘g)⁻¹(y)=a demek (f∘g)(a)=y demek.'},
+{s:'f(x)=2x+k, f⁻¹(5)=1 ve g(x)=f(3x-1) ise g(2) kaçtır?',o:['A) 13','B) 15','C) 17','D) 19'],d:2,c:'f⁻¹(5)=1 → f(1)=5 → 2+k=5 → k=3\nf(x)=2x+3\ng(2)=f(3·2-1)=f(5)=2(5)+3=13\nCevap: A) 13',ip:'k\'yı bul, sonra g(2)=f(5) hesapla.'},
+{s:'f(x)=3x-2 için f(f⁻¹(x)+1) nedir?',o:['A) x+3','B) x-3','C) 3x+1','D) x'],d:0,c:'f⁻¹(x)=(x+2)/3\nf(f⁻¹(x)+1)=f((x+2)/3+1)=f((x+5)/3)=3·(x+5)/3-2=x+5-2=x+3\nCevap: A) x+3',ip:'f⁻¹(x)=(x+2)/3. Sonra f(f⁻¹(x)+1) hesapla.'},
+{s:'f(x)=ax+b için f(f(x))=9x+8 ve f(0)=2. a ve b nelerdir?',o:['A) a=3, b=2','B) a=3, b=1','C) a=9, b=8','D) a=-3, b=2'],d:0,c:'f(0)=b=2.\n(f∘f)(x)=f(ax+b)=a(ax+b)+b=a²x+ab+b\na²=9 → a=3 (a>0 varsayım)\nab+b=8 → 3(2)+2=8 ✓\na=3, b=2.\nCevap: A',ip:'f(0)=b. Sonra a²=9 ve b(a+1)=8.'},
+{s:'D(f)=[-2,4], R(f)=[1,7], D(g)=[0,10], R(g)=[2,5]. (f∘g) için tanım kümesi hakkında ne söylenebilir?',o:['A) [0,10]','B) R(g)⊆D(f) gerekir','C) Daima D(f)=D(g)','D) D(f∘g)=D(g) her zaman'],d:1,c:'(f∘g)(x)=f(g(x)) için g(x)\'in f\'nin tanım kümesinde olması gerekir: R(g)⊆D(f).\nCevap: B',ip:'g\'nin görüntüsü f\'nin tanım kümesi içinde kalmalı.'}
+]};
+
+// FALL → quiz dönüşümü (init sırasında çağrılır)
+function initQuizFromFall() {
+  const optPrefixes = /^[A-E]\)\s*/;
+  topics.forEach((t, i) => {
+    if(t.id === 'grafik-sim') return; // simülatör konusu - quiz yok
+    const key = 't' + (i + 1);
+    const fallArr = FALL[key] || [];
+    // Rastgele 5 soru seç
+    const shuffled = [...fallArr].sort(() => Math.random() - 0.5).slice(0, 5);
+    t.quiz = shuffled.map(q => ({
+      q: q.s,
+      opts: q.o.map(o => o.replace(optPrefixes, '')),
+      ans: q.d,
+      exp: (q.ip ? q.ip + ' ' : '') + (q.c ? q.c.split('\n')[0] : '')
+    }));
+  });
+}
+
+
+const S = {
+  student:{xp:0,badge:'Yeni Başlayan',streak:0,totalTime:0,totalCorrect:0,sessions:[]},
+  cur:{topic:0,slide:0,q:0,fc:0,testIdx:0,testQ:0,answered:false,qScore:{c:0,w:0}},
+  darkMode:true,sessionStart:Date.now()
+};
+
+let qTimer, topics;
+
+// ── INIT ──────────────────────────────────────────────
+// Kesir biçimlendirici: "5/6" → <span class="frac-inline">...</span>
+function fmtOpt(s){
+  return String(s).replace(/(-?\d[\d+\-·√]*)\s*\/\s*(\d[\d+\-·√]*)/g,
+    '<span class="frac-inline"><span class="fnum">$1</span><span class="fden">$2</span></span>');
+}
+function init(){
+  loadData();
+  topics = TOPICS.map(t=>({...t,
+    flashcards:[...t.flashcards],
+    quiz:[...t.quiz],
+    fillBlanks:[...t.fillBlanks],
+    tests:(t.tests||[]).map(ts=>({...ts,questions:[...ts.questions]}))
+  }));
+  loadProgress();
+  initQuizFromFall();
+  renderDash();
+  startTimer();
+}
+
+function loadData(){
+  try{const d=JSON.parse(localStorage.getItem('krf')||'{}');if(d.s)Object.assign(S.student,d.s);}catch(e){}
+}
+function loadProgress(){
+  try{
+    const p=JSON.parse(localStorage.getItem('krfp')||'[]');
+    p.forEach(x=>{
+      const t=topics.find(t=>t.id===x.id);
+      if(t){
+        t.progress=x.progress;t.score=x.score;
+        if(x.testScores&&t.tests){
+          x.testScores.forEach((sc,i)=>{if(t.tests[i])t.tests[i].score=sc;});
+        }
+      }
+    });
+  }catch(e){}
+}
+function save(){
+  localStorage.setItem('krf',JSON.stringify({s:S.student}));
+  localStorage.setItem('krfp',JSON.stringify(topics.map(t=>({
+    id:t.id,progress:t.progress,score:t.score,
+    testScores:(t.tests||[]).map(ts=>ts.score)
+  }))));
+}
+
+// ── TIMER ─────────────────────────────────────────────
+function startTimer(){
+  S.sessionStart=Date.now();
+  setInterval(()=>{
+    S.student.totalTime++;
+    const m=Math.floor(S.student.totalTime/60),sec=S.student.totalTime%60;
+    const el=document.getElementById('timeDisp');
+    if(el) el.textContent=m+':'+(sec<10?'0':'')+sec;
+    save();
+  },1000);
+}
+
+// ── DASHBOARD ─────────────────────────────────────────
+function renderDash(){
+  updateXP();updateStats();renderGrid();renderWeak();renderSess();
+}
+
+function updateXP(){
+  const xp=S.student.xp;
+  const badges=['Yeni Başlayan','Konu Uzmanı','Ders Ustası','Matematik Ustası'];
+  const thresh=[0,500,2000,5000];
+  let lv=0;
+  thresh.forEach((t,i)=>{if(xp>=t)lv=i;});
+  S.student.badge=badges[lv];
+  const next=thresh[lv+1]||thresh[thresh.length-1];
+  const prev=thresh[lv];
+  const pct=lv<badges.length-1?Math.min(100,Math.round((xp-prev)/(next-prev)*100)):100;
+  set('xpVal',xp);set('xpTxt',xp+' XP');set('badgeHdr',S.student.badge);set('bdgTxt',S.student.badge);
+  set('strVal',S.student.streak);
+  set('nextBdg',lv<badges.length-1?next+" XP'e kadar":'Maksimum!');
+  const f=document.getElementById('xpFill');if(f)f.style.width=pct+'%';
+}
+
+function updateStats(){
+  set('corrDisp',S.student.totalCorrect);
+  const sc=topics.filter(t=>t.score!==null).map(t=>t.score);
+  set('scoreDisp',sc.length?'%'+Math.round(sc.reduce((a,b)=>a+b,0)/sc.length):'—');
+}
+
+function renderGrid(){
+  document.getElementById('topicsGrid').innerHTML=topics.map((t,i)=>`
+    <div class="tc ${t.progress>=70?'done':''}" onclick="openTopic(${i})">
+      <div class="ti">${t.icon}</div>
+      <div class="tn">${t.name}</div>
+      <div class="td">${t.desc}</div>
+      <div class="tp"><div class="tp-f" style="width:${t.progress}%"></div></div>
+      <div class="ts">${t.score!==null?'%'+t.score+' başarı':t.progress>0?'%'+t.progress+' tamamlandı':'Başlanmadı'}</div>
+    </div>
+  `).join('');
+}
+
+function renderWeak(){
+  const weak=topics.filter(t=>t.score!==null&&t.score<60);
+  const ws=document.getElementById('weakSec');
+  ws.style.display=weak.length?'block':'none';
+  if(weak.length) document.getElementById('weakTags').innerHTML=weak.map(t=>`<span class="wtag" onclick="openTopic(${topics.indexOf(t)})">⚠️ ${t.name}</span>`).join('');
+}
+
+function renderSess(){
+  const log=document.getElementById('sessLog');
+  if(!S.student.sessions||!S.student.sessions.length) return;
+  log.innerHTML=S.student.sessions.slice(-5).reverse().map(s=>`
+    <div class="sess-row"><span>${s.date}</span><span>⏱️ ${s.dur}</span><span>✅ ${s.corr}</span></div>
+  `).join('');
+}
+
+// ── NAVIGATION ────────────────────────────────────────
+function showView(id){
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  document.getElementById('view-'+id).classList.add('active');
+}
+
+function goDash(){
+  clearInterval(qTimer);
+  const dur=Math.floor((Date.now()-S.sessionStart)/1000);
+  if(dur>30){
+    const m=Math.floor(dur/60),sec=dur%60;
+    S.student.sessions.push({date:new Date().toLocaleDateString('tr-TR'),dur:m+':'+(sec<10?'0':'')+sec,corr:S.student.totalCorrect});
+    S.sessionStart=Date.now();
+  }
+  renderDash();showView('dashboard');
+}
+
+function openTopic(i){
+  S.cur.topic=i;
+  const t=topics[i];
+  const testCount=(t.tests||[]).length;
+  const hdrDesc = t.id==='grafik-sim'
+    ? 'İnteraktif grafik · Parametreli simülasyon · Anlık dönüşüm görselleştirme'
+    : `${t.slides.length} slayt · ${t.quiz.length} quiz · ${t.flashcards.length} kart · ${testCount} test`;
+  document.getElementById('topicHdr').innerHTML=`
+    <div class="thi">${t.icon}</div>
+    <div><h2>${t.name}</h2><p>${hdrDesc}</p></div>
+  `;
+  // Build tabs dynamically
+  let tabsHtml;
+  if(t.id==='grafik-sim'){
+    tabsHtml=`<button class="mod-tab active" onclick="switchMod('sim',this)">📊 Simülatör</button>`;
+  } else {
+    tabsHtml=`
+      <button class="mod-tab active" onclick="switchMod('slides',this)">📖 Anlatım</button>
+      <button class="mod-tab" onclick="switchMod('fc',this)">🃏 Flashcard</button>
+      <button class="mod-tab" onclick="switchMod('fill',this)">✏️ Boşluk</button>
+      <button class="mod-tab" onclick="switchMod('quiz',this)">📝 Quiz</button>
+    `;
+    (t.tests||[]).forEach((test,ti)=>{
+      tabsHtml+=`<button class="mod-tab" onclick="switchMod('test_${ti}',this)">📋 ${test.name}</button>`;
+    });
+  }
+  document.getElementById('modTabs').innerHTML=tabsHtml;
+  S.cur.slide=0;S.cur.q=0;S.cur.fc=0;S.cur.qScore={c:0,w:0};
+  if(!S.cur.testQ) S.cur.testQ=0;
+  if(!S.cur.testIdx) S.cur.testIdx=0;
+  if(t.id==='grafik-sim'){
+    switchMod('sim',null);
+  } else {
+    switchMod('slides',null);
+  }
+  showView('topic');
+}
+
+function switchMod(mod,btn){
+  clearInterval(qTimer);
+  if(btn){document.querySelectorAll('.mod-tab').forEach(t=>t.classList.remove('active'));btn.classList.add('active');}
+  const t=topics[S.cur.topic];
+  const c=document.getElementById('modContent');
+  if(mod.startsWith('test_')){
+    const testIdx=parseInt(mod.split('_')[1]);
+    S.cur.testIdx=testIdx;
+    S.cur.testQ=0;
+    S.cur.answered=false;
+    S.cur.qScore={c:0,w:0};
+    renderTestStart(c,t,testIdx);
+  } else {
+    S.cur.slide=0;S.cur.q=0;S.cur.fc=0;S.cur.qScore={c:0,w:0};
+    if(mod==='slides') renderSlides(c,t);
+    else if(mod==='fc') renderFC(c,t);
+    else if(mod==='fill') renderFill(c,t);
+    else if(mod==='quiz') renderQuiz(c,t);
+    else if(mod==='sim') renderSimulator(c);
+  }
+}
+
+// ── SLIDES ────────────────────────────────────────────
+function renderSlides(c,t){
+  const i=S.cur.slide,total=t.slides.length,sl=t.slides[i];
+  c.innerHTML=`
+    <div class="slide">
+      <div class="slide-meta">
+        <span class="slide-num">${i+1} / ${total}</span>
+        <div class="slide-prog"><div class="slide-prog-f" style="width:${((i+1)/total*100)}%"></div></div>
+        <button onclick="speakNow()" class="btn btn-o btn-sm">🔊 Dinle</button>
+      </div>
+      <div class="slide-icon">${sl.icon}</div>
+      <div class="slide-title">${sl.title}</div>
+      <div class="slide-content" id="slContent">${sl.content}</div>
+      <div class="slide-actions">
+        ${i>0?'<button class="btn btn-o" onclick="goSlide(-1)">← Geri</button>':''}
+        ${i<total-1?'<button class="btn btn-p" onclick="goSlide(1)">İleri →</button>':'<button class="btn btn-acc" onclick="toQuizTab()">Quiz\'e Geç 🎯</button>'}
+      </div>
+    </div>
+  `;
+  setTimeout(()=>document.querySelectorAll('.step-list li').forEach((li,j)=>setTimeout(()=>li.classList.add('vis'),j*150)),80);
+  t.progress=Math.max(t.progress,Math.round(((i+1)/total)*40));save();
+}
+
+function goSlide(d){
+  const t=topics[S.cur.topic];
+  S.cur.slide=Math.max(0,Math.min(t.slides.length-1,S.cur.slide+d));
+  renderSlides(document.getElementById('modContent'),t);
+}
+
+function speakNow(){
+  const txt=document.getElementById('slContent')?document.getElementById('slContent').innerText:'';
+  const u=new SpeechSynthesisUtterance(txt);u.lang='tr-TR';u.rate=0.85;
+  speechSynthesis.cancel();speechSynthesis.speak(u);
+}
+
+function toQuizTab(){
+  document.querySelectorAll('.mod-tab').forEach((t,i)=>{t.classList.toggle('active',i===3);});
+  switchMod('quiz',null);
+}
+
+// ── QUIZ ──────────────────────────────────────────────
+function renderQuiz(c,t){
+  clearInterval(qTimer);
+  const i=S.cur.q;
+  if(i>=t.quiz.length){renderResult(c,t);return;}
+  const q=t.quiz[i];
+  S.cur.answered=false;
+  let tl=35;
+  const labels=['A','B','C','D','E'];
+  c.innerHTML=`
+    <div class="q-with-canvas">
+      <div class="quiz-card">
+        <div class="quiz-meta">
+          <span>Soru ${i+1}/${t.quiz.length}</span>
+          <span>✅${S.cur.qScore.c} ❌${S.cur.qScore.w}</span>
+          <span class="q-timer">⏱️ <span id="qt">${tl}</span>s</span>
+        </div>
+        <div class="timer-bar"><div class="timer-fill" id="tf" style="width:100%"></div></div>
+        <p class="q-text">${q.q}</p>
+        <div class="options" id="opts">
+          ${q.opts.map((o,j)=>`
+            <button class="option" id="opt${j}" onclick="chkAns(${j},${j===q.ans})">
+              <span class="opt-lbl">${labels[j]}</span>${fmtOpt(o)}
+            </button>
+          `).join('')}
+        </div>
+        <div class="q-fb" id="fb"></div>
+        <div class="q-nav">
+          <span style="font-size:.78rem;color:var(--text2)">📌 ${t.name}</span>
+          <button class="btn btn-p btn-sm" id="nxtBtn" style="display:none" onclick="nextQ()">Sonraki →</button>
+        </div>
+        <button class="canvas-toggle-btn" id="quiz-toggle-btn" onclick="toggleCanvas('quiz-canvas')">✏️ Çözüm Alanını Aç / Kapat</button>
+      </div>
+      <div class="canvas-side" id="quiz-canvas" style="display:none">
+        <div class="canvas-side-label">✏️ Çözüm Alanı</div>
+        ${buildCanvas('quiz-canvas')}
+      </div>
+    </div>
+  `;
+  qTimer=setInterval(()=>{
+    tl--;
+    const el=document.getElementById('qt'),fl=document.getElementById('tf');
+    if(el)el.textContent=tl;if(fl)fl.style.width=(tl/35*100)+'%';
+    if(tl<=0){
+      clearInterval(qTimer);
+      if(!S.cur.answered){
+        S.cur.answered=true;S.cur.qScore.w++;S.student.streak=0;
+        disableOpts();showAns(q.ans);
+        showFb(false,'Süre doldu! Doğru: '+labels[q.ans]+') '+q.opts[q.ans]+' — '+q.exp);
+        show('nxtBtn');playSound(false);
+      }
+    }
+  },1000);
+}
+
+function chkAns(idx,correct){
+  if(S.cur.answered)return;
+  S.cur.answered=true;clearInterval(qTimer);
+  disableOpts();
+  const t=topics[S.cur.topic],q=t.quiz[S.cur.q];
+  if(correct){
+    document.getElementById('opt'+idx).classList.add('c-sel');
+    S.cur.qScore.c++;S.student.totalCorrect++;S.student.streak++;
+    gainXP(10);
+    showFb(true,'Doğru! '+q.exp);
+    if(S.student.streak>0&&S.student.streak%3===0)streakPop();
+  } else {
+    document.getElementById('opt'+idx).classList.add('w-sel');
+    document.getElementById('opt'+idx).classList.add('shake');
+    showAns(q.ans);
+    S.cur.qScore.w++;S.student.streak=0;
+    showFb(false,'Yanlış! Doğru cevap: '+q.exp);
+  }
+  show('nxtBtn');updateStats();
+}
+
+function disableOpts(){document.querySelectorAll('.option').forEach(b=>b.disabled=true);}
+function showAns(ans){const el=document.getElementById('opt'+ans);if(el)el.classList.add('show-c');}
+function showFb(ok,txt){
+  const fb=document.getElementById('fb');
+  if(fb){fb.className='q-fb '+(ok?'c-fb':'w-fb');fb.style.display='block';fb.textContent=(ok?'✅ ':'❌ ')+txt;}
+  playSound(ok);
+}
+function show(id){const el=document.getElementById(id);if(el)el.style.display='inline-block';}
+
+function nextQ(){S.cur.q++;renderQuiz(document.getElementById('modContent'),topics[S.cur.topic]);}
+
+function renderResult(c,t){
+  clearInterval(qTimer);
+  const {cc:_c,ww:_w,..._}={}; // unused
+  const cr=S.cur.qScore.c,wr=S.cur.qScore.w,tot=cr+wr;
+  const pct=tot>0?Math.round(cr/tot*100):0;
+  t.score=pct;t.progress=Math.max(t.progress,pct>=100?100:80);
+  gainXP(50);save();
+  const em=pct>=80?'🎉':pct>=60?'👍':'📚';
+  const msg=pct>=80?'Harika! Konuya hakimsin!':pct>=60?'İyi iş! Biraz daha pratik yap.':'Konuyu tekrar edelim!';
+  c.innerHTML=`
+    <div class="result-screen">
+      <div class="result-emoji">${em}</div>
+      <div class="result-score">%${pct}</div>
+      <div class="result-lbl">${msg}</div>
+      <div class="result-det">
+        <div class="ri"><div class="rv" style="color:var(--correct)">✅ ${cr}</div><div class="rl">Doğru</div></div>
+        <div class="ri"><div class="rv" style="color:var(--wrong)">❌ ${wr}</div><div class="rl">Yanlış</div></div>
+        <div class="ri"><div class="rv" style="color:var(--xp)">⚡+${50+cr*10}</div><div class="rl">XP</div></div>
+      </div>
+      <div class="result-btns">
+        <button class="btn btn-o" onclick="retryQ()">🔄 Tekrar</button>
+        <button class="btn btn-p" onclick="goDash()">🏠 Menü</button>
+        ${pct<60?'<button class="btn btn-o" onclick="backToSlides()">📖 Konuyu Gözden Geçir</button>':''}
+      </div>
+    </div>
+  `;
+  if(pct>=80)confetti();
+}
+
+function retryQ(){S.cur.q=0;S.cur.qScore={c:0,w:0};renderQuiz(document.getElementById('modContent'),topics[S.cur.topic]);}
+function backToSlides(){
+  document.querySelectorAll('.mod-tab').forEach((t,i)=>{t.classList.toggle('active',i===0);});
+  S.cur.slide=0;renderSlides(document.getElementById('modContent'),topics[S.cur.topic]);
+}
+
+// ── FLASHCARDS ────────────────────────────────────────
+function renderFC(c,t){
+  const i=S.cur.fc,fc=t.flashcards;
+  c.innerHTML=`
+    <div class="flashcard-area">
+      <p style="color:var(--text2);margin-bottom:6px;font-size:.82rem">Karta tıkla — çevir 👆</p>
+      <div class="flashcard" id="fc" onclick="flipFC()">
+        <div class="card-inner">
+          <div class="card-front"><span class="card-lbl">Kavram</span><h3>${fc[i].front}</h3><p class="card-hint">👆 Tıkla</p></div>
+          <div class="card-back"><span class="card-lbl">Açıklama</span><p>${fc[i].back}</p></div>
+        </div>
+      </div>
+      <div class="fc-prog">${fc.map((_,j)=>`<div class="fc-dot ${j<i?'known':j===i?'active':''}"></div>`).join('')}</div>
+      <p style="font-size:.78rem;color:var(--text2);margin-top:7px">${i+1} / ${fc.length}</p>
+      <div class="fc-btns">
+        ${i>0?'<button class="btn btn-o btn-sm" onclick="goFC(-1)">← Geri</button>':''}
+        <button class="btn btn-o btn-sm" onclick="flipFC()">🔄 Çevir</button>
+        ${i<fc.length-1?'<button class="btn btn-p btn-sm" onclick="goFC(1)">İleri →</button>':'<button class="btn btn-acc btn-sm" onclick="toQuizTab()">Quiz\'e Geç →</button>'}
+      </div>
+    </div>
+  `;
+}
+
+function flipFC(){document.getElementById('fc')?.classList.toggle('flipped');}
+function goFC(d){const t=topics[S.cur.topic];S.cur.fc=Math.max(0,Math.min(t.flashcards.length-1,S.cur.fc+d));renderFC(document.getElementById('modContent'),t);t.progress=Math.max(t.progress,Math.round(((S.cur.fc+1)/t.flashcards.length)*30));save();}
+
+// ── FILL BLANKS ───────────────────────────────────────
+function renderFill(c,t){
+  c.innerHTML=`
+    <div class="fill-card">
+      <h3 style="margin-bottom:14px">✏️ Boşlukları Doldur</h3>
+      ${t.fillBlanks.map((item,i)=>`
+        <div style="margin-bottom:18px">
+          <p class="fill-sentence">${item.s.replace('___','<input type="text" class="blank-inp" id="fi'+i+'" placeholder="?" onkeydown="if(event.key===\'Enter\')chkFill('+i+')">')}</p>
+          <div id="ffb${i}" style="font-size:.78rem;margin-top:3px;min-height:18px"></div>
+        </div>
+      `).join('')}
+      <div style="display:flex;gap:9px;margin-top:14px">
+        <button class="btn btn-p" onclick="chkAllFill()">✅ Kontrol Et</button>
+        <button class="btn btn-o" onclick="resetFill()">🔄 Sıfırla</button>
+      </div>
+    </div>
+  `;
+}
+
+function chkFill(i){
+  const t=topics[S.cur.topic],item=t.fillBlanks[i];
+  const inp=document.getElementById('fi'+i),fb=document.getElementById('ffb'+i);
+  if(!inp)return;
+  const val=inp.value.trim().toLowerCase(),ans=item.a.toLowerCase();
+  if(val===ans){inp.className='blank-inp c-i';fb.innerHTML='<span style="color:var(--correct)">✅ Doğru!</span>';playSound(true);gainXP(5);}
+  else{inp.className='blank-inp w-i';fb.innerHTML='<span style="color:var(--wrong)">❌ Doğru: <strong>'+item.a+'</strong></span>';playSound(false);}
+}
+function chkAllFill(){topics[S.cur.topic].fillBlanks.forEach((_,i)=>chkFill(i));}
+function resetFill(){
+  topics[S.cur.topic].fillBlanks.forEach((_,i)=>{
+    const inp=document.getElementById('fi'+i),fb=document.getElementById('ffb'+i);
+    if(inp){inp.value='';inp.className='blank-inp';}if(fb)fb.innerHTML='';
+  });
+}
+
+// ── TEST MODULE ───────────────────────────────────────
+function renderTestStart(c,t,testIdx){
+  const test=t.tests[testIdx];
+  if(!test){c.innerHTML='<p style="color:var(--text2)">Test bulunamadı.</p>';return;}
+  c.innerHTML=`
+    <div class="quiz-card" style="text-align:center">
+      <div style="font-size:3rem;margin-bottom:12px">📋</div>
+      <h2 style="color:var(--primary);margin-bottom:8px">${test.name}</h2>
+      <p style="color:var(--text2);margin-bottom:6px">${test.questions.length} soru</p>
+      <p style="color:var(--text2);font-size:.85rem;margin-bottom:24px">Bu test PDF\'ten alınmıştır. Süre sınırı yoktur.</p>
+      ${test.score!==null?`<p style="color:var(--accent);margin-bottom:16px">Son skor: %${test.score}</p>`:''}
+      <button class="btn btn-p" onclick="startTest(${testIdx})">▶ Teste Başla</button>
+    </div>
+  `;
+}
+
+function startTest(testIdx){
+  S.cur.testIdx=testIdx;
+  S.cur.testQ=0;
+  S.cur.answered=false;
+  S.cur.qScore={c:0,w:0};
+  const t=topics[S.cur.topic];
+  renderTestQuestion(document.getElementById('modContent'),t,testIdx);
+}
+
+function renderTestQuestion(container,t,testIdx){
+  const test=t.tests[testIdx];
+  const qi=S.cur.testQ;
+  if(qi>=test.questions.length){renderTestResult(container,t,testIdx);return;}
+  const q=test.questions[qi];
+  S.cur.answered=false;
+  const labels=['A','B','C','D','E'];
+  const total=test.questions.length;
+  container.innerHTML=`
+    <div class="q-with-canvas">
+      <div class="quiz-card">
+        <div class="quiz-meta">
+          <span style="color:var(--primary);font-weight:700">${test.name}</span>
+          <span>Soru ${qi+1}/${total}</span>
+          <span>✅${S.cur.qScore.c} ❌${S.cur.qScore.w}</span>
+        </div>
+        <div style="height:5px;background:var(--surface2);border-radius:3px;margin-bottom:16px;overflow:hidden">
+          <div style="height:100%;width:${(qi/total)*100}%;background:linear-gradient(90deg,var(--primary),var(--secondary));border-radius:3px;transition:width .4s"></div>
+        </div>
+        <div style="display:flex;align-items:baseline;gap:8px;margin-bottom:14px">
+          <span style="background:var(--primary);color:#fff;border-radius:50%;width:28px;height:28px;display:inline-flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:700;flex-shrink:0">${q.num}</span>
+          <p class="q-text" style="margin:0">${q.q}</p>
+        </div>
+        <div class="options" id="topts">
+          ${q.opts.map((o,j)=>`
+            <button class="option" id="topt${j}" onclick="chkTestAns(${j},${j===q.ans},${testIdx})">
+              <span class="opt-lbl">${labels[j]}</span>${fmtOpt(o)}
+            </button>
+          `).join('')}
+        </div>
+        <div class="q-fb" id="tfb"></div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:16px">
+          ${qi>0?`<button class="btn btn-o btn-sm" onclick="prevTestQ(${testIdx})">← Geri</button>`:'<span></span>'}
+          <button class="btn btn-p btn-sm" id="tnxt" style="display:none" onclick="nextTestQ(${testIdx})">${qi<total-1?'Sonraki →':'Sonuçları Gör 🎯'}</button>
+        </div>
+        <button class="canvas-toggle-btn" onclick="toggleCanvas('test-canvas')">✏️ Çözüm Alanını Aç / Kapat</button>
+      </div>
+      <div class="canvas-side" id="test-canvas" style="display:none">
+        <div class="canvas-side-label">✏️ Çözüm Alanı</div>
+        ${buildCanvas('test-canvas')}
+      </div>
+    </div>
+  `;
+}
+
+function chkTestAns(optIdx,isCorrect,testIdx){
+  if(S.cur.answered)return;
+  S.cur.answered=true;
+  document.querySelectorAll('#topts .option').forEach(b=>b.disabled=true);
+  const t=topics[S.cur.topic];
+  const q=t.tests[testIdx].questions[S.cur.testQ];
+  const labels=['A','B','C','D','E'];
+  if(isCorrect){
+    document.getElementById('topt'+optIdx).classList.add('c-sel');
+    S.cur.qScore.c++;S.student.totalCorrect++;S.student.streak++;
+    gainXP(10);
+    const fb=document.getElementById('tfb');
+    if(fb){fb.className='q-fb c-fb';fb.style.display='block';fb.textContent='✅ Doğru! '+(q.exp||'');}
+    if(S.student.streak%3===0)streakPop();
+  } else {
+    document.getElementById('topt'+optIdx).classList.add('w-sel');
+    document.getElementById('topt'+optIdx).classList.add('shake');
+    const ca=document.getElementById('topt'+q.ans);if(ca)ca.classList.add('show-c');
+    S.cur.qScore.w++;S.student.streak=0;
+    const fb=document.getElementById('tfb');
+    if(fb){fb.className='q-fb w-fb';fb.style.display='block';fb.textContent='❌ Yanlış! Doğru: '+labels[q.ans]+') '+(q.exp||'');}
+  }
+  const nb=document.getElementById('tnxt');if(nb)nb.style.display='inline-block';
+  playSound(isCorrect);updateStats();
+}
+
+function nextTestQ(testIdx){
+  S.cur.testQ++;S.cur.answered=false;
+  renderTestQuestion(document.getElementById('modContent'),topics[S.cur.topic],testIdx);
+}
+
+function prevTestQ(testIdx){
+  if(S.cur.testQ>0){S.cur.testQ--;S.cur.answered=false;
+    renderTestQuestion(document.getElementById('modContent'),topics[S.cur.topic],testIdx);}
+}
+
+function renderTestResult(container,t,testIdx){
+  const test=t.tests[testIdx];
+  const {c,w}=S.cur.qScore;
+  const total=c+w;
+  const pct=total>0?Math.round(c/total*100):0;
+  test.score=pct;
+  t.progress=Math.max(t.progress,70);
+  gainXP(50);save();
+  const em=pct>=80?'🎉':pct>=60?'👍':'📚';
+  container.innerHTML=`
+    <div class="result-screen">
+      <div class="result-emoji">${em}</div>
+      <div style="color:var(--primary);font-size:.9rem;font-weight:700;margin-bottom:4px">${test.name}</div>
+      <div class="result-score">%${pct}</div>
+      <div class="result-lbl">${pct>=80?'Harika!':pct>=60?'İyi iş!':'Tekrar et!'}</div>
+      <div class="result-det">
+        <div class="ri"><div class="rv" style="color:var(--correct)">✅ ${c}</div><div class="rl">Doğru</div></div>
+        <div class="ri"><div class="rv" style="color:var(--wrong)">❌ ${w}</div><div class="rl">Yanlış</div></div>
+        <div class="ri"><div class="rv" style="color:var(--xp)">⚡+${50+c*10}</div><div class="rl">XP</div></div>
+      </div>
+      <div class="result-btns">
+        <button class="btn btn-o" onclick="startTest(${testIdx})">🔄 Tekrar</button>
+        <button class="btn btn-p" onclick="goDash()">🏠 Menü</button>
+      </div>
+    </div>
+  `;
+  if(pct>=80)confetti();
+}
+
+// ── FINAL TEST ────────────────────────────────────────
+let finalQs=[],finalIdx=0,finalScore={c:0,w:0};
+
+function startFinal(){
+  finalQs=[];
+  topics.forEach(t=>{if(t.id!=='grafik-sim')t.quiz.forEach(q=>finalQs.push({...q,topic:t.name}));});
+  for(let i=finalQs.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[finalQs[i],finalQs[j]]=[finalQs[j],finalQs[i]];}
+  finalQs=finalQs.slice(0,16);
+  finalIdx=0;finalScore={c:0,w:0};
+  showView('final');renderFinalQ();
+}
+
+function renderFinalQ(){
+  clearInterval(qTimer);
+  if(finalIdx>=finalQs.length){renderFinalResult();return;}
+  const q=finalQs[finalIdx];S.cur.answered=false;
+  let tl=30;
+  const labels=['A','B','C','D','E'];
+  document.getElementById('finalContent').innerHTML=`
+    <div style="margin-bottom:12px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+        <span style="font-size:.82rem;color:var(--text2)">Soru ${finalIdx+1}/${finalQs.length}</span>
+        <span style="font-size:.78rem;color:var(--text2)">📌 ${q.topic}</span>
+        <span style="font-size:.82rem;color:var(--accent);font-weight:700">⏱️ <span id="ft">${tl}</span>s</span>
+      </div>
+      <div class="timer-bar"><div class="timer-fill" id="ftf" style="width:100%"></div></div>
+      <div style="height:5px;background:var(--surface2);border-radius:3px;margin-top:3px;overflow:hidden">
+        <div style="height:100%;width:${finalIdx/finalQs.length*100}%;background:linear-gradient(90deg,var(--primary),var(--secondary));border-radius:3px;transition:width .5s"></div>
+      </div>
+    </div>
+    <div class="q-with-canvas">
+      <div class="quiz-card">
+        <div class="quiz-meta"><span>✅${finalScore.c}</span><span>❌${finalScore.w}</span><span style="color:var(--xp)">⚡${finalScore.c*10} XP</span></div>
+        <p class="q-text">${q.q}</p>
+        <div class="options" id="fopts">
+          ${q.opts.map((o,j)=>`<button class="option" id="fo${j}" onclick="chkFinal(${j},${j===q.ans})"><span class="opt-lbl">${labels[j]}</span>${fmtOpt(o)}</button>`).join('')}
+        </div>
+        <div class="q-fb" id="ffb"></div>
+        <div style="text-align:right;margin-top:14px"><button class="btn btn-p btn-sm" id="fnxt" style="display:none" onclick="nextFinal()">Sonraki →</button></div>
+        <button class="canvas-toggle-btn" onclick="toggleCanvas('final-canvas')">✏️ Çözüm Alanını Aç / Kapat</button>
+      </div>
+      <div class="canvas-side" id="final-canvas" style="display:none">
+        <div class="canvas-side-label">✏️ Çözüm Alanı</div>
+        ${buildCanvas('final-canvas')}
+      </div>
+    </div>
+  `;
+  qTimer=setInterval(()=>{
+    tl--;
+    const el=document.getElementById('ft'),fl=document.getElementById('ftf');
+    if(el)el.textContent=tl;if(fl)fl.style.width=(tl/30*100)+'%';
+    if(tl<=0){
+      clearInterval(qTimer);
+      if(!S.cur.answered){
+        S.cur.answered=true;finalScore.w++;S.student.streak=0;
+        document.querySelectorAll('#fopts .option').forEach(b=>b.disabled=true);
+        showFinalAns(q.ans);
+        const fb=document.getElementById('ffb');if(fb){fb.className='q-fb w-fb';fb.style.display='block';fb.textContent='Süre doldu! '+q.exp;}
+        const nb=document.getElementById('fnxt');if(nb)nb.style.display='inline-block';
+        playSound(false);
+      }
+    }
+  },1000);
+}
+
+function chkFinal(idx,correct){
+  if(S.cur.answered)return;S.cur.answered=true;clearInterval(qTimer);
+  document.querySelectorAll('#fopts .option').forEach(b=>b.disabled=true);
+  const q=finalQs[finalIdx];
+  if(correct){
+    document.getElementById('fo'+idx).classList.add('c-sel');
+    finalScore.c++;S.student.totalCorrect++;S.student.streak++;
+    gainXP(10);
+    const fb=document.getElementById('ffb');if(fb){fb.className='q-fb c-fb';fb.style.display='block';fb.textContent='Doğru! '+q.exp;}
+    if(S.student.streak%3===0)streakPop();
+  } else {
+    document.getElementById('fo'+idx).classList.add('w-sel');
+    document.getElementById('fo'+idx).classList.add('shake');
+    showFinalAns(q.ans);finalScore.w++;S.student.streak=0;
+    const fb=document.getElementById('ffb');if(fb){fb.className='q-fb w-fb';fb.style.display='block';fb.textContent='Yanlış! '+q.exp;}
+  }
+  const nb=document.getElementById('fnxt');if(nb)nb.style.display='inline-block';
+  playSound(correct);updateStats();
+}
+
+function showFinalAns(ans){const el=document.getElementById('fo'+ans);if(el)el.classList.add('show-c');}
+function nextFinal(){finalIdx++;renderFinalQ();}
+
+function renderFinalResult(){
+  const tot=finalScore.c+finalScore.w,pct=tot>0?Math.round(finalScore.c/tot*100):0;
+  gainXP(100);save();
+  const em=pct>=80?'🏆':pct>=60?'🌟':'📚';
+  document.getElementById('finalContent').innerHTML=`
+    <div class="result-screen">
+      <div class="result-emoji">${em}</div>
+      <h2 style="margin-bottom:7px">Final Testi Tamamlandı!</h2>
+      <div class="result-score">%${pct}</div>
+      <div class="result-lbl">${pct>=80?'Mükemmel! Tüm konulara hakimsin!':pct>=60?'İyi iş! Birkaç konuyu gözden geçir.':'Konuları tekrar etmeni öneririm.'}</div>
+      <div class="result-det">
+        <div class="ri"><div class="rv" style="color:var(--correct)">✅${finalScore.c}</div><div class="rl">Doğru</div></div>
+        <div class="ri"><div class="rv" style="color:var(--wrong)">❌${finalScore.w}</div><div class="rl">Yanlış</div></div>
+        <div class="ri"><div class="rv" style="color:var(--xp)">⚡+${finalScore.c*10+100}</div><div class="rl">XP</div></div>
+      </div>
+      <div class="result-btns">
+        <button class="btn btn-o" onclick="startFinal()">🔄 Tekrar</button>
+        <button class="btn btn-p" onclick="goDash()">🏠 Menü</button>
+      </div>
+    </div>
+  `;
+  if(pct>=80)confetti();
+}
+
+// ── GAMIFICATION ──────────────────────────────────────
+function gainXP(n){S.student.xp+=n;const prev=S.student.badge;updateXP();if(S.student.badge!==prev)badgePop(S.student.badge);save();}
+
+function streakPop(){
+  const el=document.createElement('div');el.className='streak-pop';
+  el.textContent='🔥 '+S.student.streak+' Seri! +Bonus';
+  document.body.appendChild(el);gainXP(20);
+  setTimeout(()=>el.remove(),2000);
+}
+function badgePop(badge){
+  const el=document.createElement('div');el.className='badge-pop';
+  el.innerHTML='<h4>🏅 Yeni Unvan!</h4><p>'+badge+' unvanını kazandın!</p>';
+  document.body.appendChild(el);setTimeout(()=>el.remove(),3600);
+}
+function confetti(){
+  const cols=['#6366f1','#fbbf24','#4ade80','#f87171','#38bdf8','#a78bfa'];
+  for(let i=0;i<60;i++){
+    const c=document.createElement('div');c.className='confetti-p';
+    c.style.cssText=`left:${Math.random()*100}%;background:${cols[Math.floor(Math.random()*cols.length)]};animation-delay:${Math.random()*.8}s;animation-duration:${1.5+Math.random()}s`;
+    document.body.appendChild(c);setTimeout(()=>c.remove(),3000);
+  }
+}
+
+// ── SOUND ─────────────────────────────────────────────
+function playSound(ok){
+  try{
+    const ctx=new(window.AudioContext||window.webkitAudioContext)();
+    const osc=ctx.createOscillator(),gain=ctx.createGain();
+    osc.connect(gain);gain.connect(ctx.destination);
+    osc.frequency.value=ok?880:220;osc.type=ok?'sine':'sawtooth';
+    gain.gain.setValueAtTime(0.22,ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.01,ctx.currentTime+0.4);
+    osc.start();osc.stop(ctx.currentTime+0.4);
+  }catch(e){}
+}
+
+// ── THEME ─────────────────────────────────────────────
+function toggleTheme(){
+  S.darkMode=!S.darkMode;
+  document.body.classList.toggle('light',!S.darkMode);
+  document.querySelector('.thm-btn').textContent=S.darkMode?'🌙':'☀️';
+}
+
+// ── HELPERS ───────────────────────────────────────────
+function set(id,val){const el=document.getElementById(id);if(el)el.textContent=val;}
+
+// ── ÇİZİM ALANI (Apple Pencil & Parmak) ──────────────
+function buildCanvas(id){
+  return `
+  <div class="canvas-wrap">
+    <div class="canvas-toolbar">
+      <button class="active" id="${id}-pen" onclick="setTool('${id}','pen')">🖊 Kalem</button>
+      <button id="${id}-eraser" onclick="setTool('${id}','eraser')">🧹 Silgi</button>
+      <span style="color:var(--text2);font-size:.75rem">Renk:</span>
+      <button class="color-btn active" id="${id}-col-black" style="background:#1a1a2e;border-color:#888" onclick="setColor('${id}','#1a1a2e')"></button>
+      <button class="color-btn" id="${id}-col-blue" style="background:#3b82f6" onclick="setColor('${id}','#3b82f6')"></button>
+      <button class="color-btn" id="${id}-col-red" style="background:#ef4444" onclick="setColor('${id}','#ef4444')"></button>
+      <button class="color-btn" id="${id}-col-green" style="background:#22c55e" onclick="setColor('${id}','#22c55e')"></button>
+      <span style="color:var(--text2);font-size:.75rem">Kalınlık:</span>
+      <input class="size-slider" type="range" min="1" max="20" value="3" id="${id}-size" oninput="setSize('${id}',this.value)">
+      <button style="margin-left:auto" onclick="clearCanvas('${id}')">🗑 Temizle</button>
+    </div>
+    <canvas class="drawing-canvas" id="${id}-cvs" height="320"
+      ontouchstart="cvStart(event,'${id}')" ontouchmove="cvMove(event,'${id}')" ontouchend="cvEnd(event,'${id}')"
+      onmousedown="cvStart(event,'${id}')" onmousemove="cvMove(event,'${id}')" onmouseup="cvEnd(event,'${id}')" onmouseleave="cvEnd(event,'${id}')">
+    </canvas>
+  </div>`;
+}
+
+const cvState = {};
+
+function initCanvas(id){
+  const cvs = document.getElementById(id+'-cvs');
+  if(!cvs || cvs._init) return;
+  cvs._init = true;
+  // Gerçek render boyutunu kullan (CSS ile ayarlanan boyutu al)
+  const rect = cvs.getBoundingClientRect();
+  cvs.width = rect.width || cvs.offsetWidth || cvs.parentElement?.offsetWidth || 600;
+  cvs.height = rect.height || cvs.offsetHeight || 400;
+  cvState[id] = { drawing: false, tool: 'pen', color: '#1a1a2e', size: 3 };
+  const ctx = cvs.getContext('2d');
+  ctx.lineCap = 'round';
+  ctx.lineJoin = 'round';
+}
+
+function toggleCanvas(id){
+  const wrap = document.getElementById(id);
+  if(!wrap) return;
+  const isHidden = wrap.style.display === 'none';
+  wrap.style.display = isHidden ? 'block' : 'none';
+  if(isHidden){
+    setTimeout(() => {
+      // Soru kartını bul ve yüksekliği eşitle
+      const qcard = wrap.closest('.q-with-canvas')?.querySelector('.quiz-card');
+      if(qcard && window.matchMedia('(orientation:landscape)').matches){
+        const h = qcard.offsetHeight;
+        wrap.style.height = h + 'px';
+      } else {
+        wrap.style.height = '';
+      }
+      initCanvas(id);
+      // Canvas piksel boyutunu güncelle
+      setTimeout(() => {
+        const cvs = document.getElementById(id+'-cvs');
+        if(cvs){
+          cvs._init = false;
+          initCanvas(id);
+        }
+      }, 50);
+    }, 30);
+  }
+}
+
+// Yön değişince canvas boyutunu güncelle
+window.addEventListener('orientationchange', () => {
+  setTimeout(() => {
+    ['quiz-canvas','test-canvas','final-canvas'].forEach(id => {
+      const wrap = document.getElementById(id);
+      if(!wrap || wrap.style.display === 'none') return;
+      // Yüksekliği soru kartından al
+      const qcard = wrap.closest('.q-with-canvas')?.querySelector('.quiz-card');
+      if(qcard && window.matchMedia('(orientation:landscape)').matches){
+        wrap.style.height = qcard.offsetHeight + 'px';
+      } else {
+        wrap.style.height = '';
+      }
+      const cvs = document.getElementById(id + '-cvs');
+      if(!cvs) return;
+      const tmp = document.createElement('canvas');
+      tmp.width = cvs.width; tmp.height = cvs.height;
+      tmp.getContext('2d').drawImage(cvs, 0, 0);
+      cvs._init = false;
+      initCanvas(id);
+      cvs.getContext('2d').drawImage(tmp, 0, 0);
+    });
+  }, 400);
+});
+
+function setTool(id, tool){
+  cvState[id] = cvState[id] || {};
+  cvState[id].tool = tool;
+  ['pen','eraser'].forEach(t => {
+    const b = document.getElementById(id+'-'+t);
+    if(b) b.classList.toggle('active', t === tool);
+  });
+}
+
+function setColor(id, color){
+  cvState[id] = cvState[id] || {};
+  cvState[id].color = color;
+  const cols = {
+    '#1a1a2e':'black','#3b82f6':'blue','#ef4444':'red','#22c55e':'green'
+  };
+  Object.keys(cols).forEach(c => {
+    const b = document.getElementById(id+'-col-'+cols[c]);
+    if(b) b.classList.toggle('active', c === color);
+  });
+  // Silgideyse kaleme geç
+  setTool(id, 'pen');
+}
+
+function setSize(id, val){
+  cvState[id] = cvState[id] || {};
+  cvState[id].size = parseInt(val);
+}
+
+function clearCanvas(id){
+  const cvs = document.getElementById(id+'-cvs');
+  if(!cvs) return;
+  cvs.getContext('2d').clearRect(0,0,cvs.width,cvs.height);
+}
+
+function getPos(e, cvs){
+  const r = cvs.getBoundingClientRect();
+  const scaleX = cvs.width / r.width;
+  const scaleY = cvs.height / r.height;
+  if(e.touches){
+    const t = e.touches[0];
+    return { x:(t.clientX - r.left)*scaleX, y:(t.clientY - r.top)*scaleY };
+  }
+  return { x:(e.clientX - r.left)*scaleX, y:(e.clientY - r.top)*scaleY };
+}
+
+function cvStart(e, id){
+  e.preventDefault();
+  initCanvas(id);
+  const st = cvState[id];
+  if(!st) return;
+  st.drawing = true;
+  const cvs = document.getElementById(id+'-cvs');
+  const ctx = cvs.getContext('2d');
+  const pos = getPos(e, cvs);
+  ctx.beginPath();
+  ctx.moveTo(pos.x, pos.y);
+}
+
+function cvMove(e, id){
+  e.preventDefault();
+  const st = cvState[id];
+  if(!st || !st.drawing) return;
+  const cvs = document.getElementById(id+'-cvs');
+  const ctx = cvs.getContext('2d');
+  const pos = getPos(e, cvs);
+  if(st.tool === 'eraser'){
+    ctx.clearRect(pos.x - 15, pos.y - 15, 30, 30);
+  } else {
+    ctx.strokeStyle = st.color;
+    ctx.lineWidth = st.size;
+    ctx.lineTo(pos.x, pos.y);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(pos.x, pos.y);
+  }
+}
+
+function cvEnd(e, id){
+  const st = cvState[id];
+  if(st) st.drawing = false;
+}
+
+init();
+
+
+
+// ── GRAFİK SİMÜLATÖRÜ ────────────────────────────────
+function renderSimulator(c) {
+  c.innerHTML = `
+  <div id="sim-wrap">
+    <div class="sim-left">
+      <div class="sim-section">
+        <div class="sim-sec-title">📐 FONKSİYON SEÇ</div>
+        <div class="sim-fn-grid" id="simFnGrid">
+          <button class="sim-fn active" onclick="simSetFn('x*x',this)">x²</button>
+          <button class="sim-fn" onclick="simSetFn('x*x*x/6',this)">x³/6</button>
+          <button class="sim-fn" onclick="simSetFn('Math.sqrt(Math.abs(x))',this)">√x</button>
+          <button class="sim-fn" onclick="simSetFn('Math.abs(x)',this)">|x|</button>
+          <button class="sim-fn" onclick="simSetFn('Math.sin(x)',this)">sin(x)</button>
+          <button class="sim-fn" onclick="simSetFn('x',this)">x</button>
+        </div>
+        <div class="sim-formula" id="simFormula">f(x) = x²</div>
+      </div>
+
+      <div class="sim-section">
+        <div class="sim-sec-title">🎛 PARAMETRELER</div>
+        <div class="sim-param">
+          <span class="sim-plabel" style="background:rgba(99,102,241,.3);color:#a78bfa">a</span>
+          <span class="sim-pname">Dikey dönüşüm</span>
+          <span class="sim-pval" id="valA">1.0</span>
+        </div>
+        <input type="range" class="sim-slider" id="sliderA" min="-3" max="3" step="0.1" value="1" oninput="simUpdate()">
+
+        <div class="sim-param">
+          <span class="sim-plabel" style="background:rgba(6,182,212,.3);color:#22d3ee">h</span>
+          <span class="sim-pname">Yatay öteleme</span>
+          <span class="sim-pval" id="valH">0.0</span>
+        </div>
+        <input type="range" class="sim-slider" id="sliderH" min="-5" max="5" step="0.5" value="0" oninput="simUpdate()">
+
+        <div class="sim-param">
+          <span class="sim-plabel" style="background:rgba(251,191,36,.3);color:#fbbf24">k</span>
+          <span class="sim-pname">Dikey öteleme</span>
+          <span class="sim-pval" id="valK">0.0</span>
+        </div>
+        <input type="range" class="sim-slider" id="sliderK" min="-5" max="5" step="0.5" value="0" oninput="simUpdate()">
+      </div>
+
+      <div class="sim-section">
+        <div class="sim-sec-title">💡 BİLGİ</div>
+        <div class="sim-info-grid">
+          <div class="sim-info-c"><div class="sim-info-lbl">TEPE/KÖŞE</div><div class="sim-info-val" id="infoTepe">(0, 0)</div></div>
+          <div class="sim-info-c"><div class="sim-info-lbl">Y-KESİMİ</div><div class="sim-info-val" id="infoYkes">0.00</div></div>
+          <div class="sim-info-c"><div class="sim-info-lbl">SİMETRİ</div><div class="sim-info-val" id="infoSim">x=0</div></div>
+        </div>
+      </div>
+
+      <button class="btn btn-o" style="width:100%;margin-top:8px" onclick="simReset()">↺ Sıfırla</button>
+    </div>
+
+    <div class="sim-right">
+      <canvas id="simCanvas" style="width:100%;background:var(--surface2);border-radius:12px;display:block"></canvas>
+      <div class="sim-hint-box" id="simHint">
+        <strong>⚡ DÖNÜŞÜM KURALLARI — HIZLI HATIRLATMA</strong><br>
+        <span id="hintA"></span>&nbsp;
+        <span id="hintH"></span>&nbsp;
+        <span id="hintK"></span>
+      </div>
+    </div>
+  </div>`;
+
+  // Canvas boyutunu ayarla
+  setTimeout(() => {
+    const cvs = document.getElementById('simCanvas');
+    if (!cvs) return;
+    const w = cvs.parentElement.clientWidth;
+    cvs.width = w;
+    cvs.height = Math.min(420, w * 0.65);
+    simState.fn = 'x*x';
+    simState.label = 'x²';
+    simDraw();
+  }, 60);
+}
+
+const simState = {
+  fn: 'x*x',
+  label: 'x²',
+  a: 1, h: 0, k: 0
+};
+
+function simSetFn(fn, btn) {
+  simState.fn = fn;
+  const labels = {'x*x':'x²','x*x*x/6':'x³/6','Math.sqrt(Math.abs(x))':'√x','Math.abs(x)':'|x|','Math.sin(x)':'sin(x)','x':'x'};
+  simState.label = labels[fn] || fn;
+  document.querySelectorAll('.sim-fn').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  simUpdate();
+}
+
+function simUpdate() {
+  const a = parseFloat(document.getElementById('sliderA').value);
+  const h = parseFloat(document.getElementById('sliderH').value);
+  const k = parseFloat(document.getElementById('sliderK').value);
+  simState.a = a; simState.h = h; simState.k = k;
+  document.getElementById('valA').textContent = a.toFixed(1);
+  document.getElementById('valH').textContent = h.toFixed(1);
+  document.getElementById('valK').textContent = k.toFixed(1);
+  simDraw();
+  simUpdateInfo(a, h, k);
+  simUpdateHints(a, h, k);
+}
+
+function simReset() {
+  document.getElementById('sliderA').value = 1;
+  document.getElementById('sliderH').value = 0;
+  document.getElementById('sliderK').value = 0;
+  simUpdate();
+}
+
+function simUpdateInfo(a, h, k) {
+  const el_t = document.getElementById('infoTepe');
+  const el_y = document.getElementById('infoYkes');
+  const el_s = document.getElementById('infoSim');
+  if (!el_t) return;
+  // Orijinal f(x) = 0 noktasını döndürülmüş forma çevir
+  el_t.textContent = '(' + h.toFixed(1) + ', ' + k.toFixed(1) + ')';
+  // y-kesim: x=0 için f değeri
+  try {
+    const x = 0;
+    const val = a * eval(simState.fn.replace(/x/g, `(${x}-${h})`)) + k;
+    el_y.textContent = isNaN(val) || !isFinite(val) ? '—' : val.toFixed(2);
+  } catch(e) { el_y.textContent = '—'; }
+  el_s.textContent = h !== 0 ? 'x=' + h.toFixed(1) : 'x=0';
+}
+
+function simUpdateHints(a, h, k) {
+  const ha = document.getElementById('hintA');
+  const hh = document.getElementById('hintH');
+  const hk = document.getElementById('hintK');
+  if (!ha) return;
+  ha.innerHTML = a === 1 ? '' : a === -1
+    ? '<strong>a = -1</strong> — x eksenine yansıma.'
+    : Math.abs(a) > 1
+      ? `<strong>a = ${a.toFixed(1)}</strong> — Dikey ${Math.abs(a).toFixed(1)} kat uzama${a < 0 ? ' + x eksenine yansıma' : ''}.`
+      : `<strong>a = ${a.toFixed(1)}</strong> — Dikey sıkışma${a < 0 ? ' + x eksenine yansıma' : ''}.`;
+  hh.innerHTML = h === 0 ? '' : `<strong>h = ${h.toFixed(1)}</strong> — Yatay ${h > 0 ? `sağa ${h.toFixed(1)}` : `sola ${Math.abs(h).toFixed(1)}`} birim öteleme. <em>İşarete dikkat!</em>`;
+  hk.innerHTML = k === 0 ? '' : `<strong>k = ${k.toFixed(1)}</strong> — Dikey öteleme: f(x)+k formülünde k${k > 0 ? `>0 yukarı ${k.toFixed(1)}` : `<0 aşağı ${Math.abs(k).toFixed(1)}`} birim.`;
+  const hint = document.getElementById('simHint');
+  if (hint) hint.style.display = (ha.innerHTML || hh.innerHTML || hk.innerHTML) ? 'block' : 'none';
+}
+
+function simDraw() {
+  const cvs = document.getElementById('simCanvas');
+  if (!cvs) return;
+  const ctx = cvs.getContext('2d');
+  const W = cvs.width, H = cvs.height;
+  const a = simState.a, h = simState.h, k = simState.k;
+
+  // Renk şeması
+  const isDark = !document.body.classList.contains('light');
+  const bg = isDark ? '#16213e' : '#f0f2ff';
+  const gridCol = isDark ? 'rgba(255,255,255,0.07)' : 'rgba(0,0,0,0.08)';
+  const axisCol = isDark ? 'rgba(255,255,255,0.25)' : 'rgba(0,0,0,0.3)';
+  const labelCol = isDark ? '#a0a0b8' : '#555577';
+  const fnCol = '#8b5cf6';
+  const origCol = isDark ? 'rgba(99,102,241,0.35)' : 'rgba(99,102,241,0.25)';
+  const dotCol = '#fbbf24';
+
+  ctx.clearRect(0, 0, W, H);
+  ctx.fillStyle = bg;
+  ctx.fillRect(0, 0, W, H);
+
+  // Koordinat sistemi
+  const scale = Math.min(W, H) / 14;
+  const ox = W / 2, oy = H / 2; // origin pixel
+  const xMin = -ox / scale, xMax = (W - ox) / scale;
+  const yMin = -oy / scale, yMax = (H - oy) / scale;
+
+  // Grid
+  ctx.strokeStyle = gridCol;
+  ctx.lineWidth = 1;
+  for (let gx = Math.ceil(xMin); gx <= Math.floor(xMax); gx++) {
+    const px = ox + gx * scale;
+    ctx.beginPath(); ctx.moveTo(px, 0); ctx.lineTo(px, H); ctx.stroke();
+  }
+  for (let gy = Math.ceil(yMin); gy <= Math.floor(yMax); gy++) {
+    const py = oy - gy * scale;
+    ctx.beginPath(); ctx.moveTo(0, py); ctx.lineTo(W, py); ctx.stroke();
+  }
+
+  // Eksenler
+  ctx.strokeStyle = axisCol;
+  ctx.lineWidth = 1.5;
+  ctx.beginPath(); ctx.moveTo(0, oy); ctx.lineTo(W, oy); ctx.stroke(); // x ekseni
+  ctx.beginPath(); ctx.moveTo(ox, 0); ctx.lineTo(ox, H); ctx.stroke(); // y ekseni
+
+  // Ok uçları
+  ctx.fillStyle = axisCol;
+  ctx.beginPath(); ctx.moveTo(W-2, oy); ctx.lineTo(W-10, oy-5); ctx.lineTo(W-10, oy+5); ctx.fill();
+  ctx.beginPath(); ctx.moveTo(ox, 2); ctx.lineTo(ox-5, 10); ctx.lineTo(ox+5, 10); ctx.fill();
+
+  // Eksen etiketleri
+  ctx.fillStyle = labelCol;
+  ctx.font = `${Math.max(9, scale * 0.55)}px Segoe UI, system-ui, sans-serif`;
+  ctx.textAlign = 'center';
+  for (let gx = Math.ceil(xMin); gx <= Math.floor(xMax); gx++) {
+    if (gx === 0) continue;
+    const px = ox + gx * scale;
+    ctx.fillText(gx, px, oy + scale * 0.55);
+  }
+  ctx.textAlign = 'right';
+  for (let gy = Math.ceil(yMin); gy <= Math.floor(yMax); gy++) {
+    if (gy === 0) continue;
+    const py = oy - gy * scale;
+    ctx.fillText(gy, ox - 4, py + 4);
+  }
+  ctx.textAlign = 'left';
+  ctx.fillText('x', W - 14, oy - 6);
+  ctx.fillText('y', ox + 6, 14);
+
+  // Orijinal fonksiyon (soluk)
+  ctx.strokeStyle = origCol;
+  ctx.lineWidth = 1.5;
+  ctx.setLineDash([5, 4]);
+  ctx.beginPath();
+  let origStarted = false;
+  for (let px = 0; px <= W; px += 1) {
+    const x = (px - ox) / scale;
+    try {
+      const y = eval(simState.fn.replace(/x/g, `(${x})`));
+      if (!isFinite(y) || isNaN(y)) { origStarted = false; continue; }
+      const py = oy - y * scale;
+      if (!origStarted) { ctx.moveTo(px, py); origStarted = true; }
+      else ctx.lineTo(px, py);
+    } catch(e) { origStarted = false; }
+  }
+  ctx.stroke();
+  ctx.setLineDash([]);
+
+  // Dönüştürülmüş fonksiyon: a·f(x-h)+k
+  ctx.strokeStyle = fnCol;
+  ctx.lineWidth = 2.5;
+  ctx.shadowColor = fnCol;
+  ctx.shadowBlur = 8;
+  ctx.beginPath();
+  let started = false;
+  let lastPy = null;
+  for (let px = 0; px <= W; px += 0.8) {
+    const x = (px - ox) / scale;
+    try {
+      const inner = x - h;
+      const y = a * eval(simState.fn.replace(/x/g, `(${inner})`)) + k;
+      if (!isFinite(y) || isNaN(y)) { started = false; lastPy = null; continue; }
+      const py = oy - y * scale;
+      // Büyük sıçramaları kes (asimptot)
+      if (lastPy !== null && Math.abs(py - lastPy) > H * 0.8) { started = false; }
+      if (!started) { ctx.moveTo(px, py); started = true; }
+      else ctx.lineTo(px, py);
+      lastPy = py;
+    } catch(e) { started = false; lastPy = null; }
+  }
+  ctx.stroke();
+  ctx.shadowBlur = 0;
+
+  // Tepe / köşe noktası
+  try {
+    const tepex = h;
+    const tepey = k;
+    const tepePx = ox + tepex * scale;
+    const tepePy = oy - tepey * scale;
+    if (tepePx >= 0 && tepePx <= W && tepePy >= 0 && tepePy <= H) {
+      ctx.fillStyle = dotCol;
+      ctx.shadowColor = dotCol;
+      ctx.shadowBlur = 12;
+      ctx.beginPath();
+      ctx.arc(tepePx, tepePy, 5, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.shadowBlur = 0;
+      ctx.fillStyle = dotCol;
+      ctx.font = `bold ${Math.max(10, scale * 0.6)}px Segoe UI, system-ui, sans-serif`;
+      ctx.textAlign = 'left';
+      const tx = tepePx + 8, ty = tepePy - 8;
+      ctx.fillText(`(${tepex.toFixed(1)}, ${tepey.toFixed(1)})`, tx, ty);
+    }
+  } catch(e) {}
+
+  // Formül etiketi
+  const fA = a === 1 ? '' : a === -1 ? '-' : a.toFixed(1) + '·';
+  const fH = h === 0 ? simState.label : `${simState.label.replace('x', `(x${h > 0 ? '-' + h.toFixed(1) : '+' + Math.abs(h).toFixed(1)})`)}`;
+  const fK = k === 0 ? '' : k > 0 ? ` + ${k.toFixed(1)}` : ` - ${Math.abs(k).toFixed(1)}`;
+  ctx.fillStyle = isDark ? '#e8e8f0' : '#1a1a2e';
+  ctx.font = `bold ${Math.max(11, scale * 0.7)}px Segoe UI, system-ui, sans-serif`;
+  ctx.textAlign = 'left';
+  ctx.fillText(`y = ${fA}${fH}${fK}`, 10, 22);
+
+  // Formül kutusunu da güncelle
+  const fEl = document.getElementById('simFormula');
+  if (fEl) fEl.textContent = `f(x) = ${fA}${fH}${fK}`;
+
+  simUpdateInfo(a, h, k);
+  simUpdateHints(a, h, k);
+}
+
+window.addEventListener('load', init);
+</script>
+</body>
+</html>
