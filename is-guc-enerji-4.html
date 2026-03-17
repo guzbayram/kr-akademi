@@ -1075,7 +1075,7 @@ const ALL_Q = [
   {q:'Kucağındaki koliye yatay yürüyen çocuğun taşıma kuvveti (yukarı) hangi işi yapar?', opts:['Pozitif iş','Negatif iş','Sıfır iş','Bilinemez'], ans:2, exp:'Kuvvet dikey, hareket yatay → θ = 90° → cos90° = 0 → W = 0.'},
   {q:'Sürtünme kuvveti 4 N, yol 5 m. Sürtünmenin yaptığı iş?', opts:['20 J','-20 J','0 J','4 J'], ans:1, exp:'Sürtünme harekete karşıt → negatif iş: W = -4×5 = -20 J.'},
   {q:'F-x grafiğinde, x=0-10 m aralığında F=8 N sabitse yapılan iş?', opts:['8 J','80 J','40 J','800 J'], ans:1, exp:'Alan = F × x = 8 × 10 = 80 J.'},
-  {q:'30° açıyla 20 N kuvvet uygulanan cisim 4 m yol alıyor. (cos30°≈0,87) W ≈ ?', opts:['69,2 J','80 J','40 J','34,6 J'], ans:0, exp:'W = 20×4×cos30° = 80×0,87 ≈ 69,2 J.'},
+  {q:'60° açıyla 10 N kuvvet uygulanan cisim 6 m yol alıyor. (cos60°=0,5) W = ?', opts:['30 J','60 J','20 J','10 J'], ans:0, exp:'W = F·Δx·cos60° = 10×6×0,5 = 30 J.'},
   {q:'Net kuvvetin yaptığı iş neye eşittir?', opts:['Potansiyel enerji değişimine','Kinetik enerji değişimine','Toplam enerjiye','Gücün karesi'], ans:1, exp:'Wnet = Fnet·Δx = ΔEK (iş-enerji teoremi).'},
   {q:'F-x grafiğinde üçgen alan oluşuyor: taban 6 m, yükseklik 10 N. İş?', opts:['30 J','60 J','20 J','15 J'], ans:0, exp:'Alan = ½ × taban × yükseklik = ½×6×10 = 30 J.'},
   {q:'Cisim sabit hızla hareket ediyor. Net kuvvetin yaptığı iş?', opts:['Pozitif','Negatif','Sıfır','Bilinemez'], ans:2, exp:'Sabit hız → ivme = 0 → Fnet = 0 → Wnet = 0.'},
@@ -1101,7 +1101,7 @@ const ALL_Q = [
   {q:'Duran cisim hızlanıp 6 m/s\'ye ulaşıyor, EK = 54 J. Kütlesi?', opts:['1 kg','2 kg','3 kg','9 kg'], ans:2, exp:'EK = ½mv² → 54 = ½×m×36 → m = 3 kg.'},
   {q:'Net kuvvet 10 N, cisim 5 m yol alıyor. Kinetik enerji değişimi?', opts:['2 J','50 J','100 J','25 J'], ans:1, exp:'ΔEK = Wnet = Fnet·Δx = 10×5 = 50 J.'},
   {q:'Başlangıç EK = 30 J, net kuvvet -10 J iş yapıyor. Son EK?', opts:['20 J','30 J','40 J','-10 J'], ans:0, exp:'EK_son = EK_ilk + Wnet = 30 + (-10) = 20 J.'},
-  {q:'3 m/s hızlı 4 kg cisim ile 4 m/s hızlı 3 kg cismin EK\'leri?', opts:['Eşit','1. cisim büyük','2. cisim büyük','İkisi de 0'], ans:0, exp:'EK1=½×4×9=18 J, EK2=½×3×16=24 J. Hayır — 2. cisim büyük! EK2=24 > EK1=18.'},
+  {q:'3 m/s hızlı 4 kg cisim ile 4 m/s hızlı 3 kg cismin EK\'leri?', opts:['Eşit','1. cisim büyük','2. cisim büyük','İkisi de 0'], ans:2, exp:'EK1 = ½×4×9 = 18 J, EK2 = ½×3×16 = 24 J → EK2 > EK1 → 2. cismin kinetik enerjisi büyük.'},
 
   // POTANSİYEL ENERJİ (29-35)
   {q:'3 kg cisim yerden 5 m yüksekte. EP? (g=10)', opts:['15 J','30 J','150 J','1500 J'], ans:2, exp:'EP = mgh = 3×10×5 = 150 J.'},
@@ -1117,7 +1117,7 @@ const ALL_Q = [
   {q:'Em = 100 J, EK = 40 J ise EP?', opts:['60 J','140 J','40 J','0 J'], ans:0, exp:'Em = EK + EP → EP = 100 - 40 = 60 J.'},
   {q:'Sürtünmesiz ortamda serbest bırakılan cismin mekanik enerjisi?', opts:['Artar','Azalır','Sabit kalır','Önce artar sonra azalır'], ans:2, exp:'Sürtünmesiz → Em = sabit = EK + EP = korunur.'},
   {q:'Sürtünmeli yüzeyde kayan cismin mekanik enerjisi?', opts:['Artar','Azalır (ısıya dönüşür)','Sabit','2 katı olur'], ans:1, exp:'Sürtünme Em\'yi azaltır. Kaybolan enerji ısıya dönüşür.'},
-  {q:'10 m/s hızlı cisim 3 m yükseliyor (sürtünmesiz). Üstteki hızı? (g=10)', opts:['4 m/s','8 m/s','10 m/s','0 m/s'], ans:1, exp:'½v₁² = ½v₂²+gh → 50 = ½v₂²+30 → v₂² = 40 → v₂≈8 m/s? Doğru: √(100-60)=√40≈6,3. En yakın: 8 m/s değil ama seçenekten A=8 yakın. Gerçek: v²=100-2×10×3=40 → v≈6,3.'},
+  {q:'6 m/s hızlı cisim 1 m yükseliyor (sürtünmesiz, g=10). Üstteki hızı?', opts:['2 m/s','4 m/s','6 m/s','0 m/s'], ans:1, exp:'Em korunur: v₂²=v₁²−2gh = 36−2×10×1 = 36−20 = 16 → v₂=4 m/s'},
   {q:'h=20 m\'den düşen cisim yerde kaç m/s? (g=10)', opts:['10 m/s','20 m/s','√400=20 m/s','200 m/s'], ans:1, exp:'v = √(2gh) = √(2×10×20) = √400 = 20 m/s.'},
   {q:'v=30 m/s ile yukarı fırlatılan cisim maksimum kaç m yükselir? (g=10)', opts:['15 m','30 m','45 m','90 m'], ans:2, exp:'½mv²=mgh → h = v²/(2g) = 900/20 = 45 m.'},
   {q:'Yaydan fırlayan 1 kg cisim (Ey=200 J) sürtünmesiz düzlemde kaç m/s hızla ayrılır?', opts:['10 m/s','20 m/s','200 m/s','√400=20 m/s'], ans:1, exp:'Ey = ½mv² → 200 = ½×1×v² → v² = 400 → v = 20 m/s.'},
@@ -1126,7 +1126,7 @@ const ALL_Q = [
   // KARMA / ZOR (45-50)
   {q:'Asansör 500 kg yükü 2 m/s sabit hızla kaldırıyor. Motor gücü? (g=10)', opts:['1000 W','5000 W','10000 W','25000 W'], ans:2, exp:'F = mg = 500×10 = 5000 N → P = F·v = 5000×2 = 10000 W.'},
   {q:'h=45 m\'den serbest bırakılan cisim L noktasından geçiyor (L yerde). Hız? (g=10)', opts:['30 m/s','20 m/s','15 m/s','45 m/s'], ans:0, exp:'v = √(2×10×45) = √900 = 30 m/s.'},
-  {q:'2 kg cisim 10 m/s ile hareket ediyor, F=6 N uygulanıp 5 m alıyor. Son hız? (Wnet=30 J)', opts:['√130 m/s ≈ 11,4 m/s','10 m/s','15 m/s','√200 m/s'], ans:0, exp:'EK_ilk=½×2×100=100 J. Wnet=30 J → EK_son=130 J → v=√(130)≈11,4 m/s.'},
+  {q:'2 kg cisim durmaktayken F=4 N kuvvet 9 m boyunca uygulanıyor. Cismin son hızı?', opts:['4 m/s','6 m/s','8 m/s','2 m/s'], ans:1, exp:'Wnet = F·Δx = 4×9 = 36 J. EK_son = ½mv² → 36 = ½×2×v² → v² = 36 → v = 6 m/s'},
   {q:'K\'dan 4v hızla geçip L\'den 3v, M\'den v geçen cisim. KL\'de ısı E1, LM\'de E2. E1/E2?', opts:['7/8','7/16','1/2','8/7'], ans:0, exp:'ΔEK_KL = ½m(16v²-9v²)=7/2mv². ΔEK_LM=½m(9v²-v²)=4mv². E1/E2=3,5/4=7/8.'},
   {q:'80 N/m yaylı fırlatıcı, yay 2 m sıkıştırılıyor. 1 kg cisim en fazla kaç m yükselir? (g=10)', opts:['8 m','16 m','32 m','64 m'], ans:1, exp:'Ey = ½×80×4 = 160 J = mgh → h = 160/(1×10) = 16 m.'},
   {q:'%75 verimli motor 10 s\'de 3000 J faydalı iş yapıyor. Toplam güç tüketimi?', opts:['225 W','300 W','400 W','750 W'], ans:2, exp:'P_fayda = 3000/10 = 300 W. P_toplam = 300/0,75 = 400 W.'},
