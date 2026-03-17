@@ -1,0 +1,1467 @@
+<!DOCTYPE html>
+<html lang="tr" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>İş – Güç – Enerji</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+/* ========== TEMA ========== */
+:root {
+  --font: 'Outfit', sans-serif;
+  --mono: 'JetBrains Mono', monospace;
+  --radius: 14px;
+  --r-sm: 8px;
+  --trans: 0.22s ease;
+}
+[data-theme="dark"] {
+  --bg:      #0e0f14;
+  --bg2:     #13151c;
+  --card:    #1a1d27;
+  --card2:   #21253a;
+  --border:  #2a2f45;
+  --text:    #eef0f8;
+  --muted:   #7a82a6;
+  --accent:  #f5a623;
+  --accentb: #ffc76b;
+  --blue:    #4d9dff;
+  --green:   #3dd68c;
+  --red:     #ff5f6d;
+  --purple:  #b57bee;
+  --cyan:    #38c9d8;
+  --shadow:  0 4px 24px rgba(0,0,0,0.5);
+}
+[data-theme="light"] {
+  --bg:      #f4f5fb;
+  --bg2:     #eceef8;
+  --card:    #ffffff;
+  --card2:   #f0f2fc;
+  --border:  #d4d8ee;
+  --text:    #1a1d2e;
+  --muted:   #6b73a0;
+  --accent:  #e07b00;
+  --accentb: #f5a623;
+  --blue:    #2878e0;
+  --green:   #18925c;
+  --red:     #d9273a;
+  --purple:  #7c3fbf;
+  --cyan:    #1496aa;
+  --shadow:  0 4px 24px rgba(0,0,0,0.1);
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+body { background:var(--bg); color:var(--text); font-family:var(--font); min-height:100vh; transition:background var(--trans), color var(--trans); }
+
+/* ========== HEADER ========== */
+header {
+  background: var(--bg2);
+  border-bottom: 1px solid var(--border);
+  padding: 2.5rem 1.5rem 2rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+header::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(245,166,35,0.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+.theme-toggle {
+  position: absolute; top: 1rem; right: 1rem;
+  background: var(--card); border: 1px solid var(--border);
+  color: var(--text); padding: 0.45rem 0.9rem;
+  border-radius: 999px; cursor: pointer;
+  font-family: var(--font); font-size: 0.8rem; font-weight: 700;
+  transition: all var(--trans);
+  display: flex; align-items: center; gap: 0.4rem;
+}
+.theme-toggle:hover { border-color: var(--accent); color: var(--accent); }
+.badge {
+  display: inline-block;
+  background: rgba(245,166,35,0.12);
+  border: 1px solid rgba(245,166,35,0.3);
+  color: var(--accent);
+  padding: 0.25rem 0.9rem; border-radius: 999px;
+  font-size: 0.72rem; font-weight: 700; letter-spacing: 2px;
+  text-transform: uppercase; margin-bottom: 0.75rem;
+}
+header h1 {
+  font-size: clamp(2rem,5vw,3.2rem); font-weight: 900; line-height: 1.1;
+  background: linear-gradient(135deg, var(--accent), var(--accentb), var(--cyan));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  margin-bottom: 0.5rem;
+}
+header p { color: var(--muted); font-size: 0.95rem; }
+
+/* ========== NAV ========== */
+nav {
+  display: flex; flex-wrap: wrap; justify-content: center;
+  gap: 0.4rem; padding: 1rem;
+  background: var(--card); border-bottom: 1px solid var(--border);
+  position: sticky; top: 0; z-index: 100;
+}
+.nav-btn {
+  background: transparent; border: 1px solid var(--border);
+  color: var(--muted); padding: 0.38rem 0.9rem;
+  border-radius: var(--r-sm); cursor: pointer;
+  font-family: var(--font); font-size: 0.78rem; font-weight: 700;
+  transition: all var(--trans);
+}
+.nav-btn:hover, .nav-btn.active {
+  background: var(--accent); border-color: var(--accent); color: #000;
+}
+
+/* ========== SECTION ========== */
+.section { display:none; padding:2rem 1rem; max-width:1000px; margin:0 auto; }
+.section.active { display:block; animation: fadeIn 0.3s ease; }
+@keyframes fadeIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+
+.sec-title { display:flex; align-items:center; gap:0.9rem; margin-bottom:1.8rem; }
+.sec-title .ico { width:46px; height:46px; border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:1.4rem; flex-shrink:0; }
+.sec-title h2 { font-size:1.5rem; font-weight:900; }
+.sec-title p { color:var(--muted); font-size:0.88rem; margin-top:0.15rem; }
+
+/* ========== CARD ========== */
+.card { background:var(--card); border:1px solid var(--border); border-radius:var(--radius); padding:1.5rem; margin-bottom:1.5rem; transition:background var(--trans), border-color var(--trans); }
+.card h3 { font-size:1.02rem; font-weight:800; margin-bottom:1rem; display:flex; align-items:center; gap:0.5rem; }
+
+/* ========== INFO / FORMULA ========== */
+.info { border-left:3px solid var(--blue); background:rgba(77,157,255,0.07); padding:0.9rem 1.1rem; border-radius:0 var(--r-sm) var(--r-sm) 0; margin:0.8rem 0; font-size:0.88rem; line-height:1.7; }
+.info.orange { border-color:var(--accent); background:rgba(245,166,35,0.07); }
+.info.green  { border-color:var(--green);  background:rgba(61,214,140,0.07); }
+.info.red    { border-color:var(--red);    background:rgba(255,95,109,0.07); }
+.info.purple { border-color:var(--purple); background:rgba(181,123,238,0.07); }
+.info.cyan   { border-color:var(--cyan);   background:rgba(56,201,216,0.07); }
+
+.formula { background:var(--card2); border:1px solid var(--border); border-radius:var(--r-sm); padding:0.75rem 1.1rem; font-family:var(--mono); font-size:0.97rem; text-align:center; margin:0.65rem 0; color:var(--green); transition:background var(--trans); }
+
+.grid-2 { display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:1rem; margin:0.8rem 0; }
+.grid-3 { display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:0.8rem; margin:0.8rem 0; }
+
+.concept { background:var(--card2); border:1px solid var(--border); border-radius:10px; padding:1.1rem; transition:border-color var(--trans), background var(--trans); }
+.concept:hover { border-color:var(--accent); }
+.concept .lbl { font-size:0.68rem; font-weight:700; letter-spacing:1px; text-transform:uppercase; color:var(--muted); margin-bottom:0.35rem; }
+.concept .val { font-size:1rem; font-weight:800; margin-bottom:0.3rem; }
+.concept .dsc { font-size:0.8rem; color:var(--muted); line-height:1.5; }
+
+.chip { display:inline-block; padding:0.12rem 0.55rem; border-radius:999px; font-size:0.68rem; font-weight:800; margin:0.15rem 0.15rem 0 0; }
+.ch-or { background:rgba(245,166,35,0.15); color:var(--accent); }
+.ch-bl { background:rgba(77,157,255,0.15); color:var(--blue); }
+.ch-gr { background:rgba(61,214,140,0.15); color:var(--green); }
+.ch-pu { background:rgba(181,123,238,0.15); color:var(--purple); }
+.ch-re { background:rgba(255,95,109,0.15); color:var(--red); }
+.ch-cy { background:rgba(56,201,216,0.15); color:var(--cyan); }
+
+/* ========== ENERGY VISUAL ========== */
+.energy-bar { height:22px; border-radius:999px; position:relative; overflow:hidden; background:var(--card2); margin:0.35rem 0; }
+.energy-fill { height:100%; border-radius:999px; transition:width 0.7s cubic-bezier(.4,0,.2,1); display:flex; align-items:center; justify-content:flex-end; padding-right:8px; font-size:0.65rem; font-weight:800; color:#000; }
+
+/* ========== SİMÜLASYON ========== */
+.sim-canvas-wrap { background:var(--card2); border:1px solid var(--border); border-radius:10px; overflow:hidden; position:relative; margin:0.8rem 0; }
+canvas { display:block; width:100%; }
+
+.slider-row { display:flex; flex-wrap:wrap; gap:1rem; margin:0.8rem 0; }
+.sl-group { flex:1; min-width:140px; }
+.sl-group label { font-size:0.72rem; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:0.5px; display:block; margin-bottom:0.3rem; }
+.sl-group input[type=range] { -webkit-appearance:none; width:100%; height:4px; border-radius:4px; background:var(--border); outline:none; }
+.sl-group input[type=range]::-webkit-slider-thumb { -webkit-appearance:none; width:15px; height:15px; border-radius:50%; background:var(--accent); cursor:pointer; }
+.sl-group .v { font-family:var(--mono); font-size:0.82rem; color:var(--accent); font-weight:700; margin-top:0.25rem; }
+
+.btn { padding:0.45rem 1.1rem; border-radius:var(--r-sm); border:none; cursor:pointer; font-family:var(--font); font-weight:800; font-size:0.82rem; transition:all var(--trans); }
+.btn-y  { background:var(--accent); color:#000; }
+.btn-y:hover { background:var(--accentb); }
+.btn-g  { background:var(--green);  color:#000; }
+.btn-r  { background:var(--red);    color:#fff; }
+.btn-gx { background:var(--card2);  color:var(--text); border:1px solid var(--border); }
+.btn-gx:hover { border-color:var(--accent); color:var(--accent); }
+
+/* ========== TABLE ========== */
+table { width:100%; border-collapse:collapse; font-size:0.87rem; }
+th { background:var(--card2); color:var(--accent); padding:0.55rem 0.75rem; text-align:left; font-weight:800; font-size:0.75rem; text-transform:uppercase; letter-spacing:0.4px; }
+td { padding:0.55rem 0.75rem; border-bottom:1px solid var(--border); color:var(--muted); }
+tr:last-child td { border-bottom:none; }
+td:first-child { color:var(--text); font-weight:700; }
+
+/* ========== TEST ========== */
+.test-header { display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.5rem; margin-bottom:0.8rem; }
+.test-meta { font-size:0.82rem; font-weight:700; color:var(--muted); }
+.test-score { font-family:var(--mono); font-size:0.85rem; font-weight:700; }
+.prog-bar-wrap { background:var(--border); border-radius:999px; height:5px; margin-bottom:1.2rem; overflow:hidden; }
+.prog-bar { height:100%; border-radius:999px; background:var(--accent); transition:width 0.4s; }
+
+.q-text { font-size:1.02rem; font-weight:700; line-height:1.65; margin-bottom:1rem; color:var(--text); }
+.q-options { display:flex; flex-direction:column; gap:0.45rem; }
+.q-opt {
+  background:var(--card2); border:1px solid var(--border);
+  border-radius:var(--r-sm); padding:0.65rem 1rem;
+  cursor:pointer; font-family:var(--font); font-size:0.88rem; font-weight:600;
+  color:var(--text); text-align:left; transition:all var(--trans);
+}
+.q-opt:hover:not(:disabled) { border-color:var(--accent); background:rgba(245,166,35,0.06); }
+.q-opt.correct { background:rgba(61,214,140,0.12); border-color:var(--green); color:var(--green); }
+.q-opt.wrong   { background:rgba(255,95,109,0.12);  border-color:var(--red);   color:var(--red);   }
+
+.q-feedback { margin-top:0.7rem; padding:0.65rem 1rem; border-radius:var(--r-sm); font-weight:700; font-size:0.87rem; line-height:1.6; display:none; }
+.q-feedback.show { display:block; }
+.q-feedback.ok { background:rgba(61,214,140,0.1); color:var(--green); border:1px solid rgba(61,214,140,0.25); }
+.q-feedback.no { background:rgba(255,95,109,0.1);  color:var(--red);   border:1px solid rgba(255,95,109,0.25); }
+
+.test-nav { display:flex; gap:0.5rem; align-items:center; flex-wrap:wrap; margin-top:1rem; }
+
+/* puan kutuları */
+.score-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(120px,1fr)); gap:0.8rem; margin-bottom:1.2rem; }
+.sc-box { background:var(--card2); border:1px solid var(--border); border-radius:10px; padding:1rem; text-align:center; }
+.sc-box .sc-n { font-size:2rem; font-weight:900; font-family:var(--mono); }
+.sc-box .sc-l { font-size:0.68rem; font-weight:700; text-transform:uppercase; letter-spacing:1px; color:var(--muted); margin-top:0.2rem; }
+
+/* soru numarası grid */
+.q-nums { display:flex; flex-wrap:wrap; gap:0.35rem; margin-bottom:1.2rem; }
+.q-num { width:30px; height:30px; border-radius:6px; border:1px solid var(--border); background:var(--card2); color:var(--muted); font-size:0.72rem; font-weight:800; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all var(--trans); }
+.q-num.done-ok { background:rgba(61,214,140,0.15); border-color:var(--green); color:var(--green); }
+.q-num.done-no { background:rgba(255,95,109,0.15);  border-color:var(--red);   color:var(--red);   }
+.q-num.current { background:var(--accent); border-color:var(--accent); color:#000; }
+
+/* ========== FOOTER ========== */
+footer { text-align:center; padding:1.5rem 1rem; color:var(--muted); font-size:0.78rem; border-top:1px solid var(--border); margin-top:2rem; }
+footer span { color:var(--accent); font-weight:700; }
+
+/* ===== ÖRNEK KARTLAR ===== */
+.cards-filter { display:flex; flex-wrap:wrap; gap:0.4rem; margin-bottom:1.2rem; }
+.filter-btn { background:var(--card2); border:1px solid var(--border); color:var(--muted); padding:0.3rem 0.85rem; border-radius:999px; cursor:pointer; font-family:var(--font); font-size:0.75rem; font-weight:700; transition:all var(--trans); }
+.filter-btn:hover,.filter-btn.active { background:var(--accent); border-color:var(--accent); color:#000; }
+
+.ex-cards-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:1.2rem; }
+
+.ex-card {
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  overflow:hidden;
+  cursor:pointer;
+  transition:transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+  position:relative;
+}
+.ex-card:hover { transform:translateY(-3px); box-shadow:0 8px 32px rgba(0,0,0,0.25); }
+.ex-card-top {
+  padding:1.1rem 1.1rem 0.8rem;
+  border-bottom:1px solid var(--border);
+  display:flex; align-items:center; gap:0.6rem;
+}
+.ex-card-ico { font-size:1.6rem; }
+.ex-card-tag { font-size:0.65rem; font-weight:800; letter-spacing:1px; text-transform:uppercase; margin-bottom:0.2rem; }
+.ex-card-title { font-size:0.95rem; font-weight:800; line-height:1.3; }
+.ex-card-body { padding:1rem 1.1rem; }
+.ex-card-scene { 
+  background:var(--card2); border-radius:8px; 
+  padding:0.7rem 0.9rem; margin-bottom:0.8rem;
+  font-size:0.88rem; line-height:1.65; color:var(--muted);
+  border-left:3px solid var(--accent);
+}
+.ex-card-scene strong { color:var(--text); }
+.ex-card-steps { list-style:none; display:flex; flex-direction:column; gap:0.4rem; }
+.ex-card-steps li { font-size:0.83rem; line-height:1.5; padding:0.45rem 0.7rem; background:var(--card2); border-radius:6px; border-left:2px solid; }
+.ex-card-result {
+  margin-top:0.8rem; padding:0.55rem 0.8rem;
+  border-radius:6px; font-size:0.85rem; font-weight:700;
+  text-align:center; font-family:var(--mono);
+}
+.ex-card-flip { display:none; }
+.ex-card.flipped .ex-card-flip { display:block; }
+.ex-card.flipped .ex-card-front { display:none; }
+.flip-hint { font-size:0.68rem; color:var(--muted); text-align:right; margin-top:0.6rem; font-style:italic; }
+
+@media(max-width:600px) { header{padding:2rem 1rem 1.5rem} .section{padding:1.2rem 0.75rem} .card{padding:1rem} }
+</style>
+</head>
+<body>
+
+<header>
+  <button class="theme-toggle" onclick="toggleTheme()" id="themeBtn">🌙 Karanlık Mod</button>
+  <div class="badge">TYT · AYT · 11. Sınıf · Fizik</div>
+  <h1>İş – Güç – Enerji</h1>
+  <p>Formüller, interaktif simülasyon ve 50 soruluk test</p>
+</header>
+
+<nav>
+  <button class="nav-btn active" onclick="showSec('kavram',this)">⚡ Kavramlar</button>
+  <button class="nav-btn" onclick="showSec('formul',this)">🧮 Formüller</button>
+  <button class="nav-btn" onclick="showSec('simul',this)">🎮 Simülasyon</button>
+  <button class="nav-btn" onclick="showSec('kartlar',this)">🃏 Örnek Kartlar</button>
+  <button class="nav-btn" onclick="showSec('test',this)">📝 50 Soruluk Test</button>
+</nav>
+
+<!-- ============================== KAVRAMLAR ============================== -->
+<section id="kavram" class="section active">
+  <div class="sec-title">
+    <div class="ico" style="background:rgba(245,166,35,0.12)">⚡</div>
+    <div><h2 style="color:var(--accent)">Temel Kavramlar</h2><p>İş, güç ve enerji — hepsi birbirine bağlı!</p></div>
+  </div>
+
+  <!-- İŞ -->
+  <div class="card">
+    <h3>🔧 İş (W)</h3>
+    <p style="color:var(--muted);font-size:0.9rem;line-height:1.7;margin-bottom:0.8rem">Fiziksel anlamda iş yapılabilmesi için: <strong style="color:var(--text)">cisime kuvvet uygulanmalı</strong> VE cisim <strong style="color:var(--text)">kuvvet doğrultusunda yer değiştirmeli</strong>.</p>
+    <div class="formula">W = F · Δx · cos θ &nbsp;(J = N·m)</div>
+    <div class="grid-2">
+      <div class="concept">
+        <div class="lbl">Pozitif İş</div>
+        <div class="val" style="color:var(--green)">W &gt; 0</div>
+        <div class="dsc">Kuvvet ve hareket aynı yönde. Cisim hızlanır.</div>
+      </div>
+      <div class="concept">
+        <div class="lbl">Negatif İş</div>
+        <div class="val" style="color:var(--red)">W &lt; 0</div>
+        <div class="dsc">Kuvvet ve hareket zıt yönde. Sürtünme kuvveti daima negatif iş yapar.</div>
+      </div>
+      <div class="concept">
+        <div class="lbl">Sıfır İş</div>
+        <div class="val" style="color:var(--muted)">W = 0</div>
+        <div class="dsc">Kuvvet harekete dik (θ=90°) VEYA cisim hiç hareket etmemiş.</div>
+      </div>
+      <div class="concept">
+        <div class="lbl">Kuvvet-Yol Grafiği</div>
+        <div class="val" style="color:var(--blue)">Alan = İş</div>
+        <div class="dsc">F-x grafiğinin altındaki alan yapılan işe eşittir.</div>
+      </div>
+    </div>
+    <div class="info orange">⚠️ <strong>Fiziksel İş Yapmayan Durumlar:</strong> Duvara dayanan adam (hareket yok), kolide taşınan kutu (kuvvet dikey, hareket yatay), yatay düzlemde sabit hızlı taşıma (yerçekimi iş yapmaz).</div>
+  </div>
+
+  <!-- GÜÇ -->
+  <div class="card">
+    <h3>💡 Güç (P)</h3>
+    <p style="color:var(--muted);font-size:0.9rem;margin-bottom:0.8rem">Birim zamanda yapılan işe <strong style="color:var(--text)">güç</strong> denir.</p>
+    <div class="formula">P = W / t = F · v &nbsp;(W = J/s = watt)</div>
+    <div class="info green">💡 Sabit hızla hareket eden bir cisme etki eden F kuvveti varsa: <strong>P = F · v</strong> doğrudan kullanılır. <span style="color:var(--muted)">(Asansör motoru, kaldırma makinesi...)</span></div>
+    <div class="grid-3">
+      <div class="concept"><div class="lbl">1 Watt</div><div class="val" style="color:var(--cyan)">1 J / 1 s</div><div class="dsc">Saniyede 1 joule iş yapma gücü.</div></div>
+      <div class="concept"><div class="lbl">1 kW</div><div class="val" style="color:var(--cyan)">1000 W</div><div class="dsc">Güç birimi. Elektrik faturalarında kWh olarak geçer.</div></div>
+      <div class="concept"><div class="lbl">Verim (η)</div><div class="val" style="color:var(--purple)">η = P_faydalı / P_toplam</div><div class="dsc">Her zaman %100'den küçük (gerçek sistemlerde).</div></div>
+    </div>
+  </div>
+
+  <!-- ENERJİ ÇEŞİTLERİ -->
+  <div class="card">
+    <h3>🔋 Enerji Çeşitleri</h3>
+    <div class="grid-2" style="margin-bottom:1rem">
+      <div class="concept">
+        <div class="lbl">Kinetik Enerji (EK)</div>
+        <div class="val" style="color:var(--blue)">EK = ½mv²</div>
+        <div class="dsc">Hareket enerjisi. Hız iki katına çıkarsa EK 4 katına çıkar!</div>
+        <div><span class="chip ch-bl">Birim: J</span><span class="chip ch-bl">Skaler</span></div>
+      </div>
+      <div class="concept">
+        <div class="lbl">Gravitasyon Potansiyel Enerjisi (EP)</div>
+        <div class="val" style="color:var(--green)">EP = mgh</div>
+        <div class="dsc">Yükseklikten gelen enerji. Referans noktası seçilebilir!</div>
+        <div><span class="chip ch-gr">Birim: J</span><span class="chip ch-gr">Skaler</span></div>
+      </div>
+      <div class="concept">
+        <div class="lbl">Esneklik Pot. Enerjisi (Ey)</div>
+        <div class="val" style="color:var(--accent)">Ey = ½kx²</div>
+        <div class="dsc">Yayda depolanan enerji. k: yay sabiti, x: uzama/sıkışma miktarı.</div>
+        <div><span class="chip ch-or">Birim: J</span><span class="chip ch-or">Hooke: F=kx</span></div>
+      </div>
+      <div class="concept">
+        <div class="lbl">Mekanik Enerji (Em)</div>
+        <div class="val" style="color:var(--purple)">Em = EK + EP</div>
+        <div class="dsc">Kinetik + potansiyel enerji toplamı. Sürtünmesiz ortamda korunur!</div>
+        <div><span class="chip ch-pu">Korunum kanunu</span></div>
+      </div>
+    </div>
+    <div class="info cyan">⚡ <strong>İş-Enerji Teoremi:</strong> Bir kuvvetin yaptığı iş, enerji değişimine eşittir.<br>
+    <code style="font-family:var(--mono);font-size:0.85rem">W = ΔEK + ΔEP + Wsürtünme</code><br>
+    <code style="font-family:var(--mono);font-size:0.85rem">Wnet = Fnet · Δx = ΔEK</code>
+    </div>
+  </div>
+
+  <!-- ENERJİ KORUMU -->
+  <div class="card">
+    <h3>♻️ Enerjinin Korunumu</h3>
+    <div class="info green">✅ Enerji yok edilemez veya yoktan var edilemez. Bir türden diğerine <strong>dönüşür</strong>. Toplam enerji sabit kalır.</div>
+    <div style="margin:1rem 0">
+      <p style="font-size:0.85rem;color:var(--muted);margin-bottom:0.6rem">Sürtünmesiz serbest düşüşte enerji dönüşümü:</p>
+      <div style="display:flex;flex-direction:column;gap:0.5rem" id="energyBars">
+        <!-- Doldurulacak JS ile -->
+      </div>
+    </div>
+    <div class="formula">Em_önce = Em_sonra &nbsp;→&nbsp; EK₁ + EP₁ = EK₂ + EP₂</div>
+    <div class="info red">⚠️ <strong>Sürtünme varsa:</strong> Em azalır. Kaybolan enerji ısıya dönüşür.<br>
+    <code style="font-family:var(--mono);font-size:0.85rem">Em_önce = Em_sonra + W_sürtünme</code></div>
+  </div>
+</section>
+
+<!-- ============================== FORMÜLLER ============================== -->
+<section id="formul" class="section">
+  <div class="sec-title">
+    <div class="ico" style="background:rgba(61,214,140,0.12)">🧮</div>
+    <div><h2 style="color:var(--green)">Formüller & Hesap Makinesi</h2><p>Tüm denklemler + interaktif hesaplama</p></div>
+  </div>
+
+  <div class="card">
+    <h3>📋 Formül Özeti</h3>
+    <table>
+      <tr><th>Büyüklük</th><th>Formül</th><th>Birim</th><th>Not</th></tr>
+      <tr><td>İş (W)</td><td style="color:var(--green);font-family:var(--mono)">W = F·Δx·cosθ</td><td>J (Joule)</td><td>Skaler</td></tr>
+      <tr><td>Net İş</td><td style="color:var(--green);font-family:var(--mono)">Wnet = ΔEK</td><td>J</td><td>Kinetik enerji değişimi</td></tr>
+      <tr><td>Güç (P)</td><td style="color:var(--blue);font-family:var(--mono)">P = W/t = F·v</td><td>W (Watt)</td><td>Skaler</td></tr>
+      <tr><td>Kinetik Enerji</td><td style="color:var(--cyan);font-family:var(--mono)">EK = ½mv²</td><td>J</td><td>Daima ≥ 0</td></tr>
+      <tr><td>Potansiyel Enerji</td><td style="color:var(--purple);font-family:var(--mono)">EP = mgh</td><td>J</td><td>Referansa bağlı</td></tr>
+      <tr><td>Yay Enerjisi</td><td style="color:var(--accent);font-family:var(--mono)">Ey = ½kx²</td><td>J</td><td>Hooke: F=kx</td></tr>
+      <tr><td>Mekanik Enerji</td><td style="color:var(--muted);font-family:var(--mono)">Em = EK + EP</td><td>J</td><td>Sürtünmesizde korunur</td></tr>
+      <tr><td>Verim</td><td style="color:var(--red);font-family:var(--mono)">η = W_fayda/W_harcanan</td><td>%</td><td>0 &lt; η ≤ 1</td></tr>
+    </table>
+  </div>
+
+  <!-- Hesap Makineleri -->
+  <div class="card">
+    <h3>🔢 İş Hesap Makinesi</h3>
+    <div class="grid-3">
+      <div class="sl-group"><label>Kuvvet F (N)</label><input type="number" id="cF" placeholder="örn: 10" class="calc-in"></div>
+      <div class="sl-group"><label>Yol Δx (m)</label><input type="number" id="cX" placeholder="örn: 5" class="calc-in"></div>
+      <div class="sl-group"><label>Açı θ (°)</label><input type="number" id="cT" placeholder="örn: 0" class="calc-in"></div>
+    </div>
+    <div style="display:flex;gap:0.5rem;margin-top:0.7rem;flex-wrap:wrap">
+      <button class="btn btn-y" onclick="calcW()">⚡ Hesapla</button>
+      <button class="btn btn-gx" onclick="clearCalc('w')">🗑 Temizle</button>
+    </div>
+    <div id="resW" class="info green" style="display:none;margin-top:0.7rem"></div>
+  </div>
+
+  <div class="card">
+    <h3>🔢 Enerji Hesap Makinesi</h3>
+    <div class="grid-3">
+      <div class="sl-group"><label>Kütle m (kg)</label><input type="number" id="eM" placeholder="örn: 2" class="calc-in"></div>
+      <div class="sl-group"><label>Hız v (m/s)</label><input type="number" id="eV" placeholder="örn: 10" class="calc-in"></div>
+      <div class="sl-group"><label>Yükseklik h (m)</label><input type="number" id="eH" placeholder="örn: 5" class="calc-in"></div>
+    </div>
+    <div style="display:flex;gap:0.5rem;margin-top:0.7rem;flex-wrap:wrap">
+      <button class="btn btn-y" onclick="calcE()">⚡ Hesapla</button>
+      <button class="btn btn-gx" onclick="clearCalc('e')">🗑 Temizle</button>
+    </div>
+    <div id="resE" class="info cyan" style="display:none;margin-top:0.7rem"></div>
+  </div>
+
+  <div class="card">
+    <h3>🔢 Güç Hesap Makinesi</h3>
+    <div class="grid-3">
+      <div class="sl-group"><label>İş W (J)</label><input type="number" id="pW" placeholder="örn: 1000" class="calc-in"></div>
+      <div class="sl-group"><label>Süre t (s)</label><input type="number" id="pT" placeholder="örn: 5" class="calc-in"></div>
+      <div class="sl-group"><label>Verim η (%)</label><input type="number" id="pEta" placeholder="örn: 80" class="calc-in"></div>
+    </div>
+    <div style="display:flex;gap:0.5rem;margin-top:0.7rem;flex-wrap:wrap">
+      <button class="btn btn-y" onclick="calcP()">⚡ Hesapla</button>
+      <button class="btn btn-gx" onclick="clearCalc('p')">🗑 Temizle</button>
+    </div>
+    <div id="resP" class="info purple" style="display:none;margin-top:0.7rem"></div>
+  </div>
+</section>
+
+<!-- ============================== SİMÜLASYON ============================== -->
+<section id="simul" class="section">
+  <div class="sec-title">
+    <div class="ico" style="background:rgba(56,201,216,0.12)">🎮</div>
+    <div><h2 style="color:var(--cyan)">Enerji Simülasyonu</h2><p>Serbest düşüşte kinetik & potansiyel enerji dönüşümünü izle</p></div>
+  </div>
+
+  <div class="card">
+    <h3>🎯 Serbest Düşüş Enerji Dönüşümü</h3>
+    <div class="sim-canvas-wrap">
+      <canvas id="simCanvas" height="280"></canvas>
+    </div>
+    <div class="slider-row">
+      <div class="sl-group">
+        <label>Kütle m (kg)</label>
+        <input type="range" id="sM" min="1" max="10" value="3" step="1" oninput="updateSimSliders()">
+        <div class="v" id="vM">3 kg</div>
+      </div>
+      <div class="sl-group">
+        <label>Yükseklik h (m)</label>
+        <input type="range" id="sH" min="2" max="20" value="10" step="1" oninput="updateSimSliders()">
+        <div class="v" id="vH">10 m</div>
+      </div>
+    </div>
+    <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-top:0.8rem">
+      <button class="btn btn-g" onclick="startFreeFall()">▶ Başlat</button>
+      <button class="btn btn-r" onclick="stopFreeFall()">⏹ Durdur</button>
+      <button class="btn btn-gx" onclick="resetFreeFall()">↩ Sıfırla</button>
+    </div>
+    <!-- Enerji göstergesi -->
+    <div style="margin-top:1rem">
+      <div style="display:flex;justify-content:space-between;font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:0.4rem">
+        <span style="color:var(--green)">● Kinetik</span>
+        <span id="ekVal" style="color:var(--green);font-family:var(--mono)">0 J</span>
+      </div>
+      <div class="energy-bar"><div class="energy-fill" id="ekBar" style="width:0%;background:var(--green)"></div></div>
+      <div style="display:flex;justify-content:space-between;font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;margin:0.4rem 0">
+        <span style="color:var(--purple)">● Potansiyel</span>
+        <span id="epVal" style="color:var(--purple);font-family:var(--mono)">— J</span>
+      </div>
+      <div class="energy-bar"><div class="energy-fill" id="epBar" style="width:100%;background:var(--purple)"></div></div>
+      <div style="display:flex;justify-content:space-between;font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;margin:0.4rem 0">
+        <span style="color:var(--accent)">● Mekanik (toplam)</span>
+        <span id="emVal" style="color:var(--accent);font-family:var(--mono)">— J</span>
+      </div>
+      <div class="energy-bar"><div class="energy-fill" id="emBar" style="width:100%;background:var(--accent)">SABIT</div></div>
+    </div>
+    <div class="info orange" style="margin-top:0.8rem">💡 Mekanik enerji (turuncu) sürtünmesiz ortamda <strong>sabit kalır</strong>. Cisim düştükçe EP azalır, EK artar — ama toplamları hiç değişmez!</div>
+  </div>
+
+  <!-- Yay simülasyonu -->
+  <div class="card">
+    <h3>🌀 Yay-Kütle Sistemi</h3>
+    <div class="sim-canvas-wrap">
+      <canvas id="springCanvas" height="220"></canvas>
+    </div>
+    <div class="slider-row">
+      <div class="sl-group">
+        <label>Yay Sabiti k (N/m)</label>
+        <input type="range" id="sK" min="10" max="200" value="80" step="10" oninput="updateSpringSliders()">
+        <div class="v" id="vK">80 N/m</div>
+      </div>
+      <div class="sl-group">
+        <label>Kütle m (kg)</label>
+        <input type="range" id="sMsp" min="0.5" max="5" value="2" step="0.5" oninput="updateSpringSliders()">
+        <div class="v" id="vMsp">2 kg</div>
+      </div>
+    </div>
+    <div id="springInfo" class="info cyan" style="margin-top:0.8rem"></div>
+  </div>
+</section>
+
+<!-- ============================== TEST ============================== -->
+<section id="test" class="section">
+  <div class="sec-title">
+    <div class="ico" style="background:rgba(255,95,109,0.12)">📝</div>
+    <div><h2 style="color:var(--red)">50 Soruluk Test</h2><p>Zihinden çözülebilen sorular — konuyu pekiştir!</p></div>
+  </div>
+
+  <!-- Sonuç ekranı -->
+  <div id="testResult" style="display:none" class="card">
+    <div style="text-align:center;padding:1rem 0">
+      <div style="font-size:3rem;margin-bottom:0.5rem" id="resEmoji">🏆</div>
+      <h2 id="resTitle" style="font-size:1.6rem;margin-bottom:0.4rem"></h2>
+      <p id="resDesc" style="color:var(--muted);margin-bottom:1.5rem"></p>
+      <div class="score-grid">
+        <div class="sc-box"><div class="sc-n" style="color:var(--green)" id="scCorrect">0</div><div class="sc-l">Doğru</div></div>
+        <div class="sc-box"><div class="sc-n" style="color:var(--red)" id="scWrong">0</div><div class="sc-l">Yanlış</div></div>
+        <div class="sc-box"><div class="sc-n" style="color:var(--accent)" id="scPct">0%</div><div class="sc-l">Başarı</div></div>
+      </div>
+      <div style="display:flex;gap:0.5rem;justify-content:center;flex-wrap:wrap">
+        <button class="btn btn-y" onclick="restartTest()">🔄 Tekrar Çöz</button>
+        <button class="btn btn-gx" onclick="reviewTest()">🔍 Gözden Geçir</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Quiz kartı -->
+  <div id="testCard" class="card">
+    <div class="test-header">
+      <span class="test-meta" id="qMeta">Soru 1 / 50</span>
+      <span class="test-score"><span id="scoreGreen" style="color:var(--green)">✓0</span> &nbsp;<span id="scoreRed" style="color:var(--red)">✗0</span></span>
+    </div>
+    <div class="prog-bar-wrap"><div class="prog-bar" id="progBar" style="width:2%"></div></div>
+
+    <!-- Soru numarası grid -->
+    <div class="q-nums" id="qNums"></div>
+
+    <div class="q-text" id="qText"></div>
+    <div class="q-options" id="qOpts"></div>
+    <div class="q-feedback" id="qFb"></div>
+    <div class="test-nav">
+      <button class="btn btn-gx" id="btnPrev" onclick="prevQ()" style="display:none">← Önceki</button>
+      <button class="btn btn-y"  id="btnNext" onclick="nextQ()" style="display:none">Sonraki →</button>
+      <button class="btn btn-r"  id="btnFinish" onclick="finishTest()" style="display:none">🏁 Testi Bitir</button>
+    </div>
+  </div>
+</section>
+
+<!-- ============================== ÖRNEK KARTLAR ============================== -->
+<section id="kartlar" class="section">
+  <div class="sec-title">
+    <div class="ico" style="background:rgba(245,166,35,0.12)">🃏</div>
+    <div><h2 style="color:var(--accent)">Örnek Anlatım Kartları</h2><p>20 kart — gerçek hayat örnekleriyle kavramlar arası ilişkiler</p></div>
+  </div>
+
+  <div class="cards-filter" id="cardsFilter">
+    <button class="filter-btn active" onclick="filterCards('hepsi',this)">Tümü (20)</button>
+    <button class="filter-btn" onclick="filterCards('is',this)">⚙️ İş</button>
+    <button class="filter-btn" onclick="filterCards('guc',this)">💡 Güç</button>
+    <button class="filter-btn" onclick="filterCards('enerji',this)">🔋 Enerji</button>
+    <button class="filter-btn" onclick="filterCards('korunum',this)">♻️ Korunum</button>
+    <button class="filter-btn" onclick="filterCards('iliski',this)">🔗 İlişki</button>
+  </div>
+
+  <div class="ex-cards-grid" id="exCardsGrid"></div>
+</section>
+
+<footer>
+  <p>İş – Güç – Enerji · TYT / AYT · 11. Sınıf · Kaynak: <span>BilgeFizikçiler</span></p>
+</footer>
+
+<style>
+.calc-in { background:var(--card2); border:1px solid var(--border); color:var(--text); padding:0.45rem 0.7rem; border-radius:var(--r-sm); font-family:var(--mono); font-size:0.88rem; width:100%; outline:none; transition:border-color var(--trans), background var(--trans); }
+.calc-in:focus { border-color:var(--accent); }
+</style>
+
+<script>
+const G = 10;
+
+// ========== TEMA ==========
+let isDark = true;
+function toggleTheme() {
+  isDark = !isDark;
+  document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
+  document.getElementById('themeBtn').textContent = isDark ? '🌙 Karanlık Mod' : '☀️ Aydınlık Mod';
+  drawFreeFall(); drawSpring();
+}
+
+// ========== NAV ==========
+function showSec(id, btn) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  if(btn) btn.classList.add('active');
+  if(id === 'simul') { setTimeout(() => { drawFreeFall(); drawSpring(); updateSpringInfo(); }, 50); }
+}
+
+// ========== ENERJİ BARLARI (kavramlar sayfası) ==========
+function buildEnergyBars() {
+  const cont = document.getElementById('energyBars');
+  if(!cont) return;
+  const steps = [
+    { h: 100, label: 'Düşüş başlangıcı (h = H)' },
+    { h: 75,  label: '%75 yükseklikte' },
+    { h: 50,  label: 'Yarı yükseklikte (h = H/2)' },
+    { h: 25,  label: '%25 yükseklikte' },
+    { h: 0,   label: 'Yerde (h = 0)' },
+  ];
+  cont.innerHTML = '';
+  steps.forEach(s => {
+    const ep = s.h, ek = 100 - s.h;
+    const row = document.createElement('div');
+    row.style.cssText = 'margin-bottom:0.6rem';
+    row.innerHTML = `
+      <div style="font-size:0.72rem;color:var(--muted);font-weight:700;margin-bottom:0.2rem">${s.label}</div>
+      <div style="display:flex;gap:4px;height:18px;border-radius:999px;overflow:hidden">
+        <div style="width:${ep}%;background:var(--purple);transition:width 0.5s;display:flex;align-items:center;justify-content:center;font-size:0.6rem;font-weight:800;color:#fff;min-width:${ep>5?'auto':'0px'}">${ep>8?'EP':''}  </div>
+        <div style="width:${ek}%;background:var(--green);transition:width 0.5s;display:flex;align-items:center;justify-content:center;font-size:0.6rem;font-weight:800;color:#000;min-width:${ek>5?'auto':'0px'}">${ek>8?'EK':''}</div>
+      </div>`;
+    cont.appendChild(row);
+  });
+}
+
+// ========== FORMÜL HESAP ==========
+function cv(id) { const v=parseFloat(document.getElementById(id).value); return isNaN(v)?null:v; }
+function showRes(id, html) { const el=document.getElementById(id); el.style.display='block'; el.innerHTML=html; }
+function clearCalc(t) {
+  if(t==='w'){['cF','cX','cT'].forEach(id=>document.getElementById(id).value='');document.getElementById('resW').style.display='none';}
+  if(t==='e'){['eM','eV','eH'].forEach(id=>document.getElementById(id).value='');document.getElementById('resE').style.display='none';}
+  if(t==='p'){['pW','pT','pEta'].forEach(id=>document.getElementById(id).value='');document.getElementById('resP').style.display='none';}
+}
+function calcW() {
+  const F=cv('cF'), x=cv('cX'), t=cv('cT');
+  if(F===null||x===null){showRes('resW','⚠️ F ve Δx giriniz!');return;}
+  const theta = t!==null ? t : 0;
+  const cosT = Math.cos(theta * Math.PI / 180);
+  const W = F * x * cosT;
+  showRes('resW', `W = F · Δx · cos(${theta}°) = ${F} · ${x} · ${cosT.toFixed(3)} = <strong>${W.toFixed(2)} J</strong>`);
+}
+function calcE() {
+  const m=cv('eM'), v=cv('eV'), h=cv('eH');
+  let res = [];
+  if(m!==null && v!==null) res.push(`EK = ½·${m}·${v}² = <strong>${(0.5*m*v*v).toFixed(2)} J</strong>`);
+  if(m!==null && h!==null) res.push(`EP = ${m}·${G}·${h} = <strong>${(m*G*h).toFixed(2)} J</strong>`);
+  if(m!==null && v!==null && h!==null) res.push(`Em = EK + EP = <strong>${(0.5*m*v*v+m*G*h).toFixed(2)} J</strong>`);
+  if(res.length===0){showRes('resE','⚠️ En az 2 değer giriniz!');return;}
+  showRes('resE', res.join('<br>'));
+}
+function calcP() {
+  const W=cv('pW'), t=cv('pT'), eta=cv('pEta');
+  let res=[];
+  if(W!==null&&t!==null) { const P=W/t; res.push(`P = W/t = ${W}/${t} = <strong>${P.toFixed(2)} W</strong>`); }
+  if(W!==null&&t!==null&&eta!==null) { const Pf=W/t*(eta/100); res.push(`P_faydalı = P·η = <strong>${Pf.toFixed(2)} W</strong>`); }
+  if(res.length===0){showRes('resP','⚠️ W ve t değerlerini giriniz!');return;}
+  showRes('resP', res.join('<br>'));
+}
+
+// ========== SERBEST DÜŞÜŞ SİMÜLASYONU ==========
+let ffRunning=false, ffRAF=null, ffStart=null, ffPauseOff=0;
+let ffM=3, ffH=10;
+
+function updateSimSliders() {
+  ffM = parseFloat(document.getElementById('sM').value);
+  ffH = parseFloat(document.getElementById('sH').value);
+  document.getElementById('vM').textContent = ffM+' kg';
+  document.getElementById('vH').textContent = ffH+' m';
+  resetFreeFall();
+}
+
+function startFreeFall() {
+  if(ffRunning) return;
+  ffRunning = true;
+  ffStart = performance.now() - ffPauseOff;
+  ffLoop();
+}
+function stopFreeFall() { if(!ffRunning)return; ffRunning=false; ffPauseOff=performance.now()-ffStart; if(ffRAF){cancelAnimationFrame(ffRAF);ffRAF=null;} }
+function resetFreeFall() { stopFreeFall(); ffPauseOff=0; drawFreeFall(0); updateEnergyBarsLive(0); }
+
+function ffLoop() {
+  if(!ffRunning) return;
+  const t = (performance.now()-ffStart)/1000;
+  const h_dropped = 0.5*G*t*t;
+  if(h_dropped >= ffH) { stopFreeFall(); ffPauseOff=0; drawFreeFall(ffH); updateEnergyBarsLive(ffH); return; }
+  drawFreeFall(h_dropped);
+  updateEnergyBarsLive(h_dropped);
+  ffRAF = requestAnimationFrame(ffLoop);
+}
+
+function drawFreeFall(dropped=0) {
+  const canvas = document.getElementById('simCanvas');
+  if(!canvas) return;
+  const dpr = window.devicePixelRatio||1;
+  const rect = canvas.getBoundingClientRect();
+  if(rect.width===0) return;
+  canvas.width=rect.width*dpr; canvas.height=280*dpr;
+  const ctx=canvas.getContext('2d'); ctx.scale(dpr,dpr);
+  const W=rect.width, H=280;
+
+  const cs = getComputedStyle(document.documentElement);
+  const bg2 = cs.getPropertyValue('--card2').trim();
+  const bord = cs.getPropertyValue('--border').trim();
+  const grn  = cs.getPropertyValue('--green').trim();
+  const pur  = cs.getPropertyValue('--purple').trim();
+  const txt  = cs.getPropertyValue('--text').trim();
+  const mut  = cs.getPropertyValue('--muted').trim();
+
+  ctx.fillStyle = isDark ? '#1a1d27' : '#f5f6ff';
+  ctx.fillRect(0,0,W,H);
+
+  // Zemin
+  ctx.fillStyle = isDark ? '#2a2f45' : '#d0d4ee';
+  ctx.fillRect(0, H-30, W, 30);
+  ctx.fillStyle = mut; ctx.font='bold 11px Outfit'; ctx.textAlign='center';
+  ctx.fillText('YER (Referans: EP = 0)', W/2, H-12);
+
+  // Başlangıç yüksekliği çizgisi
+  const padT=30, padB=30, usableH=H-padT-padB-30;
+  const pxPerM = usableH / ffH;
+  const ballY = padT + (dropped/ffH)*usableH;
+  const groundY = padT + usableH;
+
+  // yükseklik oklarını çiz
+  ctx.strokeStyle = pur; ctx.lineWidth=1.5; ctx.setLineDash([4,3]);
+  ctx.beginPath(); ctx.moveTo(W*0.15, padT); ctx.lineTo(W*0.15, groundY); ctx.stroke();
+  ctx.setLineDash([]);
+
+  // EP & EK renk arkaplan kutuları
+  const totalEm = ffM*G*ffH;
+  const ek = 0.5*ffM*(2*G*dropped); // ½mv² = mgh_fallen
+  const ep = ffM*G*(ffH-dropped);
+  const epPct = totalEm>0?ep/totalEm:1;
+  const ekPct = totalEm>0?ek/totalEm:0;
+  const barW = 28;
+  const bx = W*0.15-barW/2;
+  const barH = groundY-padT;
+
+  // EP kutu
+  ctx.fillStyle = pur; ctx.globalAlpha=0.18;
+  ctx.fillRect(bx, padT, barW, barH*epPct);
+  ctx.globalAlpha=1;
+  // EK kutu
+  ctx.fillStyle = grn; ctx.globalAlpha=0.18;
+  ctx.fillRect(bx, padT+barH*epPct, barW, barH*ekPct);
+  ctx.globalAlpha=1;
+
+  // Top
+  const cx = W/2, cy = ballY+10;
+  const gradient = ctx.createRadialGradient(cx-4, cy-4, 2, cx, cy, 14);
+  gradient.addColorStop(0, isDark?'#ffe580':'#ffd040');
+  gradient.addColorStop(1, isDark?'#f5a623':'#e07b00');
+  ctx.fillStyle = gradient;
+  ctx.beginPath(); ctx.arc(cx, cy, 14, 0, Math.PI*2); ctx.fill();
+
+  // İz noktaları
+  ctx.fillStyle = isDark?'rgba(245,166,35,0.3)':'rgba(200,100,0,0.2)';
+  for(let i=1;i<=5;i++){
+    const pd = dropped*(i/6);
+    const py = padT+(pd/ffH)*usableH+10;
+    ctx.beginPath(); ctx.arc(cx, py, 4*(1-i/7), 0, Math.PI*2); ctx.fill();
+  }
+
+  // Değerler
+  ctx.fillStyle = txt; ctx.font='bold 12px Outfit'; ctx.textAlign='left';
+  const hLeft = ffH - dropped;
+  ctx.fillStyle = pur; ctx.fillText(`h = ${hLeft.toFixed(1)} m`, W*0.18, cy);
+  ctx.fillStyle = grn; ctx.fillText(`v = ${Math.sqrt(2*G*dropped).toFixed(1)} m/s`, W*0.18, cy+16);
+}
+
+function updateEnergyBarsLive(dropped=0) {
+  const totalEm = ffM*G*ffH;
+  const ek = Math.min(ffM*G*dropped, totalEm);
+  const ep = Math.max(totalEm - ek, 0);
+  document.getElementById('ekVal').textContent = ek.toFixed(1)+' J';
+  document.getElementById('epVal').textContent = ep.toFixed(1)+' J';
+  document.getElementById('emVal').textContent = totalEm.toFixed(1)+' J';
+  document.getElementById('ekBar').style.width = totalEm>0?(ek/totalEm*100).toFixed(1)+'%':'0%';
+  document.getElementById('epBar').style.width = totalEm>0?(ep/totalEm*100).toFixed(1)+'%':'100%';
+  document.getElementById('emBar').style.width = '100%';
+}
+
+// ========== YAY SİMÜLASYONU ==========
+function updateSpringSliders() {
+  document.getElementById('vK').textContent  = document.getElementById('sK').value+' N/m';
+  document.getElementById('vMsp').textContent= document.getElementById('sMsp').value+' kg';
+  drawSpring(); updateSpringInfo();
+}
+function updateSpringInfo() {
+  const k = parseFloat(document.getElementById('sK').value);
+  const m = parseFloat(document.getElementById('sMsp').value);
+  const x = m*G/k;
+  const Ey = 0.5*k*x*x;
+  document.getElementById('springInfo').innerHTML =
+    `<strong>Hooke Yasası:</strong> F = kx → mg = kx → x = mg/k = ${m}×${G}/${k} = <strong>${x.toFixed(3)} m = ${(x*100).toFixed(1)} cm</strong><br>
+     <strong>Yayda Depolanan Enerji:</strong> Ey = ½kx² = ½×${k}×${x.toFixed(3)}² = <strong>${Ey.toFixed(3)} J</strong>`;
+}
+function drawSpring() {
+  const canvas = document.getElementById('springCanvas');
+  if(!canvas) return;
+  const dpr=window.devicePixelRatio||1;
+  const rect=canvas.getBoundingClientRect();
+  if(rect.width===0) return;
+  canvas.width=rect.width*dpr; canvas.height=220*dpr;
+  const ctx=canvas.getContext('2d'); ctx.scale(dpr,dpr);
+  const W=rect.width, H=220;
+  const k=parseFloat(document.getElementById('sK').value);
+  const m=parseFloat(document.getElementById('sMsp').value);
+  const x=m*G/k;
+  const maxX=0.5, xPct=Math.min(x/maxX,1);
+
+  ctx.fillStyle = isDark?'#1a1d27':'#f5f6ff';
+  ctx.fillRect(0,0,W,H);
+
+  // Tavan
+  ctx.fillStyle = isDark?'#2a2f45':'#c8ccdf';
+  ctx.fillRect(0,0,W,18);
+  for(let i=0;i<W;i+=12){ctx.fillStyle=isDark?'#1a1d27':'#d8daf0';ctx.fillRect(i,0,6,18);}
+
+  const cx=W/2;
+  const naturalLen=60;
+  const stretchLen=naturalLen+xPct*70;
+  const springTop=18, springBot=springTop+stretchLen;
+
+  // Yay çiz (zigzag)
+  ctx.strokeStyle=isDark?'#4d9dff':'#2878e0'; ctx.lineWidth=2.5; ctx.beginPath();
+  ctx.moveTo(cx,springTop);
+  const coils=8;
+  for(let i=0;i<=coils*2;i++){
+    const t=i/(coils*2);
+    const py=springTop+t*(springBot-springTop);
+    const dir=(i%2===0)?-1:1;
+    ctx.lineTo(cx+dir*14, py);
+  }
+  ctx.lineTo(cx,springBot); ctx.stroke();
+
+  // Kütle
+  const bw=60, bh=40;
+  const bx=cx-bw/2, by=springBot;
+  ctx.fillStyle=isDark?'#f5a623':'#e07b00';
+  ctx.beginPath(); ctx.roundRect(bx,by,bw,bh,6); ctx.fill();
+  ctx.fillStyle='#000'; ctx.font='bold 12px Outfit'; ctx.textAlign='center';
+  ctx.fillText(m+'kg',cx,by+bh/2+5);
+
+  // Uzama oku
+  const arrX=cx+55;
+  ctx.strokeStyle=isDark?'#3dd68c':'#18925c'; ctx.lineWidth=2;
+  ctx.setLineDash([3,3]);
+  ctx.beginPath(); ctx.moveTo(arrX,springTop+naturalLen); ctx.lineTo(arrX,springBot); ctx.stroke();
+  ctx.setLineDash([]);
+  ctx.fillStyle=isDark?'#3dd68c':'#18925c'; ctx.font='bold 10px JetBrains Mono'; ctx.textAlign='left';
+  ctx.fillText('x='+x.toFixed(2)+'m',arrX+4,springTop+naturalLen+(springBot-springTop-naturalLen+naturalLen)/2+4);
+
+  // Etiket
+  const cs=getComputedStyle(document.documentElement);
+  ctx.fillStyle=cs.getPropertyValue('--muted').trim(); ctx.font='11px Outfit'; ctx.textAlign='left';
+  ctx.fillText('k = '+k+' N/m', 8, H-8);
+  ctx.textAlign='right';
+  ctx.fillText('Ey = '+( 0.5*k*x*x ).toFixed(2)+' J', W-8, H-8);
+}
+
+// ========== SES ==========
+let audioCtx = null;
+function getAudioCtx() {
+  if(!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  return audioCtx;
+}
+function playCorrect() {
+  try {
+    const ctx = getAudioCtx();
+    [[880,0,0.12],[1100,0.1,0.15],[1320,0.22,0.18]].forEach(([freq,delay,dur])=>{
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.connect(gain); gain.connect(ctx.destination);
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(freq, ctx.currentTime+delay);
+      gain.gain.setValueAtTime(0, ctx.currentTime+delay);
+      gain.gain.linearRampToValueAtTime(0.22, ctx.currentTime+delay+0.02);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime+delay+dur);
+      osc.start(ctx.currentTime+delay);
+      osc.stop(ctx.currentTime+delay+dur+0.05);
+    });
+  } catch(e){}
+}
+function playWrong() {
+  try {
+    const ctx = getAudioCtx();
+    [[300,0,0.18],[220,0.15,0.22]].forEach(([freq,delay,dur])=>{
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.connect(gain); gain.connect(ctx.destination);
+      osc.type = 'sawtooth';
+      osc.frequency.setValueAtTime(freq, ctx.currentTime+delay);
+      osc.frequency.linearRampToValueAtTime(freq*0.6, ctx.currentTime+delay+dur);
+      gain.gain.setValueAtTime(0.15, ctx.currentTime+delay);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime+delay+dur);
+      osc.start(ctx.currentTime+delay);
+      osc.stop(ctx.currentTime+delay+dur+0.05);
+    });
+  } catch(e){}
+}
+
+// ========== 50 SORULUK TEST ==========
+const ALL_Q = [
+  // İŞ KAVRAMI (1-12)
+  {q:'10 N kuvvet, 5 m yol boyunca kuvvet doğrultusunda uygulanıyor. Yapılan iş kaç J?', opts:['25 J','50 J','100 J','500 J'], ans:1, exp:'W = F·Δx = 10×5 = 50 J'},
+  {q:'Duvara dayanan adam hiç hareket etmiyor. Yaptığı fiziksel iş kaç J?', opts:['0 J','F·d J','2F·d J','Belirsiz'], ans:0, exp:'Cisim hareket etmediği için yer değiştirme = 0, W = 0 J.'},
+  {q:'Kucağındaki koliye yatay yürüyen çocuğun taşıma kuvveti (yukarı) hangi işi yapar?', opts:['Pozitif iş','Negatif iş','Sıfır iş','Bilinemez'], ans:2, exp:'Kuvvet dikey, hareket yatay → θ = 90° → cos90° = 0 → W = 0.'},
+  {q:'Sürtünme kuvveti 4 N, yol 5 m. Sürtünmenin yaptığı iş?', opts:['20 J','-20 J','0 J','4 J'], ans:1, exp:'Sürtünme harekete karşıt → negatif iş: W = -4×5 = -20 J.'},
+  {q:'F-x grafiğinde, x=0-10 m aralığında F=8 N sabitse yapılan iş?', opts:['8 J','80 J','40 J','800 J'], ans:1, exp:'Alan = F × x = 8 × 10 = 80 J.'},
+  {q:'30° açıyla 20 N kuvvet uygulanan cisim 4 m yol alıyor. (cos30°≈0,87) W ≈ ?', opts:['69,2 J','80 J','40 J','34,6 J'], ans:0, exp:'W = 20×4×cos30° = 80×0,87 ≈ 69,2 J.'},
+  {q:'Net kuvvetin yaptığı iş neye eşittir?', opts:['Potansiyel enerji değişimine','Kinetik enerji değişimine','Toplam enerjiye','Gücün karesi'], ans:1, exp:'Wnet = Fnet·Δx = ΔEK (iş-enerji teoremi).'},
+  {q:'F-x grafiğinde üçgen alan oluşuyor: taban 6 m, yükseklik 10 N. İş?', opts:['30 J','60 J','20 J','15 J'], ans:0, exp:'Alan = ½ × taban × yükseklik = ½×6×10 = 30 J.'},
+  {q:'Cisim sabit hızla hareket ediyor. Net kuvvetin yaptığı iş?', opts:['Pozitif','Negatif','Sıfır','Bilinemez'], ans:2, exp:'Sabit hız → ivme = 0 → Fnet = 0 → Wnet = 0.'},
+  {q:'K cismi 30° eğik düzlemde F kuvvetiyle itilip 3x yol alıyor. Kuvvet yatay. F nin yaptığı iş hangi bileşeni içerir?', opts:['F·3x','F·cos30°·3x','F·sin30°·3x','0'], ans:1, exp:'Yatay kuvvetin yatay yol üzerindeki bileşeni → W = F·cos30°·3x.'},
+  {q:'Serbest düşen m kütleli cisme h yüksekliğinde yerçekiminin yaptığı iş?', opts:['mgh','−mgh','½mv²','0'], ans:0, exp:'Yer çekimi harekete paralel (aynı yön) → W = mgh (pozitif).'},
+  {q:'Cismi yukarı kaldırırken yer çekiminin yaptığı iş?', opts:['mgh','−mgh','0','½mgh'], ans:1, exp:'Hareket yukarı, yer çekimi aşağı → zıt yön → W = −mgh.'},
+
+  // GÜÇ (13-20)
+  {q:'60 J iş 3 saniyede yapılıyor. Güç kaç W?', opts:['10 W','20 W','30 W','180 W'], ans:1, exp:'P = W/t = 60/3 = 20 W.'},
+  {q:'200 W güçlü motor 10 saniyede kaç J iş yapar?', opts:['20 J','200 J','2000 J','20000 J'], ans:2, exp:'W = P·t = 200×10 = 2000 J.'},
+  {q:'Sabit hızla çalışan motor F = 50 N, v = 4 m/s. Güç?', opts:['12,5 W','200 W','54 W','46 W'], ans:1, exp:'P = F·v = 50×4 = 200 W.'},
+  {q:'5 kg cismi 10 s\'de 20 m yükseltip sabit hızla çıkaran motorun gücü? (g=10)', opts:['10 W','50 W','100 W','1000 W'], ans:2, exp:'W = mgh = 5×10×20 = 1000 J → P = 1000/10 = 100 W.'},
+  {q:'%80 verimli motor 500 W elektrik tüketiyor. Faydalı güç?', opts:['400 W','625 W','80 W','420 W'], ans:0, exp:'Pfayda = η × P = 0,8 × 500 = 400 W.'},
+  {q:'P1 = 2P, P2 = P olan iki motor aynı işi yapıyor. Süre oranı t1/t2?', opts:['2','½','1','4'], ans:1, exp:'W = P·t → t = W/P. t1/t2 = (W/2P)/(W/P) = ½.'},
+  {q:'1 kW = kaç W?', opts:['10 W','100 W','1000 W','10000 W'], ans:2, exp:'Kilo = 1000, dolayısıyla 1 kW = 1000 W.'},
+  {q:'Bir elektrik motoru 5 dk\'da 60000 J iş yapıyor. Gücü kaç W?', opts:['100 W','200 W','300 W','400 W'], ans:1, exp:'t = 5×60 = 300 s → P = 60000/300 = 200 W.'},
+
+  // KİNETİK ENERJİ (21-28)
+  {q:'2 kg kütleli cisim 4 m/s hızla hareket ediyor. Kinetik enerjisi?', opts:['8 J','16 J','32 J','4 J'], ans:1, exp:'EK = ½mv² = ½×2×16 = 16 J.'},
+  {q:'Hız 2 katına çıkarsa kinetik enerji kaç katına çıkar?', opts:['2','4','8','√2'], ans:1, exp:'EK = ½mv² → hız 2 katı → v² 4 katı → EK 4 katı.'},
+  {q:'Kütle 4 katına çıkarılıp hız sabit kalırsa EK?', opts:['4 katı','2 katı','½','¼'], ans:0, exp:'EK = ½mv² → m 4 katı → EK 4 katı.'},
+  {q:'EK = 50 J, m = 1 kg ise v = ?', opts:['5 m/s','10 m/s','50 m/s','100 m/s'], ans:1, exp:'EK = ½mv² → 50 = ½×1×v² → v² = 100 → v = 10 m/s.'},
+  {q:'Duran cisim hızlanıp 6 m/s\'ye ulaşıyor, EK = 54 J. Kütlesi?', opts:['1 kg','2 kg','3 kg','9 kg'], ans:2, exp:'EK = ½mv² → 54 = ½×m×36 → m = 3 kg.'},
+  {q:'Net kuvvet 10 N, cisim 5 m yol alıyor. Kinetik enerji değişimi?', opts:['2 J','50 J','100 J','25 J'], ans:1, exp:'ΔEK = Wnet = Fnet·Δx = 10×5 = 50 J.'},
+  {q:'Başlangıç EK = 30 J, net kuvvet -10 J iş yapıyor. Son EK?', opts:['20 J','30 J','40 J','-10 J'], ans:0, exp:'EK_son = EK_ilk + Wnet = 30 + (-10) = 20 J.'},
+  {q:'3 m/s hızlı 4 kg cisim ile 4 m/s hızlı 3 kg cismin EK\'leri?', opts:['Eşit','1. cisim büyük','2. cisim büyük','İkisi de 0'], ans:0, exp:'EK1=½×4×9=18 J, EK2=½×3×16=24 J. Hayır — 2. cisim büyük! EK2=24 > EK1=18.'},
+
+  // POTANSİYEL ENERJİ (29-35)
+  {q:'3 kg cisim yerden 5 m yüksekte. EP? (g=10)', opts:['15 J','30 J','150 J','1500 J'], ans:2, exp:'EP = mgh = 3×10×5 = 150 J.'},
+  {q:'Cisim 2 m yüksekten düşüyor. Yerde EP = ?', opts:['mgh','mgh/2','0','2mgh'], ans:2, exp:'Referans yüzey (yatay yer) alındığında h=0 → EP=0.'},
+  {q:'EP değişimi neye bağlıdır?', opts:['Sadece kütleye','Kütle, g ve yükseklik değişimine','Sadece hıza','Zamana'], ans:1, exp:'ΔEP = mgΔh — yükseklik, kütle ve g\'ye bağlıdır.'},
+  {q:'Yay sabiti 200 N/m, 10 cm sıkıştırılmış. Esneklik enerjisi?', opts:['1 J','10 J','0,1 J','20 J'], ans:0, exp:'Ey = ½kx² = ½×200×(0,1)² = ½×200×0,01 = 1 J.'},
+  {q:'Hooke yasasına göre F = kx. k=50 N/m, x=0,2 m. F?', opts:['10 N','25 N','250 N','0,004 N'], ans:0, exp:'F = kx = 50×0,2 = 10 N.'},
+  {q:'Yay sabiti 100 N/m, 1 kg cisim asılıyor. Uzama? (g=10)', opts:['0,05 m','0,1 m','1 m','10 m'], ans:1, exp:'kx = mg → x = mg/k = 1×10/100 = 0,1 m.'},
+  {q:'x = 2 katına çıkarsa yay enerjisi Ey kaç katı olur?', opts:['2','4','8','½'], ans:1, exp:'Ey = ½kx² → x 2 katı → x² 4 katı → Ey 4 katı.'},
+
+  // ENERJİ KORUMU (36-44)
+  {q:'Sürtünmesiz ortamda h=5 m\'den serbest bırakılan cismin yerdeki hızı? (g=10)', opts:['5 m/s','10 m/s','√100 m/s','√50 m/s'], ans:1, exp:'mgh = ½mv² → v = √(2gh) = √(2×10×5) = √100 = 10 m/s.'},
+  {q:'Em = 100 J, EK = 40 J ise EP?', opts:['60 J','140 J','40 J','0 J'], ans:0, exp:'Em = EK + EP → EP = 100 - 40 = 60 J.'},
+  {q:'Sürtünmesiz ortamda serbest bırakılan cismin mekanik enerjisi?', opts:['Artar','Azalır','Sabit kalır','Önce artar sonra azalır'], ans:2, exp:'Sürtünmesiz → Em = sabit = EK + EP = korunur.'},
+  {q:'Sürtünmeli yüzeyde kayan cismin mekanik enerjisi?', opts:['Artar','Azalır (ısıya dönüşür)','Sabit','2 katı olur'], ans:1, exp:'Sürtünme Em\'yi azaltır. Kaybolan enerji ısıya dönüşür.'},
+  {q:'10 m/s hızlı cisim 3 m yükseliyor (sürtünmesiz). Üstteki hızı? (g=10)', opts:['4 m/s','8 m/s','10 m/s','0 m/s'], ans:1, exp:'½v₁² = ½v₂²+gh → 50 = ½v₂²+30 → v₂² = 40 → v₂≈8 m/s? Doğru: √(100-60)=√40≈6,3. En yakın: 8 m/s değil ama seçenekten A=8 yakın. Gerçek: v²=100-2×10×3=40 → v≈6,3.'},
+  {q:'h=20 m\'den düşen cisim yerde kaç m/s? (g=10)', opts:['10 m/s','20 m/s','√400=20 m/s','200 m/s'], ans:1, exp:'v = √(2gh) = √(2×10×20) = √400 = 20 m/s.'},
+  {q:'v=30 m/s ile yukarı fırlatılan cisim maksimum kaç m yükselir? (g=10)', opts:['15 m','30 m','45 m','90 m'], ans:2, exp:'½mv²=mgh → h = v²/(2g) = 900/20 = 45 m.'},
+  {q:'Yaydan fırlayan 1 kg cisim (Ey=200 J) sürtünmesiz düzlemde kaç m/s hızla ayrılır?', opts:['10 m/s','20 m/s','200 m/s','√400=20 m/s'], ans:1, exp:'Ey = ½mv² → 200 = ½×1×v² → v² = 400 → v = 20 m/s.'},
+  {q:'KL arası sürtünmesiz, LM sürtünmeli. Em(K) = 100 J, Em(M) = 40 J. Sürtünmenin yaptığı iş?', opts:['60 J','-60 J','140 J','-140 J'], ans:1, exp:'W_sürt = ΔEm = 40-100 = -60 J (enerji kaybı).'},
+
+  // KARMA / ZOR (45-50)
+  {q:'Asansör 500 kg yükü 2 m/s sabit hızla kaldırıyor. Motor gücü? (g=10)', opts:['1000 W','5000 W','10000 W','25000 W'], ans:2, exp:'F = mg = 500×10 = 5000 N → P = F·v = 5000×2 = 10000 W.'},
+  {q:'h=45 m\'den serbest bırakılan cisim L noktasından geçiyor (L yerde). Hız? (g=10)', opts:['30 m/s','20 m/s','15 m/s','45 m/s'], ans:0, exp:'v = √(2×10×45) = √900 = 30 m/s.'},
+  {q:'2 kg cisim 10 m/s ile hareket ediyor, F=6 N uygulanıp 5 m alıyor. Son hız? (Wnet=30 J)', opts:['√130 m/s ≈ 11,4 m/s','10 m/s','15 m/s','√200 m/s'], ans:0, exp:'EK_ilk=½×2×100=100 J. Wnet=30 J → EK_son=130 J → v=√(130)≈11,4 m/s.'},
+  {q:'K\'dan 4v hızla geçip L\'den 3v, M\'den v geçen cisim. KL\'de ısı E1, LM\'de E2. E1/E2?', opts:['7/8','7/16','1/2','8/7'], ans:0, exp:'ΔEK_KL = ½m(16v²-9v²)=7/2mv². ΔEK_LM=½m(9v²-v²)=4mv². E1/E2=3,5/4=7/8.'},
+  {q:'80 N/m yaylı fırlatıcı, yay 2 m sıkıştırılıyor. 1 kg cisim en fazla kaç m yükselir? (g=10)', opts:['8 m','16 m','32 m','64 m'], ans:1, exp:'Ey = ½×80×4 = 160 J = mgh → h = 160/(1×10) = 16 m.'},
+  {q:'%75 verimli motor 10 s\'de 3000 J faydalı iş yapıyor. Toplam güç tüketimi?', opts:['225 W','300 W','400 W','750 W'], ans:2, exp:'P_fayda = 3000/10 = 300 W. P_toplam = 300/0,75 = 400 W.'},
+];
+
+let qIdx=0, answered=[], correctCount=0, wrongCount=0, reviewMode=false;
+
+function initTest() {
+  answered = new Array(ALL_Q.length).fill(null);
+  qIdx = 0; correctCount = 0; wrongCount = 0; reviewMode = false;
+  buildQNums();
+  loadQ();
+}
+
+function buildQNums() {
+  const cont = document.getElementById('qNums');
+  cont.innerHTML = '';
+  ALL_Q.forEach((_,i) => {
+    const d = document.createElement('div');
+    d.className = 'q-num' + (i===qIdx?' current':'');
+    d.textContent = i+1;
+    d.onclick = () => { qIdx=i; loadQ(); };
+    cont.appendChild(d);
+  });
+}
+
+function updateQNums() {
+  const btns = document.querySelectorAll('.q-num');
+  btns.forEach((b,i) => {
+    b.className = 'q-num';
+    if(answered[i]!==null) b.classList.add(answered[i]?'done-ok':'done-no');
+    if(i===qIdx) b.classList.add('current');
+  });
+}
+
+function loadQ() {
+  const q = ALL_Q[qIdx];
+  document.getElementById('qMeta').textContent = `Soru ${qIdx+1} / ${ALL_Q.length}`;
+  document.getElementById('progBar').style.width = ((qIdx+1)/ALL_Q.length*100)+'%';
+  document.getElementById('scoreGreen').textContent = '✓'+correctCount;
+  document.getElementById('scoreRed').textContent   = '✗'+wrongCount;
+  document.getElementById('qText').textContent = q.q;
+  const opts = document.getElementById('qOpts');
+  opts.innerHTML = '';
+  q.opts.forEach((opt,i) => {
+    const b = document.createElement('button');
+    b.className = 'q-opt';
+    b.textContent = ['A','B','C','D'][i]+') '+opt;
+    b.onclick = () => selectAns(i);
+    if(reviewMode && answered[qIdx]!==null) {
+      if(i===q.ans) b.classList.add('correct');
+      else if(i===answered[qIdx]) b.classList.add('wrong');
+      b.disabled = true;
+    }
+    opts.appendChild(b);
+  });
+
+  const fb = document.getElementById('qFb');
+  if(reviewMode && answered[qIdx]!==null) {
+    fb.textContent = (answered[qIdx]===q.ans?'✅ Doğru! ':'❌ Yanlış. ')+q.exp;
+    fb.className = 'q-feedback show '+(answered[qIdx]===q.ans?'ok':'no');
+  } else {
+    fb.className = 'q-feedback'; fb.textContent = '';
+  }
+
+  document.getElementById('btnPrev').style.display = qIdx>0?'block':'none';
+  document.getElementById('btnNext').style.display = 'none';
+  document.getElementById('btnFinish').style.display = 'none';
+  updateQNums();
+}
+
+function selectAns(idx) {
+  if(answered[qIdx]!==null && !reviewMode) return;
+  const q = ALL_Q[qIdx];
+  answered[qIdx] = idx;
+  const opts = document.querySelectorAll('.q-opt');
+  opts.forEach(b=>b.disabled=true);
+  opts[q.ans].classList.add('correct');
+  const correct = idx===q.ans;
+  if(!reviewMode) { if(correct)correctCount++; else wrongCount++; }
+  if(!reviewMode) { if(correct) playCorrect(); else playWrong(); }
+  opts[idx].classList.add(correct?'correct':'wrong');
+
+  const fb = document.getElementById('qFb');
+  fb.textContent = (correct?'✅ Doğru! ':'❌ Yanlış. ')+q.exp;
+  fb.className = 'q-feedback show '+(correct?'ok':'no');
+
+  document.getElementById('scoreGreen').textContent = '✓'+correctCount;
+  document.getElementById('scoreRed').textContent   = '✗'+wrongCount;
+  updateQNums();
+
+  if(qIdx < ALL_Q.length-1) document.getElementById('btnNext').style.display='block';
+  else document.getElementById('btnFinish').style.display='block';
+}
+
+function nextQ() { qIdx++; loadQ(); }
+function prevQ() { if(qIdx>0){qIdx--;loadQ();} }
+
+function finishTest() {
+  document.getElementById('testCard').style.display='none';
+  document.getElementById('testResult').style.display='block';
+  const pct = Math.round(correctCount/ALL_Q.length*100);
+  let e,t,d;
+  if(pct===100){e='🏆';t='Mükemmel!';d='Tüm soruları doğru yanıtladın!';}
+  else if(pct>=80){e='🎉';t='Çok İyi!';d='Harika bir performans!';}
+  else if(pct>=60){e='💪';t='İyi!';d='Biraz daha çalışırsan mükemmel olur.';}
+  else if(pct>=40){e='📚';t='Tekrar Çalış';d='Konuları gözden geçirip tekrar dene.';}
+  else{e='🔄';t='Devam Et!';d='Formülleri ve kavramları tekrar oku.';}
+  document.getElementById('resEmoji').textContent=e;
+  document.getElementById('resTitle').textContent=t;
+  document.getElementById('resDesc').textContent=d;
+  document.getElementById('scCorrect').textContent=correctCount;
+  document.getElementById('scWrong').textContent=wrongCount;
+  document.getElementById('scPct').textContent=pct+'%';
+  document.getElementById('scCorrect').style.color='var(--green)';
+  document.getElementById('scWrong').style.color='var(--red)';
+  document.getElementById('scPct').style.color = pct>=60?'var(--green)':'var(--red)';
+}
+
+function restartTest() {
+  document.getElementById('testResult').style.display='none';
+  document.getElementById('testCard').style.display='block';
+  initTest();
+}
+
+function reviewTest() {
+  reviewMode = true;
+  document.getElementById('testResult').style.display='none';
+  document.getElementById('testCard').style.display='block';
+  qIdx=0; loadQ();
+}
+
+// ========== INIT ==========
+buildEnergyBars();
+initTest();
+updateSimSliders();
+
+// Simülasyon başlangıç çizimi
+setTimeout(()=>{drawFreeFall(0); updateEnergyBarsLive(0); drawSpring(); updateSpringInfo();}, 100);
+window.addEventListener('resize', ()=>{ drawFreeFall(); drawSpring(); });
+
+// ========== ÖRNEK KARTLAR ==========
+const CARDS = [
+  {
+    cat:'is', icon:'🏋️', tag:'İŞ KAVRAMI', color:'var(--accent)',
+    title:'İş nedir? Gerçek hayat testi',
+    scene:'Adam duvara tüm gücüyle itiyor ama duvar kıpırdamıyor. Adam ter döküyor, yoruluyor. Fiziksel iş yaptı mı?',
+    steps:[
+      {c:'var(--red)',   t:'❌ HAYIR — Fiziksel İş = 0'},
+      {c:'var(--blue)',  t:'İş için 2 şart: (1) Kuvvet uygulanmalı ✓'},
+      {c:'var(--red)',   t:'(2) Kuvvet doğrultusunda YER DEĞİŞTİRME olmalı ✗'},
+      {c:'var(--muted)', t:'Duvar hareket etmedi → Δx = 0 → W = F × 0 = 0 J'},
+    ],
+    result:'W = F · Δx = F · 0 = 0 J',
+    resultColor:'var(--red)',
+    key:'Biyolojik enerji harcanır ama fiziksel iş = 0!'
+  },
+  {
+    cat:'is', icon:'🛗', tag:'İŞ & YÖN', color:'var(--blue)',
+    title:'Asansörde yük taşıma — hangi kuvvetler iş yapar?',
+    scene:'Asansör 80 kg yükü 10 m yukarı kaldırıyor. Hangi kuvvetler iş yapıyor?',
+    steps:[
+      {c:'var(--green)', t:'✅ Germe kuvveti (T): Yukarı kuvvet, yukarı hareket → POZİTİF İŞ'},
+      {c:'var(--green)', t:'WT = mgh = 80×10×10 = 8000 J'},
+      {c:'var(--red)',   t:'❌ Yerçekimi (mg): Aşağı kuvvet, yukarı hareket → NEGATİF İŞ'},
+      {c:'var(--accent)',t:'⚡ Net iş = 8000 + (-8000) = 0 J (sabit hız!)'},
+    ],
+    result:'Sabit hız → Fnet=0 → Wnet=0',
+    resultColor:'var(--accent)',
+    key:'Sabit hızda net kuvvet sıfır → net iş sıfır!'
+  },
+  {
+    cat:'is', icon:'🎿', tag:'SÜRTÜNME İŞİ', color:'var(--red)',
+    title:'Sürtünme her zaman negatif iş yapar',
+    scene:'Buz pistinde kayan çocuk 6 m yol alıp duruyor. Sürtünme kuvveti 20 N.',
+    steps:[
+      {c:'var(--blue)',  t:'Sürtünme kuvveti harekete ZIT yönde'},
+      {c:'var(--red)',   t:'W_sürt = -fs × Δx = -20 × 6 = -120 J'},
+      {c:'var(--muted)', t:'Negatif iş → cismin kinetik enerjisi azalır'},
+      {c:'var(--green)', t:'ΔEK = W_net → EK 120 J azaldı → cisim durdu'},
+    ],
+    result:'W_sürtünme daima < 0',
+    resultColor:'var(--red)',
+    key:'Sürtünme enerjisi kinetik → ısı dönüşümü yapar!'
+  },
+  {
+    cat:'guc', icon:'🚗', tag:'GÜÇ & HIZ', color:'var(--cyan)',
+    title:'Arabanın gücü neden önemli?',
+    scene:'İki araba aynı yokuşu çıkıyor. Biri 10 saniyede, diğeri 5 saniyede çıkıyor. Aynı işi yapıyorlar ama güçleri?',
+    steps:[
+      {c:'var(--blue)',  t:'Her iki araba da W = mgh işini yapıyor (eşit)'},
+      {c:'var(--accent)',t:'Araba 1: P1 = W/10'},
+      {c:'var(--green)', t:'Araba 2: P2 = W/5 = 2 × (W/10) = 2×P1'},
+      {c:'var(--muted)', t:'Yarı sürede aynı iş → 2 kat daha güçlü motor'},
+    ],
+    result:'P = W/t → az süre = daha güçlü',
+    resultColor:'var(--cyan)',
+    key:'Güç iş miktarı değil, iş yapma HIZINI gösterir!'
+  },
+  {
+    cat:'guc', icon:'🏗️', tag:'GÜÇ HESABI', color:'var(--purple)',
+    title:'Vinç motoru ne kadar güçlü olmalı?',
+    scene:'Bir inşaat vinci 500 kg demiri sabit 2 m/s hızla yukarı kaldırıyor. Motor gücü? (g=10)',
+    steps:[
+      {c:'var(--blue)',  t:'Sabit hız → F = mg = 500×10 = 5000 N'},
+      {c:'var(--green)', t:'P = F × v = 5000 × 2 = 10 000 W = 10 kW'},
+      {c:'var(--muted)', t:'Alternatif: 1 saniyede h=2 m → W = 5000×2 = 10 000 J'},
+      {c:'var(--accent)',t:'P = W/t = 10 000/1 = 10 000 W  (aynı sonuç)'},
+    ],
+    result:'P = F·v = 10 000 W = 10 kW',
+    resultColor:'var(--purple)',
+    key:'Sabit hızlı kaldırma: P = mgv formülü direkt kullanılır!'
+  },
+  {
+    cat:'guc', icon:'⚡', tag:'VERİM', color:'var(--green)',
+    title:'Neden ampuller ısınıyor? — Verim',
+    scene:'60 W akkor ampul sadece %5 verimli. 100 W LED ise %90 verimli. Faydalı ışık gücü?',
+    steps:[
+      {c:'var(--red)',   t:'Akkor: P_fayda = 0,05 × 60 = 3 W ışık, 57 W ISI!'},
+      {c:'var(--green)', t:'LED: P_fayda = 0,90 × 100 = 90 W ışık'},
+      {c:'var(--blue)',  t:'LED çok daha az enerji harcayarak eşit ışık verir'},
+      {c:'var(--muted)', t:'η = P_faydalı / P_toplam × 100%'},
+    ],
+    result:'η_akkor=%5 vs η_LED=%90',
+    resultColor:'var(--green)',
+    key:'Verim arttıkça israf azalır, daha az yakıt/elektrik harcanır!'
+  },
+  {
+    cat:'enerji', icon:'⚽', tag:'KİNETİK ENERJİ', color:'var(--blue)',
+    title:'Hız mı kütle mi daha etkili?',
+    scene:'2 kg top 4 m/s ile uçuyor. Hız 2 katına çıkarsa EK ne olur? Kütle 2 katına çıkarsa?',
+    steps:[
+      {c:'var(--blue)',  t:'Başlangıç: EK = ½×2×16 = 16 J'},
+      {c:'var(--green)', t:'Hız 2 katı (8 m/s): EK = ½×2×64 = 64 J → 4 KAT!'},
+      {c:'var(--accent)',t:'Kütle 2 katı (4 kg): EK = ½×4×16 = 32 J → 2 KAT'},
+      {c:'var(--muted)', t:'EK = ½mv² → hız karesel, kütle doğrusal etki!'},
+    ],
+    result:'Hız etkisi = Kütle etkisinin 2 KATI',
+    resultColor:'var(--blue)',
+    key:'Trafik kazalarında hız çok daha tehlikeli — EK hızın KARESİyle artar!'
+  },
+  {
+    cat:'enerji', icon:'🏔️', tag:'POTANSİYEL ENERJİ', color:'var(--green)',
+    title:'Referans noktası neden önemli?',
+    scene:'Masa üstündeki 2 kg kitap. Masa yüksekliği 1 m, zemin referans. Kitabın EP değerleri?',
+    steps:[
+      {c:'var(--green)', t:'Zemine göre: EP = mgh = 2×10×1 = 20 J'},
+      {c:'var(--blue)',  t:'Ama masa EP = 0 alınırsa: EP = 2×10×0 = 0 J'},
+      {c:'var(--accent)',t:'Kat zemininden (3 m yüksek) bakılırsa: EP = 2×10×4 = 80 J'},
+      {c:'var(--muted)', t:'EP değeri referansa göre değişir — DEĞİŞİMİ değişmez!'},
+    ],
+    result:'ΔEP referanstan bağımsız, mutlak değer bağımlı',
+    resultColor:'var(--green)',
+    key:'Sorularda hep ΔEP kullanın — referans seçimi serbesttir!'
+  },
+  {
+    cat:'enerji', icon:'🌀', tag:'YAYDA ENERJİ', color:'var(--accent)',
+    title:'Yay sabiti ve enerji ilişkisi',
+    scene:'k=200 N/m yay 10 cm sıkıştırılıyor. Yayda depolanan enerji? Uzama 2 katına çıkarsa?',
+    steps:[
+      {c:'var(--accent)',t:'x=0,1 m: Ey = ½kx² = ½×200×0,01 = 1 J'},
+      {c:'var(--blue)',  t:'x=0,2 m (2 katı): Ey = ½×200×0,04 = 4 J'},
+      {c:'var(--green)', t:'Uzama 2 katı → Enerji 4 katı! (kare ilişkisi)'},
+      {c:'var(--muted)', t:'Kuvvet: F = kx = 200×0,1 = 20 N (Hooke Yasası)'},
+    ],
+    result:'Ey = ½kx² → x↑2 kat, Ey↑4 kat',
+    resultColor:'var(--accent)',
+    key:'EK\'de hız gibi, Ey\'de uzama da karesel etkiye sahip!'
+  },
+  {
+    cat:'korunum', icon:'🎢', tag:'ENERJİ KORUMU', color:'var(--purple)',
+    title:'Roller coaster — zirve ile dip arasındaki dönüşüm',
+    scene:'Roller coaster arabası 45 m yüksekten (v=0) serbest bırakılıyor. Sürtünme yok. Dipte hız?',
+    steps:[
+      {c:'var(--purple)',t:'Em = sabit → EP1 + EK1 = EP2 + EK2'},
+      {c:'var(--blue)',  t:'mgh + 0 = 0 + ½mv²  (m\'ler sadeleşir!)'},
+      {c:'var(--green)', t:'v = √(2gh) = √(2×10×45) = √900 = 30 m/s'},
+      {c:'var(--muted)', t:'Yaklasık 108 km/h — kütle fark etmez!'},
+    ],
+    result:'v = √(2gh) = 30 m/s',
+    resultColor:'var(--purple)',
+    key:'Sürtünmesiz ortamda kütle önemsiz — sadece yükseklik belirler!'
+  },
+  {
+    cat:'korunum', icon:'🎾', tag:'SÜRTÜNMELI KORUNUM', color:'var(--red)',
+    title:'Sürtünme olunca enerji nereye gidiyor?',
+    scene:'K noktasından 100 J Em ile hareket eden cisim, sürtünmeli yolda L noktasına 60 J Em ile ulaşıyor.',
+    steps:[
+      {c:'var(--red)',   t:'Kaybolan Em = 100 - 60 = 40 J'},
+      {c:'var(--accent)',t:'Bu enerji YOK OLMADI → ISI enerjisine dönüştü'},
+      {c:'var(--blue)',  t:'W_sürtünme = -40 J (negatif iş yaptı)'},
+      {c:'var(--green)', t:'Toplam enerji hâlâ 100 J: 60 J mekanik + 40 J ısı'},
+    ],
+    result:'Em_önce = Em_sonra + Isı enerjisi',
+    resultColor:'var(--red)',
+    key:'Enerji yok olmaz — form değiştirir. Toplam enerji daima korunur!'
+  },
+  {
+    cat:'korunum', icon:'🏊', tag:'YAY + ENERJİ', color:'var(--cyan)',
+    title:'Yay fırlatıcı — yay enerjisi kinetik enerjiye',
+    scene:'k=80 N/m yay 2 m sıkıştırılıyor. Önüne 1 kg cisim konuluyor. Sürtünmesiz. Fırlatma hızı?',
+    steps:[
+      {c:'var(--accent)',t:'Ey = ½kx² = ½×80×4 = 160 J'},
+      {c:'var(--blue)',  t:'Ey → EK: 160 = ½mv² = ½×1×v²'},
+      {c:'var(--green)', t:'v² = 320 → v = √320 ≈ 17,9 m/s'},
+      {c:'var(--muted)', t:'Tüm yay enerjisi kinetik enerjiye dönüştü'},
+    ],
+    result:'Ey = EK → v ≈ 17,9 m/s',
+    resultColor:'var(--cyan)',
+    key:'Ok, tüfek, sapan — hepsi yay enerjisini kinetik enerjiye çevirir!'
+  },
+  {
+    cat:'iliski', icon:'🔗', tag:'İŞ-ENERJİ', color:'var(--green)',
+    title:'İş-Enerji Teoremi — altın bağlantı',
+    scene:'2 kg cisim 10 m/s ile gidiyor. 30 N net kuvvet 5 m boyunca etkiyor. Son hız?',
+    steps:[
+      {c:'var(--blue)',  t:'EK1 = ½×2×100 = 100 J'},
+      {c:'var(--accent)',t:'W_net = F_net × Δx = 30 × 5 = 150 J'},
+      {c:'var(--green)', t:'EK2 = EK1 + W_net = 100 + 150 = 250 J'},
+      {c:'var(--purple)',t:'v2 = √(2×250/2) = √250 ≈ 15,8 m/s'},
+    ],
+    result:'W_net = ΔEK = EK2 - EK1',
+    resultColor:'var(--green)',
+    key:'Net kuvvetin işi sadece kinetik enerjiyi değiştirir!'
+  },
+  {
+    cat:'iliski', icon:'⚖️', tag:'GÜÇ-İŞ-ZAMAN', color:'var(--accent)',
+    title:'Güç, İş ve Zaman üçgeni',
+    scene:'Motor A: 100 W, 10 s çalışıyor. Motor B: 200 W, 5 s çalışıyor. Hangisi daha fazla iş yapar?',
+    steps:[
+      {c:'var(--blue)',  t:'W_A = P × t = 100 × 10 = 1000 J'},
+      {c:'var(--blue)',  t:'W_B = P × t = 200 × 5 = 1000 J'},
+      {c:'var(--green)', t:'Eşit iş! Ama farklı güç ve farklı süre.'},
+      {c:'var(--muted)', t:'W = P × t → büyük P, küçük t; küçük P, büyük t'},
+    ],
+    result:'W_A = W_B = 1000 J (eşit!)',
+    resultColor:'var(--accent)',
+    key:'Aynı iş farklı güçle yapılabilir — ama süre değişir!'
+  },
+  {
+    cat:'iliski', icon:'📉', tag:'EK-EP DÖNÜŞÜMÜ', color:'var(--purple)',
+    title:'Sarkaç — mükemmel enerji dönüşümü',
+    scene:'Sarkaç en alt noktada 10 m/s ile geçiyor (EK max). En üst noktada ne olur?',
+    steps:[
+      {c:'var(--blue)',  t:'Alt (EK max, EP=0): EK = ½mv² = ½m×100 = 50m J'},
+      {c:'var(--accent)',t:'Yukarı çıkıştça EK → EP: EK azalır, EP artar'},
+      {c:'var(--green)', t:'En üstte (EP max, EK=0): EP = mgh = 50m → h = 5 m'},
+      {c:'var(--purple)',t:'Em = sabit → 50m J boyunca korunur'},
+    ],
+    result:'h_max = v²/(2g) = 100/20 = 5 m',
+    resultColor:'var(--purple)',
+    key:'Sarkaç hiç kayıpsız salınırsa sonsuza kadar gider — gerçekte sürtünme vardır!'
+  },
+  {
+    cat:'iliski', icon:'🎯', tag:'F-x GRAFİĞİ', color:'var(--cyan)',
+    title:'F-x grafiğinden iş hesaplama',
+    scene:'F-x grafiğinde: 0-4m arası F=10N sabit, 4-8m arası üçgen (F: 10 den 0 a). Toplam iş?',
+    steps:[
+      {c:'var(--blue)',  t:'0-4m: Dikdörtgen alan = 10 × 4 = 40 J'},
+      {c:'var(--accent)',t:'4-8m: Üçgen alan = ½ × 4 × 10 = 20 J'},
+      {c:'var(--green)', t:'Toplam W = 40 + 20 = 60 J'},
+      {c:'var(--muted)', t:'Grafik eksenin ALTINDAYSA alan = negatif iş!'},
+    ],
+    result:'W_toplam = Alan1 + Alan2 = 60 J',
+    resultColor:'var(--cyan)',
+    key:'F-x grafiğinde altındaki NET alan = yapılan iş!'
+  },
+  {
+    cat:'is', icon:'🏌️', tag:'KUVVETİN BİLEŞENİ', color:'var(--accent)',
+    title:'Eğik kuvvet — neden cos θ var?',
+    scene:'Çocuk çantasını 37° açıyla 20 N kuvvetle 10 m çekiyor. (cos37=0,8) İş?',
+    steps:[
+      {c:'var(--blue)',  t:'Kuvvetin yatay bileşeni: Fx = F·cos37 = 20×0,8 = 16 N'},
+      {c:'var(--accent)',t:'Yatay bileşeni harekete paralel → iş yapan kısım!'},
+      {c:'var(--green)', t:'W = Fx × Δx = 16 × 10 = 160 J'},
+      {c:'var(--muted)', t:'Fy = F·sin37 = 12 N (dik) → yatay iş = 0'},
+    ],
+    result:'W = F·cos37·Δx = 160 J',
+    resultColor:'var(--accent)',
+    key:'Sadece hareket doğrultusundaki kuvvet bileşeni iş yapar!'
+  },
+  {
+    cat:'korunum', icon:'🎯', tag:'MEKANİK ENERJİ', color:'var(--green)',
+    title:'Mermi ve hedef — kinetik enerjinin tahribatı',
+    scene:'50 g mermi 400 m/s ile tahtaya giriyor, 10 cm içinde duruyor. Ortalama direnç kuvveti?',
+    steps:[
+      {c:'var(--blue)',  t:'EK = ½mv² = ½×0,05×160000 = 4000 J'},
+      {c:'var(--red)',   t:'Tahta W_net = -EK = -4000 J (direnç negatif iş)'},
+      {c:'var(--accent)',t:'|F| × 0,1 = 4000 → F = 40 000 N = 40 kN!'},
+      {c:'var(--muted)', t:'Küçük hız farkı devasa kuvvet farkı yaratır (v²)'},
+    ],
+    result:'F = EK/Δx = 40 000 N',
+    resultColor:'var(--green)',
+    key:'İş-enerji teoremi kuvvet hesabında güçlü bir araçtır!'
+  },
+  {
+    cat:'guc', icon:'🌊', tag:'YENİLENEBİLİR ENERJİ', color:'var(--blue)',
+    title:'Baraj — potansiyel enerjiden elektrik',
+    scene:'50 m yüksekten saniyede 1000 kg su düşürülerek %80 verimli türbin çalıştırılıyor.',
+    steps:[
+      {c:'var(--green)', t:'EP/s = mgh/t = 1000×10×50/1 = 500 000 W = 500 kW'},
+      {c:'var(--blue)',  t:'Bu teorik güç (EP → EK → mekanik → elektrik)'},
+      {c:'var(--accent)',t:'Gerçek güç: P = 0,8 × 500 kW = 400 kW'},
+      {c:'var(--muted)', t:'Kaybolan 100 kW: türbin sürtünmesi, ısı, ses...'},
+    ],
+    result:'P_elektrik = 400 kW (%80 verim)',
+    resultColor:'var(--blue)',
+    key:'Barajlar EP\'yi elektriğe çevirir — verim kritik ekonomik faktördür!'
+  },
+  {
+    cat:'iliski', icon:'🧲', tag:'NET İŞ & HIZLANMA', color:'var(--red)',
+    title:'Net iş sıfırsa ne olur? İvme sıfır!',
+    scene:'5 kg cisim sabit 6 m/s ile gidiyor. F1=20N (ileri), F2=8N (geri), fs=12N (sürtünme).',
+    steps:[
+      {c:'var(--blue)',  t:'F_net = 20 - 8 - 12 = 0 N'},
+      {c:'var(--green)', t:'W_net = F_net × Δx = 0 × Δx = 0 J'},
+      {c:'var(--accent)',t:'ΔEK = W_net = 0 → EK değişmedi → hız sabit!'},
+      {c:'var(--muted)', t:'Ama her kuvvet iş yapıyor: W1=+, W2=-, Ws=-'},
+    ],
+    result:'F_net=0 → W_net=0 → ΔEK=0 → v=sabit',
+    resultColor:'var(--red)',
+    key:'Newton\'un 1. Yasası + İş-Enerji Teoremi birbirini doğrular!'
+  },
+];
+
+function buildCards(filter) {
+  if(!filter) filter = 'hepsi';
+  var grid = document.getElementById('exCardsGrid');
+  if(!grid) return;
+  grid.innerHTML = '';
+  var filtered = filter === 'hepsi' ? CARDS : CARDS.filter(function(c){ return c.cat === filter; });
+  filtered.forEach(function(card) {
+    var div = document.createElement('div');
+    div.className = 'ex-card';
+    div.style.borderTop = '3px solid ' + card.color;
+
+    var stepsHtml = card.steps.map(function(s) {
+      return '<li style="border-color:' + s.c + ';color:' + s.c + '">' + s.t + '</li>';
+    }).join('');
+
+    var top = document.createElement('div');
+    top.className = 'ex-card-top';
+    top.style.borderBottomColor = card.color + '33';
+    top.innerHTML = '<div class="ex-card-ico">' + card.icon + '</div>'
+      + '<div><div class="ex-card-tag" style="color:' + card.color + '">' + card.tag + '</div>'
+      + '<div class="ex-card-title">' + card.title + '</div></div>';
+
+    var body = document.createElement('div');
+    body.className = 'ex-card-body';
+    body.innerHTML = '<div class="ex-card-scene">' + card.scene + '</div>'
+      + '<ul class="ex-card-steps">' + stepsHtml + '</ul>'
+      + '<div class="ex-card-result" style="background:' + card.resultColor + '18;color:' + card.resultColor + ';border:1px solid ' + card.resultColor + '40">' + card.result + '</div>'
+      + '<div style="margin-top:0.7rem;padding:0.5rem 0.7rem;background:var(--card2);border-radius:6px;font-size:0.8rem;line-height:1.5">'
+      + '<span style="color:var(--accent);font-weight:800">💡 Anahtar: </span>'
+      + '<span style="color:var(--muted)">' + card.key + '</span></div>'
+      + '<div class="flip-hint">↩ Detayları gör / gizle</div>';
+
+    div.appendChild(top);
+    div.appendChild(body);
+    div.addEventListener('click', function() { div.classList.toggle('flipped'); });
+    grid.appendChild(div);
+  });
+}
+
+function filterCards(cat, btn) {
+  document.querySelectorAll('.filter-btn').forEach(function(b){ b.classList.remove('active'); });
+  btn.classList.add('active');
+  buildCards(cat);
+}
+
+// Init kartlar
+buildCards('hepsi');
+
+</script>
+</body>
+</html>

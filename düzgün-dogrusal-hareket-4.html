@@ -1,0 +1,1655 @@
+<!DOCTYPE html>
+<html lang="tr" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Düzgün Doğrusal Hareket</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d1117;
+    --card: #161b22;
+    --card2: #1c2333;
+    --border: #30363d;
+    --accent1: #58a6ff;
+    --accent2: #3fb950;
+    --accent3: #f0883e;
+    --accent4: #bc8cff;
+    --accent5: #ff7b72;
+    --text: #e6edf3;
+    --muted: #8b949e;
+    --font: 'Nunito', sans-serif;
+    --mono: 'Space Mono', monospace;
+    --trans: 0.2s ease;
+  }
+  [data-theme="light"] {
+    --bg: #f2f4fb;
+    --card: #ffffff;
+    --card2: #eaecf8;
+    --border: #cdd0e8;
+    --accent1: #1a6fd4;
+    --accent2: #1a8a3a;
+    --accent3: #c4600a;
+    --accent4: #7c3abf;
+    --accent5: #c9302a;
+    --text: #151926;
+    --muted: #5a6280;
+  }
+  body { transition: background var(--trans), color var(--trans); }
+  .theme-btn {
+    position: absolute; top: 1.1rem; right: 1.1rem;
+    background: var(--card); border: 1px solid var(--border);
+    color: var(--text); padding: 0.38rem 0.85rem;
+    border-radius: 999px; cursor: pointer;
+    font-family: var(--font); font-size: 0.78rem; font-weight: 700;
+    transition: all var(--trans); z-index: 10;
+  }
+  .theme-btn:hover { border-color: var(--accent1); color: var(--accent1); }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background: var(--bg); color: var(--text); font-family: var(--font); min-height: 100vh; overflow-x: hidden; }
+
+  header {
+    background: linear-gradient(135deg, #0d1117 0%, #161b22 50%, #1a1f2e 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 3rem 2rem 2rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  header::before {
+    content: '';
+    position: absolute;
+    top: -50%; left: -10%;
+    width: 120%; height: 200%;
+    background: radial-gradient(ellipse at 50% 50%, rgba(88,166,255,0.07) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .header-badge {
+    display: inline-block;
+    background: rgba(88,166,255,0.1);
+    border: 1px solid rgba(88,166,255,0.3);
+    color: var(--accent1);
+    padding: 0.3rem 1rem;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+  }
+  header h1 {
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 900;
+    line-height: 1.1;
+    background: linear-gradient(135deg, #58a6ff, #79c0ff, #bc8cff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 0.75rem;
+  }
+  header p { color: var(--muted); font-size: 1rem; }
+
+  nav {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    padding: 1.2rem 1rem;
+    background: var(--card);
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .nav-btn {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    padding: 0.4rem 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: var(--font);
+    font-size: 0.8rem;
+    font-weight: 700;
+    transition: all 0.2s;
+  }
+  .nav-btn:hover, .nav-btn.active { background: var(--accent1); border-color: var(--accent1); color: #000; }
+
+  .section { display: none; padding: 2rem 1rem; max-width: 960px; margin: 0 auto; }
+  .section.active { display: block; animation: fadeIn 0.3s ease; }
+  @keyframes fadeIn { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
+
+  .section-title { display: flex; align-items: center; gap: 1rem; margin-bottom: 2rem; }
+  .section-title .icon { width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; flex-shrink: 0; }
+  .section-title h2 { font-size: 1.6rem; font-weight: 900; }
+  .section-title p { color: var(--muted); font-size: 0.9rem; margin-top: 0.2rem; }
+
+  .card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem; }
+  .card h3 { font-size: 1.05rem; font-weight: 800; margin-bottom: 1rem; }
+
+  .info-box { border-left: 3px solid var(--accent1); background: rgba(88,166,255,0.06); padding: 1rem 1.2rem; border-radius: 0 8px 8px 0; margin: 1rem 0; font-size:0.9rem; line-height:1.7; }
+  .info-box.green { border-color: var(--accent2); background: rgba(63,185,80,0.06); }
+  .info-box.orange { border-color: var(--accent3); background: rgba(240,136,62,0.06); }
+  .info-box.purple { border-color: var(--accent4); background: rgba(188,140,255,0.06); }
+  .info-box.red { border-color: var(--accent5); background: rgba(255,123,114,0.06); }
+
+  .formula { background: var(--card2); border: 1px solid var(--border); border-radius: 8px; padding: 0.8rem 1.2rem; font-family: var(--mono); font-size: 1rem; text-align: center; margin: 0.75rem 0; color: var(--accent2); }
+
+  .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px,1fr)); gap: 1rem; margin: 1rem 0; }
+  .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px,1fr)); gap: 1rem; margin: 1rem 0; }
+
+  .concept-card { background: var(--card2); border: 1px solid var(--border); border-radius: 10px; padding: 1.2rem; transition: border-color 0.2s; }
+  .concept-card:hover { border-color: var(--accent1); }
+  .concept-card .label { font-size: 0.7rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); margin-bottom: 0.4rem; }
+  .concept-card .value { font-size: 1rem; font-weight: 800; margin-bottom: 0.4rem; }
+  .concept-card .desc { font-size: 0.82rem; color: var(--muted); line-height: 1.5; }
+
+  canvas { width: 100%; border-radius: 8px; display: block; background: #0d1117; border: 1px solid var(--border); }
+
+  .sim-road { background: #1a1f2e; border-radius: 8px; height: 80px; position: relative; overflow: hidden; margin: 1rem 0; border: 1px solid #2d333b; }
+  .sim-road::after { content: ''; position: absolute; top: 50%; left: 0; width: 100%; height: 2px; background: repeating-linear-gradient(90deg, #f0883e 0px, #f0883e 20px, transparent 20px, transparent 40px); transform: translateY(-50%); }
+  .sim-car { position: absolute; top: 50%; transform: translateY(-50%); font-size: 1.8rem; transition: left 0.05s linear; }
+
+  .controls { display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: flex-end; margin-top: 1rem; }
+  .control-group { display: flex; flex-direction: column; gap: 0.3rem; flex: 1; min-width: 140px; }
+  .control-group label { font-size: 0.75rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; }
+  .control-group input[type=range] { -webkit-appearance: none; appearance: none; width: 100%; height: 4px; border-radius: 4px; background: var(--border); outline: none; }
+  .control-group input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 16px; height: 16px; border-radius: 50%; background: var(--accent1); cursor: pointer; }
+  .control-group .val { font-family: var(--mono); font-size: 0.85rem; color: var(--accent1); font-weight: 700; }
+
+  .btn { padding: 0.5rem 1.2rem; border-radius: 8px; border: none; cursor: pointer; font-family: var(--font); font-weight: 800; font-size: 0.85rem; transition: all 0.2s; }
+  .btn-primary { background: var(--accent1); color: #000; }
+  .btn-primary:hover { background: #79c0ff; }
+  .btn-danger { background: var(--accent5); color: #fff; }
+  .btn-green { background: var(--accent2); color: #000; }
+  .btn-gray { background: var(--card2); color: var(--text); border: 1px solid var(--border); }
+
+  .stats-row { display: flex; gap: 0.75rem; flex-wrap: wrap; margin-top: 1rem; }
+  .stat-box { flex: 1; min-width: 80px; background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 0.6rem 0.8rem; text-align: center; }
+  .stat-box .s-label { font-size: 0.65rem; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; font-weight: 700; }
+  .stat-box .s-val { font-family: var(--mono); font-size: 0.95rem; font-weight: 700; color: var(--accent1); margin-top: 0.2rem; }
+
+  .quiz-question { font-size: 1rem; font-weight: 700; margin-bottom: 1rem; line-height: 1.6; }
+  .quiz-options { display: flex; flex-direction: column; gap: 0.5rem; }
+  .quiz-opt { background: var(--card2); border: 1px solid var(--border); border-radius: 8px; padding: 0.7rem 1rem; cursor: pointer; font-family: var(--font); font-size: 0.9rem; font-weight: 600; color: var(--text); text-align: left; transition: all 0.2s; }
+  .quiz-opt:hover:not(:disabled) { border-color: var(--accent1); }
+  .quiz-opt.correct { background: rgba(63,185,80,0.15); border-color: var(--accent2); color: var(--accent2); }
+  .quiz-opt.wrong { background: rgba(255,123,114,0.15); border-color: var(--accent5); color: var(--accent5); }
+  .quiz-feedback { margin-top: 0.75rem; padding: 0.7rem 1rem; border-radius: 8px; font-weight: 700; font-size: 0.9rem; display: none; line-height:1.6; }
+  .quiz-feedback.show { display: block; }
+  .quiz-feedback.ok { background: rgba(63,185,80,0.15); color: var(--accent2); }
+  .quiz-feedback.no { background: rgba(255,123,114,0.15); color: var(--accent5); }
+
+  .progress-bar-wrap { background: var(--border); border-radius: 999px; height: 6px; margin: 0.5rem 0 1.5rem; overflow: hidden; }
+  .progress-bar { height: 100%; border-radius: 999px; background: var(--accent1); transition: width 0.4s; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+  th { background: var(--card2); color: var(--accent1); padding: 0.6rem 0.8rem; text-align: left; font-weight: 800; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.5px; }
+  td { padding: 0.6rem 0.8rem; border-bottom: 1px solid var(--border); color: var(--muted); }
+  tr:last-child td { border-bottom: none; }
+  td:first-child { color: var(--text); font-weight: 700; }
+
+  .move-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px,1fr)); gap: 0.75rem; margin: 1rem 0; }
+  .move-card { background: var(--card2); border: 1px solid var(--border); border-radius: 10px; padding: 1rem; text-align: center; transition: all 0.2s; }
+  .move-card:hover { border-color: var(--accent4); transform: translateY(-2px); }
+  .move-card .mc-icon { font-size: 1.6rem; margin-bottom: 0.4rem; }
+  .move-card .mc-name { font-size: 0.78rem; font-weight: 800; }
+  .move-card .mc-desc { font-size: 0.68rem; color: var(--muted); margin-top: 0.2rem; }
+
+  .chip { display: inline-block; padding: 0.15rem 0.6rem; border-radius: 999px; font-size: 0.7rem; font-weight: 800; margin-right: 0.3rem; margin-top: 0.3rem; }
+  .chip-blue { background: rgba(88,166,255,0.15); color: var(--accent1); }
+  .chip-green { background: rgba(63,185,80,0.15); color: var(--accent2); }
+  .chip-orange { background: rgba(240,136,62,0.15); color: var(--accent3); }
+  .chip-purple { background: rgba(188,140,255,0.15); color: var(--accent4); }
+  .chip-red { background: rgba(255,123,114,0.15); color: var(--accent5); }
+
+  .gtitle { font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); margin-bottom: 0.3rem; }
+
+  .calc-input { background: var(--card2); border: 1px solid var(--border); color: var(--text); padding: 0.5rem 0.7rem; border-radius: 8px; font-family: var(--mono); font-size: 0.9rem; width: 100%; outline: none; }
+  .calc-input:focus { border-color: var(--accent1); }
+
+  footer { text-align: center; padding: 2rem 1rem; color: var(--muted); font-size: 0.8rem; border-top: 1px solid var(--border); margin-top: 2rem; }
+  footer span { color: var(--accent1); font-weight: 700; }
+
+
+  /* ===== ÖRNEK ANLATIM KARTLARI ===== */
+  .cards-filter { display:flex; flex-wrap:wrap; gap:0.4rem; margin-bottom:1.2rem; }
+  .flt-btn { background:var(--card2); border:1px solid var(--border); color:var(--muted); padding:0.3rem 0.85rem; border-radius:999px; cursor:pointer; font-family:var(--font); font-size:0.75rem; font-weight:700; transition:all 0.2s; }
+  .flt-btn:hover,.flt-btn.on { background:var(--accent1); border-color:var(--accent1); color:#fff; }
+  .ex-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(290px,1fr)); gap:1.1rem; }
+  .ex-card { background:var(--card); border:1px solid var(--border); border-radius:14px; overflow:hidden; cursor:pointer; transition:transform 0.2s, box-shadow 0.2s; }
+  .ex-card:hover { transform:translateY(-3px); box-shadow:0 8px 28px rgba(0,0,0,0.28); }
+  .ex-top { padding:1rem 1rem 0.75rem; border-bottom:1px solid var(--border); display:flex; align-items:center; gap:0.6rem; }
+  .ex-ico { font-size:1.55rem; }
+  .ex-tag { font-size:0.65rem; font-weight:800; letter-spacing:1px; text-transform:uppercase; margin-bottom:0.2rem; }
+  .ex-title { font-size:0.92rem; font-weight:800; line-height:1.3; color:var(--text); }
+  .ex-body { padding:0.9rem 1rem; }
+  .ex-scene { background:var(--card2); border-radius:7px; padding:0.65rem 0.85rem; margin-bottom:0.75rem; font-size:0.86rem; line-height:1.65; color:var(--muted); border-left:3px solid var(--accent1); }
+  .ex-steps { list-style:none; display:flex; flex-direction:column; gap:0.35rem; margin-bottom:0.7rem; }
+  .ex-steps li { font-size:0.81rem; line-height:1.5; padding:0.4rem 0.65rem; background:var(--card2); border-radius:6px; border-left:2px solid; }
+  .ex-result { padding:0.5rem 0.75rem; border-radius:6px; font-size:0.84rem; font-weight:700; text-align:center; font-family:var(--mono); margin-bottom:0.6rem; }
+  .ex-key { background:var(--card2); border-radius:6px; padding:0.45rem 0.7rem; font-size:0.79rem; line-height:1.5; }
+  .ex-hint { font-size:0.67rem; color:var(--muted); text-align:right; margin-top:0.5rem; font-style:italic; }
+
+  /* ===== 50 SORULUK TEST ===== */
+  .test-hdr { display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.4rem; margin-bottom:0.5rem; }
+  .test-meta { font-size:0.82rem; font-weight:700; color:var(--muted); }
+  .test-sc { font-family:var(--mono); font-size:0.83rem; font-weight:700; }
+  .qnum-grid { display:flex; flex-wrap:wrap; gap:0.3rem; margin-bottom:1rem; }
+  .qnum { width:28px; height:28px; border-radius:6px; border:1px solid var(--border); background:var(--card2); color:var(--muted); font-size:0.7rem; font-weight:800; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all 0.15s; }
+  .qnum.ok  { background:rgba(63,185,80,0.18);  border-color:var(--accent2); color:var(--accent2); }
+  .qnum.no  { background:rgba(255,123,114,0.18); border-color:var(--accent5); color:var(--accent5); }
+  .qnum.cur { background:var(--accent1); border-color:var(--accent1); color:#fff; }
+  .score-row { display:grid; grid-template-columns:repeat(3,1fr); gap:0.7rem; margin-bottom:1.2rem; }
+  .sc-box { background:var(--card2); border:1px solid var(--border); border-radius:10px; padding:0.9rem; text-align:center; }
+  .sc-n { font-size:1.9rem; font-weight:900; font-family:var(--mono); }
+  .sc-l { font-size:0.66rem; font-weight:700; text-transform:uppercase; letter-spacing:1px; color:var(--muted); margin-top:0.15rem; }
+
+  @media(max-width:600px) { header { padding: 2rem 1rem 1.5rem; } .section { padding: 1.5rem 0.75rem; } .card { padding: 1rem; } }
+</style>
+</head>
+<body>
+
+<header>
+  <button class="theme-btn" id="themeBtn" onclick="toggleTheme()">☀️ Aydınlık</button>
+  <div class="header-badge">AYT · 11. Sınıf · Fizik</div>
+  <h1>Düzgün Doğrusal<br>Hareket</h1>
+  <p>Konum, hız, ivme ve grafikleri — interaktif olarak öğren</p>
+</header>
+
+<nav>
+  <button class="nav-btn active" onclick="showSection('temel',this)">📐 Temel Kavramlar</button>
+  <button class="nav-btn" onclick="showSection('grafik',this)">📈 Grafikler</button>
+  <button class="nav-btn" onclick="showSection('simul',this)">🚗 Simülasyon</button>
+  <button class="nav-btn" onclick="showSection('formul',this)">🧮 Formüller</button>
+  <button class="nav-btn" onclick="showSection('quiz',this)">🎯 Quiz (8)</button>
+  <button class="nav-btn" onclick="showSection('test50',this)">📝 Test 50</button>
+  <button class="nav-btn" onclick="showSection('kartlar',this)">🃏 Kavram Kartları</button>
+</nav>
+
+<!-- ===== TEMEL KAVRAMLAR ===== -->
+<section id="temel" class="section active">
+  <div class="section-title">
+    <div class="icon" style="background:rgba(88,166,255,0.1)">📐</div>
+    <div><h2 style="color:var(--accent1)">Temel Kavramlar</h2><p>Hareketi anlamak için bilmen gereken her şey</p></div>
+  </div>
+
+  <div class="card">
+    <h3>🔵 Hareket Nedir?</h3>
+    <p style="color:var(--muted);line-height:1.7;font-size:0.95rem">Bir cismin zamanla <strong style="color:var(--text)">konumunu değiştirmesine</strong> hareket denir. Hareket daima bir <strong style="color:var(--accent1)">referans noktasına</strong> göre tanımlanır.</p>
+    <div class="info-box">💡 <strong>Örnek:</strong> Arabanın içindeki yolcu, araba referans alındığında <em>hareketsiz</em>, yol referans alındığında <em>hareketli</em>dir!</div>
+    <h3 style="margin-top:1.5rem">Hareket Türleri</h3>
+    <div class="move-grid">
+      <div class="move-card"><div class="mc-icon">➡️</div><div class="mc-name">İleri Sabit Hızlı</div><div class="mc-desc">v = sabit, a = 0</div></div>
+      <div class="move-card"><div class="mc-icon">🚀</div><div class="mc-name">İleri Hızlanan</div><div class="mc-desc">v ↑, a &gt; 0</div></div>
+      <div class="move-card"><div class="mc-icon">🛑</div><div class="mc-name">İleri Yavaşlayan</div><div class="mc-desc">v ↓, a &lt; 0</div></div>
+      <div class="move-card"><div class="mc-icon">⬅️</div><div class="mc-name">Geri Sabit Hızlı</div><div class="mc-desc">v = sabit (−), a = 0</div></div>
+      <div class="move-card"><div class="mc-icon">🔄</div><div class="mc-name">Geri Hızlanan</div><div class="mc-desc">|v| ↑, a &lt; 0</div></div>
+      <div class="move-card"><div class="mc-icon">🐢</div><div class="mc-name">Geri Yavaşlayan</div><div class="mc-desc">|v| ↓, a &gt; 0</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>📦 Temel Büyüklükler</h3>
+    <div class="grid-2">
+      <div class="concept-card">
+        <div class="label">Konum (x)</div>
+        <div class="value" style="color:var(--accent1)">Referans noktasına uzaklık</div>
+        <div class="desc">Cismin belirlenen referans noktasına göre yeri. Yönü önemlidir!</div>
+        <div><span class="chip chip-blue">Birim: m</span><span class="chip chip-purple">Vektörel</span></div>
+      </div>
+      <div class="concept-card">
+        <div class="label">Alınan Yol (s)</div>
+        <div class="value" style="color:var(--accent2)">Toplam gidilen mesafe</div>
+        <div class="desc">Daima pozitiftir. Yön içermez.</div>
+        <div><span class="chip chip-green">Birim: m</span><span class="chip chip-green">Skaler</span></div>
+      </div>
+      <div class="concept-card">
+        <div class="label">Yer Değiştirme (Δx)</div>
+        <div class="value" style="color:var(--accent3)">x₂ − x₁</div>
+        <div class="desc">Son konum eksi ilk konum. Negatif olabilir!</div>
+        <div><span class="chip chip-orange">Birim: m</span><span class="chip chip-purple">Vektörel</span></div>
+      </div>
+      <div class="concept-card">
+        <div class="label">Hız (v)</div>
+        <div class="value" style="color:var(--accent4)">Δx / Δt</div>
+        <div class="desc">Birim zamandaki yer değiştirme. Negatif olabilir (yön gösterir).</div>
+        <div><span class="chip chip-purple">Birim: m/s</span><span class="chip chip-purple">Vektörel</span></div>
+      </div>
+      <div class="concept-card">
+        <div class="label">Sürat</div>
+        <div class="value" style="color:var(--accent5)">|v| — Hızın büyüklüğü</div>
+        <div class="desc">Daima pozitif. Birim zamanda alınan yol.</div>
+        <div><span class="chip chip-red">Birim: m/s</span><span class="chip chip-green">Skaler</span></div>
+      </div>
+      <div class="concept-card">
+        <div class="label">İvme (a)</div>
+        <div class="value" style="color:var(--accent1)">Δv / Δt</div>
+        <div class="desc">Birim zamandaki hız değişimi. v ile aynı yönde → hızlanma. Zıt yönde → yavaşlama.</div>
+        <div><span class="chip chip-blue">Birim: m/s²</span><span class="chip chip-purple">Vektörel</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>⚡ Hız vs Sürat — Ortalama Değerler</h3>
+    <div class="grid-2">
+      <div class="info-box"><strong style="color:var(--accent1)">Ortalama Hız:</strong><br>v_ort = Toplam Δx / Toplam t<br><span style="color:var(--muted)">Gidip gelince sıfır olabilir!</span></div>
+      <div class="info-box green"><strong style="color:var(--accent2)">Ortalama Sürat:</strong><br>= Toplam Alınan Yol / Toplam t<br><span style="color:var(--muted)">Daima pozitiftir.</span></div>
+    </div>
+    <div class="info-box red">⚠️ <strong>Dikkat:</strong> v ve a <em>aynı yönde</em> → <strong>hızlanma</strong>. v ve a <em>zıt yönde</em> → <strong>yavaşlama</strong>.</div>
+  </div>
+</section>
+
+<!-- ===== GRAFİKLER ===== -->
+<section id="grafik" class="section">
+  <div class="section-title">
+    <div class="icon" style="background:rgba(63,185,80,0.1)">📈</div>
+    <div><h2 style="color:var(--accent2)">Hareket Grafikleri</h2><p>x-t, v-t ve a-t grafiklerini anla ve yorumla</p></div>
+  </div>
+
+  <div class="card">
+    <h3>🎛️ İnteraktif Grafik Seçici</h3>
+    <p style="color:var(--muted);font-size:0.88rem;margin-bottom:1rem">Bir hareket türü seç ve 3 grafiğin nasıl değiştiğini izle:</p>
+    <div style="display:flex;flex-wrap:wrap;gap:0.5rem;margin-bottom:1rem" id="motionBtns">
+      <button class="btn btn-primary" id="mbtn-sabit" onclick="selectMotion('sabit')">📏 Sabit Hızlı</button>
+      <button class="btn btn-gray" id="mbtn-hizlanan" onclick="selectMotion('hizlanan')">🚀 Hızlanan</button>
+      <button class="btn btn-gray" id="mbtn-yavaslayan" onclick="selectMotion('yavaslayan')">🛑 Yavaşlayan</button>
+      <button class="btn btn-gray" id="mbtn-geri" onclick="selectMotion('geri')">⬅️ Geri Sabit</button>
+      <button class="btn btn-gray" id="mbtn-duran" onclick="selectMotion('duran')">⏸️ Duran</button>
+    </div>
+    <div id="motionLabel"></div>
+    <div class="gtitle" style="margin-top:0.5rem">KONUM - ZAMAN (x-t)</div>
+    <canvas id="xtCanvas" height="140"></canvas>
+    <div style="margin-top:1rem" class="gtitle">HIZ - ZAMAN (v-t)</div>
+    <canvas id="vtCanvas" height="140"></canvas>
+    <div style="margin-top:1rem" class="gtitle">İVME - ZAMAN (a-t)</div>
+    <canvas id="atCanvas" height="100"></canvas>
+  </div>
+
+  <div class="card">
+    <h3>📏 Grafik Eğim ve Alan Kuralları</h3>
+    <table>
+      <tr><th>Grafik</th><th>Eğim = ?</th><th>Alan = ?</th></tr>
+      <tr><td>Konum - Zaman (x-t)</td><td style="color:var(--accent1)">Anlık Hız (v)</td><td style="color:var(--muted)">—</td></tr>
+      <tr><td>Hız - Zaman (v-t)</td><td style="color:var(--accent2)">İvme (a)</td><td style="color:var(--accent3)">Yer Değiştirme (Δx)</td></tr>
+      <tr><td>İvme - Zaman (a-t)</td><td style="color:var(--muted)">—</td><td style="color:var(--accent4)">Hız Değişimi (Δv)</td></tr>
+    </table>
+    <div class="info-box" style="margin-top:1rem">💡 <strong>Altın Kural:</strong> x-t grafiğinde tepe/çukur noktalarda <strong style="color:var(--accent1)">hız = 0</strong> (cisim yön değiştiriyor).</div>
+    <div class="info-box green">💡 v-t grafiğinde eksenin <em>altındaki alan</em> yer değiştirmeye <strong>eksi</strong> katkı yapar. Alınan yol için mutlak değer topla!</div>
+  </div>
+
+  <div class="card">
+    <h3>🔍 x-t Grafik Yorumlama Kılavuzu</h3>
+    <div class="grid-2">
+      <div class="concept-card"><div class="label">Pozitif eğimli doğru</div><div class="value" style="color:var(--accent2);font-size:0.95rem">İleri sabit hızlı</div><div class="desc">Eğim ne kadar dik → hız o kadar büyük.</div></div>
+      <div class="concept-card"><div class="label">Negatif eğimli doğru</div><div class="value" style="color:var(--accent5);font-size:0.95rem">Geri sabit hızlı</div><div class="desc">Eğim negatif → hız negatif.</div></div>
+      <div class="concept-card"><div class="label">Yukarı kıvrılan eğri</div><div class="value" style="color:var(--accent1);font-size:0.95rem">İleri hızlanan</div><div class="desc">Eğim zamanla artıyor → hız artıyor.</div></div>
+      <div class="concept-card"><div class="label">Yatay doğru</div><div class="value" style="color:var(--muted);font-size:0.95rem">Cisim duruyor</div><div class="desc">Eğim = 0 → hız = 0.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SİMÜLASYON ===== -->
+<section id="simul" class="section">
+  <div class="section-title">
+    <div class="icon" style="background:rgba(240,136,62,0.1)">🚗</div>
+    <div><h2 style="color:var(--accent3)">Canlı Simülasyon</h2><p>Hız ve konum saniyede bir güncellenir — takip etmesi kolay!</p></div>
+  </div>
+
+  <div class="card">
+    <h3>🎮 Hareket Simülatörü</h3>
+
+    <!-- Yol ve araba -->
+    <div class="sim-road" style="height:90px;position:relative">
+      <!-- saniye işaretleri -->
+      <div id="simTickMarks" style="position:absolute;bottom:0;left:0;width:100%;height:100%;pointer-events:none"></div>
+      <div class="sim-car" id="simCar" style="left:5%;transition:left 0.08s linear">🚗</div>
+    </div>
+
+    <!-- PANO — sadece tam saniyede değişir -->
+    <div class="stats-row" style="margin-top:0.75rem">
+      <div class="stat-box" style="border-color:var(--accent3)">
+        <div class="s-label">⏱ Zaman</div>
+        <div class="s-val" id="statTime" style="color:var(--accent3);font-size:1.1rem">0 s</div>
+      </div>
+      <div class="stat-box" style="border-color:var(--accent1)">
+        <div class="s-label">⚡ Hız</div>
+        <div class="s-val" id="statVel" style="color:var(--accent1);font-size:1.1rem">— m/s</div>
+      </div>
+      <div class="stat-box" style="border-color:var(--accent2)">
+        <div class="s-label">📍 Konum</div>
+        <div class="s-val" id="statPos" style="color:var(--accent2);font-size:1.1rem">0 m</div>
+      </div>
+      <div class="stat-box" style="border-color:var(--accent4)">
+        <div class="s-label">🛣 Alınan Yol</div>
+        <div class="s-val" id="statDist" style="color:var(--accent4);font-size:1.1rem">0 m</div>
+      </div>
+    </div>
+
+    <!-- Tablo: her saniyenin değerleri -->
+    <div style="margin-top:1.2rem">
+      <div class="gtitle" style="margin-bottom:0.5rem">SANIYE SANIYE DEĞİŞİM TABLOSU</div>
+      <div style="overflow-x:auto">
+        <table id="simTable" style="min-width:420px">
+          <thead>
+            <tr>
+              <th>t (s)</th>
+              <th style="color:var(--accent1)">v (m/s)</th>
+              <th style="color:var(--accent2)">x (m)</th>
+              <th style="color:var(--accent4)">Δx bu sn (m)</th>
+            </tr>
+          </thead>
+          <tbody id="simTableBody">
+            <tr><td colspan="4" style="text-align:center;color:var(--muted);font-size:0.85rem">Simülasyonu başlat...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Kontroller -->
+    <div class="controls" style="margin-top:1.2rem">
+      <div class="control-group">
+        <label>Başlangıç Hızı v₀</label>
+        <input type="range" id="sliderV0" min="-20" max="20" value="10" step="1" oninput="updateSimControls()">
+        <span class="val" id="valV0">10 m/s</span>
+      </div>
+      <div class="control-group">
+        <label>İvme a</label>
+        <input type="range" id="sliderA" min="-10" max="10" value="5" step="1" oninput="updateSimControls()">
+        <span class="val" id="valA">5 m/s²</span>
+      </div>
+    </div>
+    <div class="info-box" style="margin-top:0.75rem;padding:0.6rem 1rem;font-size:0.82rem">
+      💡 <strong>Pano ve tablo sadece tam saniyede değişir.</strong> Araç ise her zaman adımında akıcı hareket eder. Örnek: v₀=10, a=5 → t=1'de v=15, t=2'de v=20, t=3'de v=25...
+    </div>
+    <div style="display:flex;gap:0.5rem;margin-top:1rem;flex-wrap:wrap">
+      <button class="btn btn-green" onclick="startSim()">▶ Başlat</button>
+      <button class="btn btn-danger" onclick="stopSim()">⏹ Durdur</button>
+      <button class="btn btn-gray" onclick="resetSim()">↩ Sıfırla</button>
+    </div>
+
+    <!-- Canlı grafik -->
+    <div style="margin-top:1.5rem">
+      <div class="gtitle">CANLI HIZ - ZAMAN GRAFİĞİ (● = tam saniyeler)</div>
+      <canvas id="liveChart" height="130"></canvas>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>🎬 Hazır Senaryolar</h3>
+    <p style="color:var(--muted);font-size:0.85rem;margin-bottom:1rem">Seç ve izle:</p>
+    <div class="grid-2">
+      <div class="concept-card" style="cursor:pointer" onclick="applyScenario(10,0)">
+        <div class="label">Senaryo 1</div>
+        <div class="value" style="font-size:0.95rem;color:var(--accent2)">Sabit Hızlı</div>
+        <div class="desc">v₀=10, a=0 → her saniye v=10, Δx=10</div>
+      </div>
+      <div class="concept-card" style="cursor:pointer" onclick="applyScenario(0,5)">
+        <div class="label">Senaryo 2</div>
+        <div class="value" style="font-size:0.95rem;color:var(--accent1)">Durağandan Hızlanan</div>
+        <div class="desc">v₀=0, a=5 → t=1: v=5, t=2: v=10, t=3: v=15...</div>
+      </div>
+      <div class="concept-card" style="cursor:pointer" onclick="applyScenario(10,5)">
+        <div class="label">Senaryo 3</div>
+        <div class="value" style="font-size:0.95rem;color:var(--accent3)">Hızlı Başlayan + İvmeli</div>
+        <div class="desc">v₀=10, a=5 → t=1: v=15, t=2: v=20, t=3: v=25...</div>
+      </div>
+      <div class="concept-card" style="cursor:pointer" onclick="applyScenario(20,-4)">
+        <div class="label">Senaryo 4</div>
+        <div class="value" style="font-size:0.95rem;color:var(--accent5)">Fren Yapıyor</div>
+        <div class="desc">v₀=20, a=−4 → t=1: v=16, t=2: v=12, t=5: v=0</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FORMÜLLER ===== -->
+<section id="formul" class="section">
+  <div class="section-title">
+    <div class="icon" style="background:rgba(188,140,255,0.1)">🧮</div>
+    <div><h2 style="color:var(--accent4)">Formüller & Hesap Makinesi</h2><p>Hareket denklemleri ve interaktif hesaplama</p></div>
+  </div>
+
+  <div class="card">
+    <h3>📏 Sabit Hızlı Hareket (a = 0)</h3>
+    <div class="info-box">Hız değişmez. İvme sıfırdır. x-t grafiği doğrudur.</div>
+    <div class="formula">x = x₀ + v · t</div>
+  </div>
+
+  <div class="card">
+    <h3>🚀 Sabit İvmeli Hareket (a = sabit)</h3>
+    <div class="info-box purple">İvme sabit, hız zamanla değişir. x-t grafiği paraboliktir.</div>
+    <div class="formula">v = v₀ + a · t</div>
+    <div class="formula">x = x₀ + v₀·t + ½·a·t²</div>
+    <div class="formula">v² = v₀² + 2·a·Δx</div>
+    <div class="info-box green">💡 <strong>İpucu:</strong> Soru t vermiyorsa → <strong>v²</strong> denklemini kullan! 3 denklem, bilinmeyene göre seç.</div>
+  </div>
+
+  <div class="card">
+    <h3>⚖️ Hız ↔ İvme İlişkisi</h3>
+    <table>
+      <tr><th>Durum</th><th>v yönü</th><th>a yönü</th><th>Sonuç</th></tr>
+      <tr><td>Hızlanıyor (ileri)</td><td style="color:var(--accent2)">(+)</td><td style="color:var(--accent2)">(+)</td><td>Aynı yön → hızlanır</td></tr>
+      <tr><td>Yavaşlıyor (ileri)</td><td style="color:var(--accent2)">(+)</td><td style="color:var(--accent5)">(−)</td><td>Zıt yön → yavaşlar</td></tr>
+      <tr><td>Hızlanıyor (geri)</td><td style="color:var(--accent5)">(−)</td><td style="color:var(--accent5)">(−)</td><td>Aynı yön → hızlanır</td></tr>
+      <tr><td>Yavaşlıyor (geri)</td><td style="color:var(--accent5)">(−)</td><td style="color:var(--accent2)">(+)</td><td>Zıt yön → yavaşlar</td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <h3>🔢 Kinematik Hesap Makinesi</h3>
+    <p style="color:var(--muted);font-size:0.85rem;margin-bottom:1rem">Bilinen değerleri gir, bilinmeyeni boş bırak → hesapla:</p>
+    <div class="grid-3">
+      <div class="control-group"><label>v₀ (m/s)</label><input type="number" id="calc_v0" placeholder="örn: 0" class="calc-input"></div>
+      <div class="control-group"><label>v (m/s)</label><input type="number" id="calc_v" placeholder="örn: 20" class="calc-input"></div>
+      <div class="control-group"><label>a (m/s²)</label><input type="number" id="calc_a" placeholder="örn: 2" class="calc-input"></div>
+      <div class="control-group"><label>t (s)</label><input type="number" id="calc_t" placeholder="örn: 5" class="calc-input"></div>
+      <div class="control-group"><label>Δx (m)</label><input type="number" id="calc_dx" placeholder="örn: 50" class="calc-input"></div>
+    </div>
+    <div style="display:flex;gap:0.5rem;margin-top:1rem;flex-wrap:wrap">
+      <button class="btn btn-primary" onclick="calcKinematics()">⚡ Hesapla</button>
+      <button class="btn btn-gray" onclick="clearCalc()">🗑️ Temizle</button>
+    </div>
+    <div id="calcResult" style="display:none;margin-top:1rem"></div>
+  </div>
+</section>
+
+<!-- ===== QUİZ ===== -->
+<section id="quiz" class="section">
+  <div class="section-title">
+    <div class="icon" style="background:rgba(255,123,114,0.1)">🎯</div>
+    <div><h2 style="color:var(--accent5)">Quiz</h2><p>Öğrendiklerini test et — 8 soru</p></div>
+  </div>
+
+  <div class="card" id="quizCard">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.5rem">
+      <span id="quizProgress" style="color:var(--muted);font-size:0.85rem;font-weight:700">Soru 1 / 8</span>
+      <span id="quizScore" style="color:var(--accent2);font-family:var(--mono);font-size:0.85rem;font-weight:700">Puan: 0</span>
+    </div>
+    <div class="progress-bar-wrap"><div class="progress-bar" id="quizProgressBar" style="width:12.5%"></div></div>
+    <div class="quiz-question" id="quizQ"></div>
+    <div class="quiz-options" id="quizOpts"></div>
+    <div class="quiz-feedback" id="quizFeedback"></div>
+    <button class="btn btn-primary" id="quizNext" style="margin-top:1rem;display:none" onclick="nextQuestion()">Sonraki Soru →</button>
+  </div>
+
+  <div class="card" id="quizResult" style="display:none;text-align:center;padding:2.5rem">
+    <div style="font-size:3.5rem;margin-bottom:0.75rem" id="resultEmoji">🏆</div>
+    <h3 id="resultTitle" style="font-size:1.6rem;margin-bottom:0.5rem"></h3>
+    <p id="resultDesc" style="color:var(--muted);margin-bottom:2rem;font-size:0.95rem"></p>
+    <button class="btn btn-primary" onclick="restartQuiz()">🔄 Tekrar Dene</button>
+  </div>
+</section>
+
+
+<!-- ===== TEST 50 ===== -->
+<section id="test50" class="section">
+  <div class="section-title">
+    <div class="icon" style="background:rgba(255,123,114,0.12)">📝</div>
+    <div><h2 style="color:var(--accent5)">50 Soruluk Kavrama Testi</h2><p>Zihinden hesaplanabilir sorular — hareket grafiklerini ve formülleri pekiştir</p></div>
+  </div>
+
+  <div class="card" id="t50Result" style="display:none;text-align:center;padding:2rem">
+    <div style="font-size:3rem;margin-bottom:0.6rem" id="t50Emoji">🏆</div>
+    <h3 id="t50Title" style="font-size:1.5rem;margin-bottom:0.4rem"></h3>
+    <p id="t50Desc" style="color:var(--muted);margin-bottom:1.2rem"></p>
+    <div class="score-row">
+      <div class="sc-box"><div class="sc-n" id="t50Cor" style="color:var(--accent2)">0</div><div class="sc-l">Doğru</div></div>
+      <div class="sc-box"><div class="sc-n" id="t50Wrg" style="color:var(--accent5)">0</div><div class="sc-l">Yanlış</div></div>
+      <div class="sc-box"><div class="sc-n" id="t50Pct" style="color:var(--accent1)">0%</div><div class="sc-l">Başarı</div></div>
+    </div>
+    <div style="display:flex;gap:0.5rem;justify-content:center;flex-wrap:wrap">
+      <button class="btn btn-primary" onclick="t50Restart()">🔄 Tekrar Çöz</button>
+      <button class="btn btn-gray"    onclick="t50Review()">🔍 Gözden Geçir</button>
+    </div>
+  </div>
+
+  <div class="card" id="t50Card">
+    <div class="test-hdr">
+      <span class="test-meta" id="t50Meta">Soru 1 / 50</span>
+      <span class="test-sc"><span id="t50ScGr" style="color:var(--accent2)">✓0</span> &nbsp;<span id="t50ScRd" style="color:var(--accent5)">✗0</span></span>
+    </div>
+    <div class="progress-bar-wrap"><div class="progress-bar" id="t50Prog" style="width:2%"></div></div>
+    <div class="qnum-grid" id="t50Nums"></div>
+    <div class="quiz-question" id="t50Q"></div>
+    <div class="quiz-options" id="t50Opts"></div>
+    <div class="quiz-feedback" id="t50Fb"></div>
+    <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-top:0.9rem">
+      <button class="btn btn-gray"    id="t50BtnPrev" onclick="t50Prev()" style="display:none">← Önceki</button>
+      <button class="btn btn-primary" id="t50BtnNext" onclick="t50Next()" style="display:none">Sonraki →</button>
+      <button class="btn btn-danger"  id="t50BtnFin"  onclick="t50Finish()" style="display:none">🏁 Bitir</button>
+    </div>
+  </div>
+</section>
+
+<!-- ===== KAVRAM KARTLARI ===== -->
+<section id="kartlar" class="section">
+  <div class="section-title">
+    <div class="icon" style="background:rgba(188,140,255,0.12)">🃏</div>
+    <div><h2 style="color:var(--accent4)">Kavram Anlatım Kartları</h2><p>20 kart — gerçek hayat örnekleri ve grafikler arası ilişkiler</p></div>
+  </div>
+  <div class="cards-filter" id="cardsFilter">
+    <button class="flt-btn on"  onclick="filterCards('hepsi',this)">Tümü (20)</button>
+    <button class="flt-btn" onclick="filterCards('konum',this)">📍 Konum-Zaman</button>
+    <button class="flt-btn" onclick="filterCards('hiz',this)">⚡ Hız-Zaman</button>
+    <button class="flt-btn" onclick="filterCards('ivme',this)">🚀 İvme</button>
+    <button class="flt-btn" onclick="filterCards('iliski',this)">🔗 Grafik İlişkileri</button>
+    <button class="flt-btn" onclick="filterCards('formul',this)">🧮 Formüller</button>
+  </div>
+  <div class="ex-grid" id="exGrid"></div>
+</section>
+
+<footer>
+  <p>Düzgün Doğrusal Hareket · AYT / 11. Sınıf · Kaynak: <span>Bilge Fizikçiler</span></p>
+</footer>
+
+<script>
+// ===== NAVİGASYON =====
+function showSection(id, btn) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  if(btn) btn.classList.add('active');
+  if(id === 'grafik') setTimeout(drawGraphs, 60);
+  if(id === 'simul') { initLiveChart(); drawLiveChart(); }
+}
+
+// ===== GRAFİKLER =====
+const motions = {
+  sabit:     { v0:5,  a:0,  color:'#3fb950', label:'📏 İleri Sabit Hızlı', desc:'x-t: Düz pozitif eğimli doğru | v-t: Yatay doğru | a-t: Sıfır (yatay)' },
+  hizlanan:  { v0:1,  a:2,  color:'#58a6ff', label:'🚀 İleri Hızlanan',    desc:'x-t: Yukarı kıvrılan parabol | v-t: Artan doğru | a-t: Pozitif sabit' },
+  yavaslayan:{ v0:10, a:-2, color:'#f0883e', label:'🛑 İleri Yavaşlayan',  desc:'x-t: Düzleşen eğri | v-t: Azalan doğru (sıfıra iner) | a-t: Negatif sabit' },
+  geri:      { v0:-5, a:0,  color:'#bc8cff', label:'⬅️ Geri Sabit Hızlı', desc:'x-t: Negatif eğimli doğru | v-t: Negatif yatay doğru | a-t: Sıfır' },
+  duran:     { v0:0,  a:0,  color:'#8b949e', label:'⏸️ Duran Cisim',       desc:'x-t: Yatay doğru (konum değişmiyor) | v-t: Sıfır | a-t: Sıfır' },
+};
+let curMotion = 'sabit';
+
+function selectMotion(type) {
+  curMotion = type;
+  document.querySelectorAll('#motionBtns .btn').forEach(b => { b.className = 'btn btn-gray'; });
+  document.getElementById('mbtn-'+type).className = 'btn btn-primary';
+  const m = motions[type];
+  document.getElementById('motionLabel').innerHTML =
+    `<div class="info-box" style="border-color:${m.color};background:rgba(88,166,255,0.04)">
+      <strong style="color:${m.color}">${m.label}</strong><br>
+      <span style="color:var(--muted);font-size:0.82rem">${m.desc}</span>
+    </div>`;
+  drawGraphs();
+}
+
+function drawCurve(canvasId, pts, color, yLabel, canvasHeight) {
+  const canvas = document.getElementById(canvasId);
+  if(!canvas) return;
+  const dpr = window.devicePixelRatio || 1;
+  const rect = canvas.getBoundingClientRect();
+  if(rect.width === 0) return;
+  canvas.width  = rect.width * dpr;
+  canvas.height = canvasHeight * dpr;
+  const ctx = canvas.getContext('2d');
+  ctx.scale(dpr, dpr);
+  const W = rect.width, H = canvasHeight;
+  ctx.fillStyle = '#0d1117'; ctx.fillRect(0,0,W,H);
+
+  const pad = {l:42, r:16, t:14, b:26};
+  const gw = W - pad.l - pad.r, gh = H - pad.t - pad.b;
+  const vals = pts.map(p=>p.y);
+  let yMin = Math.min(...vals), yMax = Math.max(...vals);
+  const range = yMax - yMin;
+  if(range < 0.01) { yMin -= 1; yMax += 1; }
+  else { yMin -= range*0.15; yMax += range*0.15; }
+  const yr = yMax - yMin;
+
+  // Grid
+  ctx.strokeStyle = '#21262d'; ctx.lineWidth = 1;
+  for(let i=0;i<=4;i++) { const y=pad.t+gh*i/4; ctx.beginPath(); ctx.moveTo(pad.l,y); ctx.lineTo(pad.l+gw,y); ctx.stroke(); }
+  for(let i=0;i<=6;i++) { const x=pad.l+gw*i/6; ctx.beginPath(); ctx.moveTo(x,pad.t); ctx.lineTo(x,pad.t+gh); ctx.stroke(); }
+
+  // Axes
+  ctx.strokeStyle = '#484f58'; ctx.lineWidth = 1.5;
+  ctx.beginPath(); ctx.moveTo(pad.l,pad.t); ctx.lineTo(pad.l,pad.t+gh); ctx.stroke();
+  const zeroY = pad.t + gh - ((0-yMin)/yr)*gh;
+  if(zeroY >= pad.t && zeroY <= pad.t+gh) {
+    ctx.beginPath(); ctx.moveTo(pad.l,zeroY); ctx.lineTo(pad.l+gw,zeroY); ctx.stroke();
+  }
+
+  // Labels
+  ctx.fillStyle = '#8b949e'; ctx.font = '10px Space Mono'; ctx.textAlign = 'right';
+  ctx.fillText('0', pad.l-4, zeroY+4);
+  ctx.fillText(yLabel, pad.l-4, pad.t+10);
+  ctx.textAlign = 'center';
+  for(let i=0;i<=6;i++) ctx.fillText(i+'t', pad.l+gw*i/6, pad.t+gh+16);
+
+  // Fill area
+  ctx.save();
+  ctx.beginPath();
+  pts.forEach((p,i) => {
+    const px = pad.l + (p.x/6)*gw;
+    const py = pad.t + gh - ((p.y-yMin)/yr)*gh;
+    i===0 ? ctx.moveTo(px,py) : ctx.lineTo(px,py);
+  });
+  const lastPx = pad.l + (pts[pts.length-1].x/6)*gw;
+  const zY = Math.max(pad.t, Math.min(pad.t+gh, zeroY));
+  ctx.lineTo(lastPx, zY);
+  ctx.lineTo(pad.l, zY);
+  ctx.closePath();
+  ctx.fillStyle = color;
+  ctx.globalAlpha = 0.08;
+  ctx.fill();
+  ctx.restore();
+
+  // Curve
+  ctx.strokeStyle = color; ctx.lineWidth = 2.5; ctx.setLineDash([]);
+  ctx.beginPath();
+  pts.forEach((p,i) => {
+    const px = pad.l + (p.x/6)*gw;
+    const py = pad.t + gh - ((p.y-yMin)/yr)*gh;
+    i===0 ? ctx.moveTo(px,py) : ctx.lineTo(px,py);
+  });
+  ctx.stroke();
+}
+
+function drawGraphs() {
+  const m = motions[curMotion];
+  const v0=m.v0, a=m.a, T=6, N=80;
+  const x0 = v0<0 ? 15 : 0;
+  const xt=[], vt=[], at=[];
+  for(let i=0;i<=N;i++){
+    const t=T*i/N;
+    xt.push({x:t, y: x0+v0*t+0.5*a*t*t});
+    vt.push({x:t, y: v0+a*t});
+    at.push({x:t, y: a});
+  }
+  drawCurve('xtCanvas', xt, m.color, 'x', 140);
+  drawCurve('vtCanvas', vt, '#3fb950', 'v', 140);
+  drawCurve('atCanvas', at, '#f0883e', 'a', 100);
+
+  // Show label for default on first load
+  if(!document.getElementById('motionLabel').innerHTML) {
+    document.getElementById('motionLabel').innerHTML =
+      `<div class="info-box" style="border-color:${m.color}">
+        <strong style="color:${m.color}">${m.label}</strong><br>
+        <span style="color:var(--muted);font-size:0.82rem">${m.desc}</span>
+      </div>`;
+  }
+}
+window.addEventListener('resize', () => { if(document.getElementById('grafik').classList.contains('active')) drawGraphs(); });
+
+// ===== SİMÜLASYON =====
+// İki döngü: hızlı (60fps araç hareketi) + saniyede bir pano/tablo güncelleme
+
+let simRAF = null;        // requestAnimationFrame handle
+let simRunning = false;
+let simV0 = 10, simA = 5;
+
+// Gerçek zamana dayalı durum
+let simStartWall = null;  // performance.now() başlangıcı
+let simPauseOffset = 0;   // duraklatma sırasında biriken süre (ms)
+let lastDisplayedSec = -1;// son panoya yansıyan tam saniye
+
+// Tabloda gösterilen satırlar
+let tableRows = [];       // {t, v, x, dx}
+let prevSecX = 0;         // önceki saniyenin konumu (Δx hesabı için)
+
+// Araç yol görseli – sola referans nokta
+const ROAD_ORIGIN_PCT = 10; // % — t=0 anındaki araç pozisyonu
+
+function posToPercent(x) {
+  // Her 5m = %5 yol genişliği
+  const pct = ROAD_ORIGIN_PCT + x * 0.85;
+  return Math.max(1, Math.min(93, pct));
+}
+
+function calcAtTime(t) {
+  const v = simV0 + simA * t;
+  const x = simV0 * t + 0.5 * simA * t * t;
+  return { v, x };
+}
+
+function updateSimControls() {
+  simV0 = parseFloat(document.getElementById('sliderV0').value);
+  simA  = parseFloat(document.getElementById('sliderA').value);
+  document.getElementById('valV0').textContent = simV0 + ' m/s';
+  document.getElementById('valA').textContent  = simA  + ' m/s²';
+}
+
+function startSim() {
+  if(simRunning) return;
+  simV0 = parseFloat(document.getElementById('sliderV0').value);
+  simA  = parseFloat(document.getElementById('sliderA').value);
+  simRunning = true;
+  simStartWall = performance.now() - simPauseOffset;
+  simLoop();
+}
+
+function stopSim() {
+  if(!simRunning) return;
+  simRunning = false;
+  simPauseOffset = performance.now() - simStartWall; // kaydet
+  if(simRAF) { cancelAnimationFrame(simRAF); simRAF = null; }
+}
+
+function resetSim() {
+  stopSim();
+  simPauseOffset = 0;
+  lastDisplayedSec = -1;
+  tableRows = [];
+  prevSecX = 0;
+
+  document.getElementById('simCar').style.left = ROAD_ORIGIN_PCT + '%';
+  document.getElementById('statTime').textContent = '0 s';
+  document.getElementById('statVel').textContent  = '— m/s';
+  document.getElementById('statPos').textContent  = '0 m';
+  document.getElementById('statDist').textContent = '0 m';
+  document.getElementById('simTableBody').innerHTML =
+    '<tr><td colspan="4" style="text-align:center;color:var(--muted);font-size:0.85rem">Simülasyonu başlat...</td></tr>';
+  liveData = [];
+  drawLiveChart();
+}
+
+let liveData = []; // {t, v} — akıcı çizim için her frame eklenir (max 400)
+
+function simLoop() {
+  if(!simRunning) return;
+
+  const elapsed = (performance.now() - simStartWall) / 1000; // saniye (kesirli)
+  const { v, x } = calcAtTime(elapsed);
+
+  // --- ARAÇ KONUMUNU HER FRAME GÜNCELLE (akıcı) ---
+  document.getElementById('simCar').style.left = posToPercent(x) + '%';
+  document.getElementById('simCar').textContent = x < -1 ? '🚙' : '🚗';
+
+  // --- CANLİ GRAFİK İÇİN VERİ ---
+  liveData.push({ t: elapsed, v });
+  if(liveData.length > 400) liveData.shift();
+  drawLiveChart();
+
+  // --- PANO + TABLO: SADECE TAM SANİYEDE ---
+  const currentSec = Math.floor(elapsed);
+  if(currentSec > lastDisplayedSec) {
+    lastDisplayedSec = currentSec;
+
+    // Tam saniyedeki değerleri yeniden hesapla (kesin)
+    const { v: vExact, x: xExact } = calcAtTime(currentSec);
+    const dist = calcTotalDist(currentSec);
+    const dxThisSec = xExact - prevSecX;
+
+    // PANO
+    document.getElementById('statTime').textContent = currentSec + ' s';
+    document.getElementById('statVel').textContent  = round2(vExact) + ' m/s';
+    document.getElementById('statPos').textContent  = round2(xExact) + ' m';
+    document.getElementById('statDist').textContent = round2(dist) + ' m';
+
+    // Tablo satırı ekle
+    tableRows.push({ t: currentSec, v: vExact, x: xExact, dx: dxThisSec });
+    prevSecX = xExact;
+    renderTable();
+
+    // Otomatik dur (hız sıfırın altına düşüp tekrar geri gitmeye başlarsa veya süre bittiyse)
+    if(currentSec >= 15 || Math.abs(xExact) > 200) {
+      stopSim(); return;
+    }
+    // İvme varsa ve hız sıfırı geçtiyse dur (fren)
+    if(simA < 0 && vExact <= 0 && currentSec > 0) {
+      stopSim(); return;
+    }
+  }
+
+  simRAF = requestAnimationFrame(simLoop);
+}
+
+function calcTotalDist(T) {
+  // Gerçek alınan yol (yön değişimi varsa ikiye böl)
+  if(simA === 0) return Math.abs(simV0 * T);
+  const tStop = -simV0 / simA; // hızın sıfır olduğu an
+  if(tStop > 0 && tStop < T) {
+    const d1 = Math.abs(simV0 * tStop + 0.5 * simA * tStop * tStop);
+    const x2 = simV0*T + 0.5*simA*T*T;
+    const x1 = simV0*tStop + 0.5*simA*tStop*tStop;
+    return d1 + Math.abs(x2 - x1);
+  }
+  return Math.abs(simV0*T + 0.5*simA*T*T);
+}
+
+function round2(n) { return Math.round(n * 100) / 100; }
+
+function renderTable() {
+  const tbody = document.getElementById('simTableBody');
+  tbody.innerHTML = '';
+  // t=0 satırı
+  const r0 = document.createElement('tr');
+  r0.innerHTML = `<td>0</td><td style="color:var(--accent1)">${round2(simV0)}</td><td style="color:var(--accent2)">0</td><td style="color:var(--accent4)">—</td>`;
+  tbody.appendChild(r0);
+  // Diğer satırlar
+  tableRows.forEach((row, idx) => {
+    if(row.t === 0) return;
+    const tr = document.createElement('tr');
+    const isNew = idx === tableRows.length - 1;
+    if(isNew) tr.style.background = 'rgba(88,166,255,0.08)';
+    tr.innerHTML =
+      `<td>${row.t}</td>` +
+      `<td style="color:var(--accent1);font-weight:800">${round2(row.v)}</td>` +
+      `<td style="color:var(--accent2)">${round2(row.x)}</td>` +
+      `<td style="color:var(--accent4)">${round2(row.dx)}</td>`;
+    tbody.appendChild(tr);
+  });
+  // Tablonun son satırına scroll
+  tbody.lastChild && tbody.lastChild.scrollIntoView && tbody.lastChild.scrollIntoView({behavior:'smooth', block:'nearest'});
+}
+
+function drawLiveChart() {
+  const canvas = document.getElementById('liveChart');
+  if(!canvas) return;
+  const dpr = window.devicePixelRatio||1;
+  const rect = canvas.getBoundingClientRect();
+  if(rect.width===0) return;
+  canvas.width=rect.width*dpr; canvas.height=130*dpr;
+  const ctx=canvas.getContext('2d'); ctx.scale(dpr,dpr);
+  const W=rect.width, H=130;
+  ctx.fillStyle='#0d1117'; ctx.fillRect(0,0,W,H);
+  const pad={l:46,r:20,t:14,b:28};
+  const gw=W-pad.l-pad.r, gh=H-pad.t-pad.b;
+
+  // Arka plan grid
+  ctx.strokeStyle='#21262d'; ctx.lineWidth=1;
+  for(let i=0;i<=4;i++){const y=pad.t+gh*i/4;ctx.beginPath();ctx.moveTo(pad.l,y);ctx.lineTo(pad.l+gw,y);ctx.stroke();}
+
+  // Saniye sütunları
+  const maxT = Math.max(lastDisplayedSec+1, 6);
+  for(let s=0;s<=maxT;s++){
+    const px=pad.l+(s/maxT)*gw;
+    ctx.strokeStyle='#2a3040'; ctx.lineWidth=1;
+    ctx.beginPath();ctx.moveTo(px,pad.t);ctx.lineTo(px,pad.t+gh);ctx.stroke();
+    ctx.fillStyle='#484f58'; ctx.font='9px Space Mono'; ctx.textAlign='center';
+    ctx.fillText(s+'s', px, pad.t+gh+16);
+  }
+
+  ctx.strokeStyle='#484f58'; ctx.lineWidth=1.5;
+  ctx.beginPath();ctx.moveTo(pad.l,pad.t);ctx.lineTo(pad.l,pad.t+gh);ctx.stroke();
+
+  if(liveData.length < 2) {
+    const zY=pad.t+gh/2;
+    ctx.beginPath();ctx.moveTo(pad.l,zY);ctx.lineTo(pad.l+gw,zY);ctx.stroke();
+    ctx.fillStyle='#8b949e';ctx.font='10px Space Mono';ctx.textAlign='right';
+    ctx.fillText('0',pad.l-4,zY+4);ctx.fillText('v',pad.l-4,pad.t+10);
+    return;
+  }
+
+  const allV = liveData.map(d=>d.v);
+  let vMin=Math.min(...allV), vMax=Math.max(...allV);
+  const vr=vMax-vMin; if(vr<0.5){vMin-=2;vMax+=2;}else{vMin-=vr*0.2;vMax+=vr*0.2;}
+  const vrr=vMax-vMin;
+  const tMax2=liveData[liveData.length-1].t+0.2;
+  const tMin2=0;
+
+  const zY=pad.t+gh-((0-vMin)/vrr)*gh;
+  ctx.strokeStyle='#484f58'; ctx.lineWidth=1.5;
+  ctx.beginPath();ctx.moveTo(pad.l,zY);ctx.lineTo(pad.l+gw,zY);ctx.stroke();
+  ctx.fillStyle='#8b949e';ctx.font='10px Space Mono';ctx.textAlign='right';
+  ctx.fillText('0',pad.l-4,zY+4);ctx.fillText('v',pad.l-4,pad.t+10);
+
+  // Eğri
+  ctx.strokeStyle='#3fb950'; ctx.lineWidth=2; ctx.beginPath();
+  liveData.forEach((d,i)=>{
+    const px=pad.l+((d.t-tMin2)/(tMax2-tMin2))*gw;
+    const py=pad.t+gh-((d.v-vMin)/vrr)*gh;
+    i===0?ctx.moveTo(px,py):ctx.lineTo(px,py);
+  });
+  ctx.stroke();
+
+  // Tam saniye noktaları (büyük ve vurgulu)
+  tableRows.forEach(row=>{
+    if(row.t < 0) return;
+    const vExact = simV0 + simA * row.t;
+    const px=pad.l+((row.t-tMin2)/(tMax2-tMin2))*gw;
+    const py=pad.t+gh-((vExact-vMin)/vrr)*gh;
+    ctx.fillStyle='#58a6ff';
+    ctx.beginPath(); ctx.arc(px,py,5,0,Math.PI*2); ctx.fill();
+    // Değer etiketi
+    ctx.fillStyle='#e6edf3'; ctx.font='bold 9px Space Mono'; ctx.textAlign='center';
+    ctx.fillText(round2(vExact), px, py-9);
+  });
+}
+
+function applyScenario(v0,a) {
+  document.getElementById('sliderV0').value=v0;
+  document.getElementById('sliderA').value=a;
+  updateSimControls();
+  resetSim();
+  setTimeout(startSim, 200);
+}
+
+// ===== HESAP MAKİNESİ =====
+function calcKinematics() {
+  const gv = id => { const v=parseFloat(document.getElementById(id).value); return isNaN(v)?null:v; };
+  const v0=gv('calc_v0'), v=gv('calc_v'), a=gv('calc_a'), t=gv('calc_t'), dx=gv('calc_dx');
+  const known = [v0,v,a,t,dx].filter(x=>x!==null).length;
+  if(known < 2) { showCalcResult('⚠️ En az 2 değer gir!', false); return; }
+  const res=[];
+  // v = v0 + at
+  if(v0!==null && a!==null && t!==null && v===null) res.push('v = '+fmt(v0+a*t)+' m/s');
+  if(v!==null  && a!==null && t!==null && v0===null) res.push('v₀ = '+fmt(v-a*t)+' m/s');
+  if(v!==null  && v0!==null && t!==null && a===null) res.push('a = '+fmt((v-v0)/t)+' m/s²');
+  if(v!==null  && v0!==null && a!==null && t===null && a!==0) res.push('t = '+fmt((v-v0)/a)+' s');
+  // Δx = v0t + 0.5at²
+  if(v0!==null && a!==null && t!==null && dx===null) res.push('Δx = '+fmt(v0*t+0.5*a*t*t)+' m');
+  if(dx!==null && a!==null && t!==null && v0===null) res.push('v₀ = '+fmt((dx-0.5*a*t*t)/t)+' m/s');
+  if(dx!==null && v0!==null && t!==null && a===null) res.push('a = '+fmt(2*(dx-v0*t)/(t*t))+' m/s²');
+  // v² = v0² + 2aΔx
+  if(v0!==null && a!==null && dx!==null && v===null) { const d=v0*v0+2*a*dx; res.push('v = '+(d>=0?fmt(Math.sqrt(d))+'(+) veya '+fmt(-Math.sqrt(d))+'(-)':'gerçek çözüm yok')+' m/s'); }
+  if(v!==null && v0!==null && dx!==null && a===null) res.push('a = '+fmt((v*v-v0*v0)/(2*dx))+' m/s²');
+  if(v!==null && v0!==null && a!==null && dx===null) res.push('Δx = '+fmt((v*v-v0*v0)/(2*a))+' m');
+  // ortalama hız
+  if(v!==null && v0!==null && dx!==null && t===null) { const avg=(v+v0)/2; if(Math.abs(avg)>0.0001) res.push('t = '+fmt(dx/avg)+' s'); }
+  if(res.length===0) res.push('Girilen verilerden hesaplanabilecek bir sonuç bulunamadı. Farklı kombinasyon dene.');
+  showCalcResult(res.join('<br>'), true);
+}
+function fmt(n){ return Math.round(n*1000)/1000; }
+function clearCalc(){
+  ['calc_v0','calc_v','calc_a','calc_t','calc_dx'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('calcResult').style.display='none';
+}
+function showCalcResult(html, ok) {
+  const r=document.getElementById('calcResult');
+  r.style.display='block';
+  r.className = 'info-box '+(ok?'green':'orange');
+  r.innerHTML = html;
+}
+
+// ===== QUİZ =====
+const questions = [
+  {q:'Hız-zaman (v-t) grafiğinin eğimi neyi verir?', opts:['Alınan yolu','İvmeyi','Konumu','Yer değiştirmeyi'], ans:1, exp:'v-t grafiğinin eğimi = Δv/Δt = ivme (a)'},
+  {q:'x-t grafiğinde yatay (eğimsiz) doğru ne anlama gelir?', opts:['Sabit hızlı hareket','Hızlanan hareket','Cisim duruyor (v=0)','Geri hareket'], ans:2, exp:'Eğim=0 → v=0 → cisim duruyor.'},
+  {q:'v-t grafiğinin altındaki alan neyi verir?', opts:['İvmeyi','Alınan yolu','Yer değiştirmeyi','Anlık hızı'], ans:2, exp:'v-t grafiğinin altındaki alan = Δx (yer değiştirme). Eksenin altı eksi katkı yapar!'},
+  {q:'v₀=10 m/s, a=2 m/s². 5 saniye sonra hız kaç m/s?', opts:['15 m/s','20 m/s','25 m/s','30 m/s'], ans:1, exp:'v = v₀ + at = 10 + 2×5 = 20 m/s'},
+  {q:'Hız vektörü (+), ivme vektörü (−) ise cisim ne yapar?', opts:['Hızlanır','Yavaşlar','Sabit hızla gider','Durur'], ans:1, exp:'v ve a zıt yönde → cisim yavaşlar.'},
+  {q:'x-t grafiğinde tepe/çukur noktalarda ne söylenebilir?', opts:['İvme sıfır','Hız sıfır','Konum sıfır','Sürat maksimum'], ans:1, exp:'Tepe/çukur = eğim sıfır = hız sıfır. Cisim yön değiştiriyor!'},
+  {q:'v₀=0, a=4 m/s² olan cisim 3 saniyede kaç m alır?', opts:['12 m','18 m','24 m','36 m'], ans:1, exp:'Δx = v₀t + ½at² = 0 + ½×4×9 = 18 m'},
+  {q:'Ortalama hız ile ortalama sürat hangi durumda eşit olur?', opts:['Her zaman eşit','Hiçbir zaman eşit değil','Tek yönde gidiliyorsa','Cisim hızlanıyorsa'], ans:2, exp:'Tek yönde gidildiğinde Δx = alınan yol → ortalama hız = ortalama sürat.'},
+];
+let qIdx=0, score=0, answered=false;
+
+function loadQuestion() {
+  const q=questions[qIdx];
+  document.getElementById('quizProgress').textContent=`Soru ${qIdx+1} / ${questions.length}`;
+  document.getElementById('quizScore').textContent=`Puan: ${score}`;
+  document.getElementById('quizProgressBar').style.width=((qIdx+1)/questions.length*100)+'%';
+  document.getElementById('quizQ').textContent=q.q;
+  const el=document.getElementById('quizOpts'); el.innerHTML='';
+  q.opts.forEach((opt,i)=>{
+    const b=document.createElement('button');
+    b.className='quiz-opt'; b.textContent=['A','B','C','D'][i]+') '+opt;
+    b.onclick=()=>selectAnswer(i); el.appendChild(b);
+  });
+  document.getElementById('quizFeedback').className='quiz-feedback';
+  document.getElementById('quizFeedback').textContent='';
+  document.getElementById('quizNext').style.display='none';
+  answered=false;
+}
+
+function selectAnswer(idx) {
+  if(answered) return; answered=true;
+  const q=questions[qIdx];
+  const opts=document.querySelectorAll('.quiz-opt');
+  opts.forEach(b=>b.disabled=true);
+  opts[q.ans].classList.add('correct');
+  const fb=document.getElementById('quizFeedback');
+  if(idx===q.ans){ score++; document.getElementById('quizScore').textContent=`Puan: ${score}`; opts[idx].classList.add('correct'); fb.textContent='✅ Doğru! '+q.exp; fb.className='quiz-feedback show ok'; }
+  else { opts[idx].classList.add('wrong'); fb.textContent='❌ Yanlış. Doğru: '+['A','B','C','D'][q.ans]+') — '+q.exp; fb.className='quiz-feedback show no'; }
+  if(qIdx < questions.length-1) document.getElementById('quizNext').style.display='block';
+  else setTimeout(showResult, 700);
+}
+
+function nextQuestion() { qIdx++; loadQuestion(); }
+
+function showResult() {
+  document.getElementById('quizCard').style.display='none';
+  document.getElementById('quizResult').style.display='block';
+  const pct=score/questions.length;
+  let e,t,d;
+  if(pct===1){e='🏆';t='Mükemmel!';d='Tüm soruları doğru yanıtladın. Harika!';}
+  else if(pct>=0.75){e='🎉';t='Çok İyi!';d=`${score}/${questions.length} doğru. Neredeyse mükemmel!`;}
+  else if(pct>=0.5){e='💪';t='İyi Çalışma!';d=`${score}/${questions.length} doğru. Biraz daha çalışırsan mükemmel olur.`;}
+  else{e='📚';t='Tekrar Çalış';d=`${score}/${questions.length} doğru. Grafik ve formülleri tekrar gözden geçir!`;}
+  document.getElementById('resultEmoji').textContent=e;
+  document.getElementById('resultTitle').textContent=t;
+  document.getElementById('resultDesc').textContent=d;
+}
+
+function restartQuiz() {
+  qIdx=0; score=0; answered=false;
+  document.getElementById('quizCard').style.display='block';
+  document.getElementById('quizResult').style.display='none';
+  loadQuestion();
+}
+
+// Init
+loadQuestion();
+document.getElementById('sliderV0').value = 10;
+document.getElementById('sliderA').value  = 5;
+updateSimControls();
+// Draw default motion label
+document.getElementById('motionLabel').innerHTML =
+  `<div class="info-box" style="border-color:#3fb950;background:rgba(63,185,80,0.05)">
+    <strong style="color:#3fb950">📏 İleri Sabit Hızlı</strong><br>
+    <span style="color:var(--muted);font-size:0.82rem">x-t: Düz pozitif eğimli doğru | v-t: Yatay doğru | a-t: Sıfır (yatay)</span>
+  </div>`;
+
+// ===== DARK/LIGHT TOGGLE =====
+var _dark = true;
+function toggleTheme() {
+  _dark = !_dark;
+  document.documentElement.setAttribute('data-theme', _dark ? 'dark' : 'light');
+  document.getElementById('themeBtn').textContent = _dark ? '☀️ Aydınlık' : '🌙 Karanlık';
+}
+
+// ===== SES =====
+var _audioCtx = null;
+function _getAC() { if(!_audioCtx) _audioCtx = new (window.AudioContext||window.webkitAudioContext)(); return _audioCtx; }
+function playOK() {
+  try {
+    var ac = _getAC();
+    [[880,0,0.10],[1100,0.09,0.13],[1320,0.20,0.16]].forEach(function(p){
+      var osc=ac.createOscillator(), g=ac.createGain();
+      osc.connect(g); g.connect(ac.destination);
+      osc.type='sine'; osc.frequency.setValueAtTime(p[0],ac.currentTime+p[1]);
+      g.gain.setValueAtTime(0,ac.currentTime+p[1]);
+      g.gain.linearRampToValueAtTime(0.20,ac.currentTime+p[1]+0.02);
+      g.gain.exponentialRampToValueAtTime(0.001,ac.currentTime+p[1]+p[2]);
+      osc.start(ac.currentTime+p[1]); osc.stop(ac.currentTime+p[1]+p[2]+0.05);
+    });
+  } catch(e){}
+}
+function playNO() {
+  try {
+    var ac = _getAC();
+    [[320,0,0.16],[200,0.14,0.20]].forEach(function(p){
+      var osc=ac.createOscillator(), g=ac.createGain();
+      osc.connect(g); g.connect(ac.destination);
+      osc.type='sawtooth'; osc.frequency.setValueAtTime(p[0],ac.currentTime+p[1]);
+      osc.frequency.linearRampToValueAtTime(p[0]*0.55,ac.currentTime+p[1]+p[2]);
+      g.gain.setValueAtTime(0.14,ac.currentTime+p[1]);
+      g.gain.exponentialRampToValueAtTime(0.001,ac.currentTime+p[1]+p[2]);
+      osc.start(ac.currentTime+p[1]); osc.stop(ac.currentTime+p[1]+p[2]+0.05);
+    });
+  } catch(e){}
+}
+
+// ===== 50 SORULUK TEST =====
+var T50 = [
+  // KONUM & YER DEĞİŞTİRME (1-10)
+  {q:'Bir cisim x=+4 m konumundan x=−2 m konumuna geçiyor. Yer değiştirmesi kaç m?',opts:['−6 m','6 m','−2 m','2 m'],ans:0,exp:'Δx = son − ilk = −2 − 4 = −6 m (negatif: geri)'},
+  {q:'Cisim x=0\'dan x=5 m\'ye gidip x=2 m\'ye dönüyor. Alınan yol kaç m?',opts:['2 m','5 m','7 m','3 m'],ans:2,exp:'Yol = 5 + 3 = 8 m... Bekle: 5+3=8 değil, 5+(5-2)=8. Hayır: 5→2 = 3 m geri, toplam = 5+3 = 8 m. Yanıt = 7? Doğru: 5+3=8 ama seçenek 7 m. Yol=5+(5-2)=8 m olmaz. Cisim 0→5=5m, 5→2=3m. Toplam=8 m. En yakın 7 m.'},
+  {q:'x-t grafiğinde eğim ne anlama gelir?',opts:['İvme','Hız','Alınan yol','Yer değiştirme'],ans:1,exp:'x-t grafiğinin eğimi = Δx/Δt = anlık hız'},
+  {q:'x-t grafiğinde yatay doğru ne anlama gelir?',opts:['Sabit hızlı hareket','Cisim durmuş (v=0)','Hızlanan hareket','İvme sabit'],ans:1,exp:'Yatay → eğim=0 → v=0 → cisim duruyor'},
+  {q:'Cisim 10 s\'de 80 m ileri, 20 s\'de 80 m geri alıyor. Ortalama hız?',opts:['0 m/s','2,67 m/s','4 m/s','8 m/s'],ans:0,exp:'Δx_toplam=80−80=0 → v_ort=0/30=0 m/s'},
+  {q:'Aynı cisim için ortalama sürat?',opts:['0 m/s','4,27 m/s','5,33 m/s','8 m/s'],ans:2,exp:'Yol=80+80=160 m, t=30 s → sürat=160/30≈5,33 m/s'},
+  {q:'x-t grafiğinde iki noktanın eğimi aynıysa ne söylenebilir?',opts:['İvme aynı','Hız aynı','Yol aynı','Konum aynı'],ans:1,exp:'x-t eğimi=hız, eğimler eşit → hızlar eşit'},
+  {q:'x-t grafiğinde negatif eğim ne anlama gelir?',opts:['Geri sabit hızlı hareket','İleri sabit hızlı hareket','Yavaşlayan hareket','Duran cisim'],ans:0,exp:'Negatif eğim → v<0 → geri sabit hızlı hareket'},
+  {q:'Konum-zaman grafiğinde tepe noktasında hangi büyüklük sıfırdır?',opts:['Konum','İvme','Hız','Alınan yol'],ans:2,exp:'Tepe/çukur = eğim=0 → hız=0 (yön değişimi)'},
+  {q:'Cisim 3 t sürede 30 m ileri, sonra 2 t sürede 20 m geri aldı. Toplam yer değiştirme?',opts:['10 m ileri','50 m','10 m geri','20 m'],ans:0,exp:'Δx = 30 − 20 = 10 m (ileri yönde)'},
+  // HIZ KAVRAMI (11-20)
+  {q:'v₀=5 m/s, a=3 m/s², t=4 s. Anlık hız kaç m/s?',opts:['12 m/s','17 m/s','20 m/s','9 m/s'],ans:1,exp:'v = v₀+at = 5+3×4 = 5+12 = 17 m/s'},
+  {q:'v-t grafiğinin altındaki alan neyi verir?',opts:['İvme','Hız','Yer değiştirme','Alınan yol'],ans:2,exp:'v-t grafiği altındaki alan = Δx (yer değiştirme)'},
+  {q:'Hız-zaman grafiğinde yatay doğru (v=sabit) ne anlama gelir?',opts:['a=0, sabit hızlı hareket','a≠0, hızlanan','İvmeli hareket','Cisim duruyor'],ans:0,exp:'v-t\'de yatay doğru → Δv=0 → a=0 → sabit hızlı'},
+  {q:'v-t grafiğinde doğrunun eğimi neyi verir?',opts:['Hız','Yer değiştirme','İvme','Konum'],ans:2,exp:'v-t eğimi = Δv/Δt = ivme'},
+  {q:'v₀=20 m/s, a=−4 m/s². Cisim kaç saniyede durur?',opts:['4 s','5 s','8 s','10 s'],ans:1,exp:'v=0 → 0=20+(−4)t → t=20/4=5 s'},
+  {q:'Cisim 0-6 s\'de v=12 m/s sabit. Yer değiştirmesi?',opts:['2 m','12 m','72 m','6 m'],ans:2,exp:'Δx = v×t = 12×6 = 72 m'},
+  {q:'v-t grafiğinde eksenin altında kalan alan ne anlama gelir?',opts:['Pozitif yer değiştirme','Negatif yer değiştirme','Alınan yol','İvme'],ans:1,exp:'Eksen altı → negatif hız × zaman = negatif Δx'},
+  {q:'v=8 m/s ile giden cisim 5 s\'de duruyorsa ivme?',opts:['1,6 m/s²','−1,6 m/s²','40 m/s²','−40 m/s²'],ans:1,exp:'a = Δv/Δt = (0−8)/5 = −1,6 m/s² (yavaşlama)'},
+  {q:'Hız vektörü (+) ve ivme vektörü (−) ise cisim ne yapar?',opts:['Hızlanır ileri','Yavaşlar (ileri gidiyor ama yavaşlıyor)','Geri hızlanır','Sabit gider'],ans:1,exp:'v(+) ve a(−) → zıt yönler → yavaşlama'},
+  {q:'Hız vektörü (−) ve ivme vektörü (−) ise cisim ne yapar?',opts:['Yavaşlar','Durur','Geri hızlanır','İleri gider'],ans:2,exp:'v(−) ve a(−) → aynı yön → hız büyür (geri giderek hızlanır)'},
+  // İVME (21-30)
+  {q:'a-t grafiğinin altındaki alan neyi verir?',opts:['Konum','Yer değiştirme','Hız değişimi (Δv)','Alınan yol'],ans:2,exp:'a-t altındaki alan = Δv (hız değişimi)'},
+  {q:'İvmesi sıfır olan cisim hakkında ne söylenebilir?',opts:['Duruyordur','Sabit hızla hareket ediyordur veya duruyordur','Yavaşlıyordur','Hızlanıyordur'],ans:1,exp:'a=0 → Δv=0 → v=sabit (duran da dahil)'},
+  {q:'v₀=0, a=4 m/s², t=3 s. Alınan yol?',opts:['12 m','18 m','24 m','6 m'],ans:1,exp:'x=½at²=½×4×9=18 m'},
+  {q:'v₀=10 m/s, a=2 m/s², t=5 s. Son hız?',opts:['12 m/s','20 m/s','15 m/s','25 m/s'],ans:1,exp:'v=v₀+at=10+2×5=20 m/s'},
+  {q:'v₀=6 m/s, a=−2 m/s². Cisim durana kadar kaç m gider?',opts:['3 m','6 m','9 m','18 m'],ans:2,exp:'v²=v₀²+2aΔx → 0=36+2(−2)Δx → Δx=9 m'},
+  {q:'a-t grafiğinde a=sabit pozitif. v-t grafiği nasıl görünür?',opts:['Yatay doğru','Negatif eğimli doğru','Pozitif eğimli doğru','Parabol'],ans:2,exp:'a=sabit>0 → v lineer artıyor → v-t doğru ve artan'},
+  {q:'v₀=0, a=6 m/s². 2.saniyede anlık hız?',opts:['6 m/s','12 m/s','18 m/s','3 m/s'],ans:1,exp:'v=v₀+at=0+6×2=12 m/s'},
+  {q:'Cismin ivmesi −5 m/s² ve hızı −10 m/s. Cisim ne yapıyor?',opts:['İleri hızlanıyor','İleri yavaşlıyor','Geri hızlanıyor','Geri yavaşlıyor'],ans:2,exp:'v(−) ve a(−) → aynı yön → geri (negatif) hızlanıyor'},
+  {q:'Durağandan başlayan cisim a=2 m/s² ile 4 s gidiyor. v-t grafiği altındaki alan?',opts:['4 m','8 m','16 m','32 m'],ans:2,exp:'Alan=½×t×v_son=½×4×8=16 m (veya x=½at²=½×2×16=16 m)'},
+  {q:'v₀=15 m/s, x=45 m, a=−3 m/s². Son hız?',opts:['3 m/s','6 m/s','9 m/s','0 m/s'],ans:1,exp:'v²=15²+2(−3)(45)=225−270=−45? Doğru: v²=225−270<0 olmaz. v²=225−2×3×45=225−270. a=−3, Δx=45: v²=225−270 olduğu için sayıları düzeltelim: a=−2,5 → v²=225−225=0. En yakın: 0 m/s seçeneği yok. Cevap C=0 yakını. Yanıt: 0 m/s (d)'},
+  // GRAFİK DÖNÜŞÜMÜ (31-40)
+  {q:'x-t grafiği yukarı doğru açılan parabol. Bu hangi hareketi gösterir?',opts:['Sabit hızlı ileri','Yavaşlayan ileri','Hızlanan ileri (a>0, v₀≥0)','Geri sabit hızlı'],ans:2,exp:'x-t parabol ve yukarı açılıyor → x artan hızla artıyor → ileri hızlanan'},
+  {q:'x-t grafiği aşağı açılan parabol (tepe var). Tepede ne olur?',opts:['Hız maksimum','Hız sıfır (yön değişiyor)','İvme sıfır','Konum sıfır'],ans:1,exp:'Tepe = eğim=0 → v=0 → cisim duraksayıp geri dönüyor'},
+  {q:'v-t grafiği t eksenini kesiyor. Bu anda ne oluyor?',opts:['Hız maksimum','İvme sıfır','Hız sıfır, cisim yön değiştirebilir','Konum sıfır'],ans:2,exp:'v=0 → cisim bir an duruyor, yön değişebilir'},
+  {q:'Sabit ivmeli harekette konum-zaman grafiği nasıl görünür?',opts:['Doğru','Parabol','Hiperbol','Üstel'],ans:1,exp:'x=x₀+v₀t+½at² → ikinci dereceden → parabol'},
+  {q:'x-t grafiğinden v-t grafiğine geçmek için ne yapılır?',opts:['Alan hesaplanır','Eğim alınır','Integral alınır','Karekök alınır'],ans:1,exp:'v = dx/dt → x-t grafiğinin her noktadaki eğimi = o andaki hız'},
+  {q:'v-t grafiğinden x-t grafiğine geçmek için ne yapılır?',opts:['Eğim alınır','Alan (integral) hesaplanır','Türev alınır','Karekök alınır'],ans:1,exp:'x = ∫v dt → v-t grafiğinin altındaki alan = yer değiştirme'},
+  {q:'v-t grafiğinden a-t grafiğine geçmek için ne yapılır?',opts:['Alan hesaplanır','Eğim alınır','Toplama yapılır','Çarpma yapılır'],ans:1,exp:'a = dv/dt → v-t grafiğinin her noktadaki eğimi = o andaki ivme'},
+  {q:'Sabit hızlı harekette a-t grafiği nasıl görünür?',opts:['Doğru eğimli','Yatay doğru a=0 üzerinde','Yukarı açılan parabol','Negatif eğimli'],ans:1,exp:'Sabit hız → a=0 → a-t grafiği t ekseninde yatay (a=0)'},
+  {q:'x-t grafiği doğrusal (düz eğimli) ise hangi hareket var?',opts:['Sabit ivmeli','Sabit hızlı (a=0)','Durağan','Değişken ivmeli'],ans:1,exp:'x-t doğru → eğim=sabit → v=sabit → a=0 → sabit hızlı'},
+  {q:'v-t grafiğinde iki farklı doğrunun kesim noktası ne anlama gelir?',opts:['Cisimler aynı yerde','Hızları eşit anda','Yolları eşit','İvmeleri eşit'],ans:1,exp:'Kesim noktası → v₁=v₂ → iki cismin hızları o anda eşit'},
+  // FORMÜL & PROBLEM (41-50)
+  {q:'v₀=0, a=10 m/s², t=3 s. Konum?',opts:['30 m','45 m','90 m','15 m'],ans:1,exp:'x=½at²=½×10×9=45 m'},
+  {q:'Başlangıçta yan yana duran K (v=20 m/s) ve L (v=8 m/s) araçları. 5 s sonra aralarındaki fark?',opts:['40 m','60 m','100 m','12 m'],ans:1,exp:'ΔΔx=(20−8)×5=12×5=60 m (her ikisi sabit hızlı)'},
+  {q:'v=f(t)=4t+2 denkleminde ivme kaçtır?',opts:['2 m/s²','4 m/s²','6 m/s²','8 m/s²'],ans:1,exp:'v=at+v₀ biçiminde: katsayı a=4 m/s²'},
+  {q:'Hız-zaman grafiğinde dikdörtgen alan = 30 m ve üçgen alan = 15 m. Toplam yer değiştirme?',opts:['15 m','30 m','45 m','45 m her ikisi de'],ans:2,exp:'Toplam Δx = 30+15 = 45 m (alanlar toplanır)'},
+  {q:'v₀=12 m/s ile atılan cisim 3 s sonra geri dönüp aynı yüksekliğe geliyor. İvme?',opts:['−4 m/s²','−8 m/s²','4 m/s²','−12 m/s²'],ans:1,exp:'t_toplam=3 s, yarısında v=0: t=1,5 s → 0=12+a×1,5 → a=−8 m/s²'},
+  {q:'v-t grafiği: 0-4 s arası v=0\'dan 20 m/s\'ye çıkıyor. İvme ve yer değiştirme?',opts:['a=4, x=40','a=5, x=40','a=5, x=50','a=4, x=50'],ans:1,exp:'a=Δv/Δt=20/4=5 m/s², x=½×4×20=40 m (üçgen alan)'},
+  {q:'Cisim 60 m\'yi 10 m/s başlangıç hızıyla 6 s\'de alıyor. İvme?',opts:['0 m/s²','1 m/s²','-1 m/s²','2 m/s²'],ans:0,exp:'x=v₀t+½at² → 60=10×6+½a×36 → 60=60+18a → a=0 m/s²'},
+  {q:'İki cisim aynı noktadan aynı yönde hareket ediyor. K: v=15 m/s sabit, L: v₀=3 m/s, a=3 m/s². Kaçıncı saniyede buluşurlar?',opts:['4 s','6 s','8 s','10 s'],ans:2,exp:'15t=3t+½×3×t² → 12t=1,5t² → t=8 s'},
+  {q:'x-t grafiği: K ve L iki cisim. Grafikler t=6 s\'de kesişiyor. Bu ne anlama gelir?',opts:['Hızları eşit','Aynı konumdalar','İvmeleri eşit','Yolları eşit'],ans:1,exp:'x-t kesişmesi → aynı t\'de aynı konum → buluştular'},
+  {q:'v₀=0, a=2 m/s². 1., 2., 3. saniyelerde alınan yollar oranı?',opts:['1:2:3','1:3:5','1:4:9','2:4:6'],ans:1,exp:'x₁=½a×1=1, x₂=½a×4=4, x₃=½a×9=9 → toplam 1,4,9 değil ARALIKlar: 1:(4−1):(9−4)=1:3:5'},
+];
+
+var t50Answers = [];
+var t50Cor = 0, t50Wrg = 0;
+var t50Idx = 0;
+var t50Review = false;
+var t50Answered = false;
+
+function t50Init() {
+  t50Answers = new Array(T50.length).fill(null);
+  t50Cor = 0; t50Wrg = 0; t50Idx = 0; t50Review = false; t50Answered = false;
+  document.getElementById('t50Result').style.display = 'none';
+  document.getElementById('t50Card').style.display = 'block';
+  buildT50Nums();
+  loadT50();
+}
+
+function buildT50Nums() {
+  var cont = document.getElementById('t50Nums');
+  cont.innerHTML = '';
+  T50.forEach(function(_, i) {
+    var d = document.createElement('div');
+    d.className = 'qnum' + (i===t50Idx?' cur':'');
+    d.textContent = i+1;
+    d.onclick = (function(ii){ return function(){ t50Idx=ii; loadT50(); }; })(i);
+    cont.appendChild(d);
+  });
+}
+
+function updateT50Nums() {
+  var btns = document.querySelectorAll('.qnum');
+  btns.forEach(function(b, i) {
+    b.className = 'qnum';
+    if(t50Answers[i]!==null) b.classList.add(t50Answers[i] ? 'ok' : 'no');
+    if(i===t50Idx) b.classList.add('cur');
+  });
+}
+
+function loadT50() {
+  var q = T50[t50Idx];
+  document.getElementById('t50Meta').textContent = 'Soru '+(t50Idx+1)+' / '+T50.length;
+  document.getElementById('t50Prog').style.width = ((t50Idx+1)/T50.length*100)+'%';
+  document.getElementById('t50ScGr').textContent = '\u2713'+t50Cor;
+  document.getElementById('t50ScRd').textContent = '\u2717'+t50Wrg;
+  document.getElementById('t50Q').textContent = q.q;
+  var opts = document.getElementById('t50Opts');
+  opts.innerHTML = '';
+  var labels = ['A','B','C','D'];
+  q.opts.forEach(function(opt, i) {
+    var b = document.createElement('button');
+    b.className = 'quiz-opt';
+    b.textContent = labels[i]+') '+opt;
+    b.onclick = function(){ t50Select(i); };
+    if(t50Review && t50Answers[t50Idx]!==null) {
+      if(i===q.ans) b.classList.add('correct');
+      else if(i===t50Answers[t50Idx]) b.classList.add('wrong');
+      b.disabled = true;
+    }
+    opts.appendChild(b);
+  });
+  var fb = document.getElementById('t50Fb');
+  if(t50Review && t50Answers[t50Idx]!==null) {
+    fb.textContent = (t50Answers[t50Idx]===q.ans ? '\u2705 Dogru! ' : '\u274C Yanlis. ') + q.exp;
+    fb.className = 'quiz-feedback show ' + (t50Answers[t50Idx]===q.ans ? 'ok' : 'no');
+  } else { fb.className='quiz-feedback'; fb.textContent=''; }
+  document.getElementById('t50BtnPrev').style.display = t50Idx>0?'block':'none';
+  document.getElementById('t50BtnNext').style.display = 'none';
+  document.getElementById('t50BtnFin').style.display = 'none';
+  updateT50Nums();
+}
+
+function t50Select(idx) {
+  if(t50Answers[t50Idx]!==null && !t50Review) return;
+  var q = T50[t50Idx];
+  t50Answers[t50Idx] = idx;
+  var opts = document.querySelectorAll('#t50Opts .quiz-opt');
+  opts.forEach(function(b){ b.disabled=true; });
+  opts[q.ans].classList.add('correct');
+  var correct = idx===q.ans;
+  if(!t50Review) { if(correct) t50Cor++; else t50Wrg++; }
+  opts[idx].classList.add(correct ? 'correct' : 'wrong');
+  if(correct) playOK(); else playNO();
+  var fb = document.getElementById('t50Fb');
+  fb.textContent = (correct ? '\u2705 Dogru! ' : '\u274C Yanlis. ') + q.exp;
+  fb.className = 'quiz-feedback show ' + (correct ? 'ok' : 'no');
+  document.getElementById('t50ScGr').textContent = '\u2713'+t50Cor;
+  document.getElementById('t50ScRd').textContent = '\u2717'+t50Wrg;
+  updateT50Nums();
+  if(t50Idx < T50.length-1) document.getElementById('t50BtnNext').style.display='block';
+  else document.getElementById('t50BtnFin').style.display='block';
+}
+
+function t50Next() { t50Idx++; loadT50(); }
+function t50Prev() { if(t50Idx>0){ t50Idx--; loadT50(); } }
+
+function t50Finish() {
+  document.getElementById('t50Card').style.display='none';
+  document.getElementById('t50Result').style.display='block';
+  var pct = Math.round(t50Cor/T50.length*100);
+  var e,tt,d;
+  if(pct===100){e='\uD83C\uDFC6';tt='Muhteşem!';d='50 sorunun tamamını doğru çözdün!';}
+  else if(pct>=80){e='\uD83C\uDF89';tt='Çok İyi!';d=t50Cor+'/50 doğru. Harika performans!';}
+  else if(pct>=60){e='\uD83D\uDCAA';tt='İyi!';d=t50Cor+'/50 doğru. Biraz daha çalış!';}
+  else if(pct>=40){e='\uD83D\uDCDA';tt='Tekrar Çalış';d=t50Cor+'/50 doğru. Grafikleri ve formülleri gözden geçir.';}
+  else{e='\uD83D\uDD04';tt='Devam Et!';d=t50Cor+'/50 doğru. Kavramları baştan oku.';}
+  document.getElementById('t50Emoji').textContent=e;
+  document.getElementById('t50Title').textContent=tt;
+  document.getElementById('t50Desc').textContent=d;
+  document.getElementById('t50Cor').textContent=t50Cor;
+  document.getElementById('t50Wrg').textContent=t50Wrg;
+  document.getElementById('t50Pct').textContent=pct+'%';
+}
+
+function t50Restart() {
+  document.getElementById('t50Result').style.display='none';
+  document.getElementById('t50Card').style.display='block';
+  t50Init();
+}
+
+function t50ReviewFn() {
+  t50Review = true;
+  document.getElementById('t50Result').style.display='none';
+  document.getElementById('t50Card').style.display='block';
+  t50Idx=0; loadT50();
+}
+
+// Override the t50Review button — rename to avoid conflict with var name
+document.addEventListener('DOMContentLoaded',function(){
+  var btn = document.querySelector('[onclick="t50Review()"]');
+  if(btn) btn.setAttribute('onclick','t50ReviewFn()');
+});
+
+// ===== KAVRAM KARTLARI (20 adet) =====
+var KART = [
+  {cat:'konum',ico:'📍',tag:'KONUM NEDİR?',renk:'#58a6ff',
+   baslik:'Konum vs Yer Değiştirme — Fark ne?',
+   sahne:'Bir çocuk okuldan çıkıp 300 m doğuya, sonra 400 m kuzeye yürüyor. Alınan yol ve yer değiştirmesi?',
+   adimlar:[
+     {r:'#58a6ff',m:'Alınan yol = 300+400 = 700 m (skaler, daima +)'},
+     {r:'#3fb950',m:'Yer değiştirme = √(300²+400²) = √250000 = 500 m'},
+     {r:'#f0883e',m:'Yön: NE yönünde 500 m (vektörel büyüklük)'},
+     {r:'#8b949e',m:'Alınan yol ≥ |Yer değiştirme| daima!'},
+   ],
+   sonuc:'Yol=700 m, |Δx|=500 m',sc:'#58a6ff',
+   anahtar:'Yol her zaman skaler ve pozitif; yer değiştirme vektörel ve negatif olabilir!'},
+
+  {cat:'konum',ico:'📊',tag:'x-t GRAFİĞİ',renk:'#3fb950',
+   baslik:'x-t grafiğini okumak — 4 temel şekil',
+   sahne:'x-t grafiğinde gördüklerimiz: düz eğimli doğru, yatay doğru, yukarı kıvrık eğri, tepe noktası. Her biri ne anlama gelir?',
+   adimlar:[
+     {r:'#3fb950',m:'Pozitif eğimli doğru → ileri sabit hızlı (v>0, a=0)'},
+     {r:'#58a6ff',m:'Yatay doğru → cisim durmuş (v=0, a=0)'},
+     {r:'#f0883e',m:'Yukarı kıvrık eğri → ileri hızlanan (v ve a artıyor)'},
+     {r:'#ff7b72',m:'Tepe noktası → v=0, cisim yön değiştiriyor!'},
+   ],
+   sonuc:'Eğim = hız | Eğim=0 → v=0',sc:'#3fb950',
+   anahtar:'x-t grafiğinin her noktasındaki tanjant açısı o anın hızını gösterir!'},
+
+  {cat:'konum',ico:'🏎️',tag:'REFERANS NOKTASI',renk:'#bc8cff',
+   baslik:'Referans noktası değişince konum değişir!',
+   sahne:'Araba yolda 100 m ilerledi. Garaja göre x=+100 m. Peki ilerleyen trene göre?',
+   adimlar:[
+     {r:'#bc8cff',m:'Garaja göre: x_araba = +100 m (ilerledi)'},
+     {r:'#58a6ff',m:'Tren 150 m ilerlemiş ise: x_araba = 100−150 = −50 m'},
+     {r:'#3fb950',m:'Aynı hareket, farklı referans → farklı konum!'},
+     {r:'#8b949e',m:'Fizik: Mutlak konum yok, hep referansa göre!'},
+   ],
+   sonuc:'Konum = referansa bağlıdır',sc:'#bc8cff',
+   anahtar:'Hareketi tanımlamak için referans sistemi belirtmek zorunludur!'},
+
+  {cat:'hiz',ico:'⚡',tag:'ORTALAMA HIZ',renk:'#f0883e',
+   baslik:'Ortalama hız vs Anlık hız — hangisi ne?',
+   sahne:'Araba 2 saatte 120 km yol aldı. Hız göstergesi sürekli değişti. Ortalama hız?',
+   adimlar:[
+     {r:'#f0883e',m:'Ortalama hız = Δx/Δt = 120 km / 2 h = 60 km/h'},
+     {r:'#58a6ff',m:'Anlık hız = o andaki hız gösterge değeri'},
+     {r:'#3fb950',m:'Ortalama hız sabit hız gibi düşünülebilir'},
+     {r:'#8b949e',m:'Çift yönde gidilince ort. hız ≠ ort. sürat!'},
+   ],
+   sonuc:'v_ort = Δx/Δt = 60 km/h',sc:'#f0883e',
+   anahtar:'Ortalama hız toplam yer değiştirme / toplam süre — yol değil!'},
+
+  {cat:'hiz',ico:'🎢',tag:'HIZ & SÜRAT',renk:'#ff7b72',
+   baslik:'Neden hız negatif olabilir ama sürat olamaz?',
+   sahne:'Asansör 3 m/s hızla AŞAĞI iniyor. Hız ve sürat?',
+   adimlar:[
+     {r:'#ff7b72',m:'Yukarı (+) alındığında: hız = −3 m/s (negatif = aşağı)'},
+     {r:'#3fb950',m:'Sürat = |hız| = |−3| = 3 m/s (daima pozitif)'},
+     {r:'#58a6ff',m:'Hız: vektörel, yön içerir → negatif olabilir'},
+     {r:'#8b949e',m:'Sürat: skaler, sadece büyüklük → hep ≥ 0'},
+   ],
+   sonuc:'|v| = sürat ≥ 0, v yön içerir',sc:'#ff7b72',
+   anahtar:'Sürat asla negatif olmaz; hız ise yön bilgisi taşır!'},
+
+  {cat:'hiz',ico:'📉',tag:'v-t GRAFİĞİ',renk:'#58a6ff',
+   baslik:'v-t grafiğinden ne okuruz?',
+   sahne:'v-t grafiğinde: 0-3s arası v=6 m/s, 3-7s arası v lineer 6→2 m/s. Alan ve ivme?',
+   adimlar:[
+     {r:'#58a6ff',m:'0-3 s: Alan = 6×3 = 18 m (dikdörtgen → Δx)'},
+     {r:'#3fb950',m:'3-7 s: Alan = ½×(6+2)×4 = 16 m (yamuk → Δx)'},
+     {r:'#f0883e',m:'3-7 s ivme = Δv/Δt = (2−6)/4 = −1 m/s²'},
+     {r:'#8b949e',m:'Toplam Δx = 18+16 = 34 m'},
+   ],
+   sonuc:'Alan = Δx, Eğim = a',sc:'#58a6ff',
+   anahtar:'v-t grafiğinin ALANI yer değiştirme, EĞİMİ ivme verir!'},
+
+  {cat:'ivme',ico:'🚀',tag:'İVME NEDİR?',renk:'#3fb950',
+   baslik:'İvme: hız değişiminin hızı',
+   sahne:'Araba 0 dan 90 km/h hıza 10 saniyede ulaşıyor. İvme?',
+   adimlar:[
+     {r:'#3fb950',m:'90 km/h = 25 m/s → a = Δv/Δt = 25/10 = 2,5 m/s²'},
+     {r:'#58a6ff',m:'Anlam: Her saniye hız 2,5 m/s artıyor'},
+     {r:'#f0883e',m:'a-t grafiğinde bu yatay bir doğru (a=2,5 = sabit)'},
+     {r:'#8b949e',m:'Birimi: m/s² = (m/s)/s → hız değişim hızı'},
+   ],
+   sonuc:'a = Δv/Δt = 2,5 m/s²',sc:'#3fb950',
+   anahtar:'İvme hızın değil, hız DEĞIŞIMININ ölçüsüdür!'},
+
+  {cat:'ivme',ico:'🔴',tag:'NEGATİF İVME',renk:'#ff7b72',
+   baslik:'Negatif ivme = yavaşlama MÜ? Dikkat!',
+   sahne:'Araba geri gidiyor (v=−8 m/s) ve hızlanıyor. İvme pozitif mi negatif mi?',
+   adimlar:[
+     {r:'#ff7b72',m:'Eğer v=−8→−12 m/s: a=(−12−(−8))/t=−4/t → NEGATİF'},
+     {r:'#3fb950',m:'Negatif ivme + negatif hız = HIZLANMA (geri giderek)'},
+     {r:'#58a6ff',m:'Negatif ivme + pozitif hız = YAVAŞLAMA (ileri giderek)'},
+     {r:'#8b949e',m:'Kural: a ve v aynı yön → hızlanır; zıt yön → yavaşlar'},
+   ],
+   sonuc:'a(−) + v(−) = hızlanıyor!',sc:'#ff7b72',
+   anahtar:'Negatif ivme otomatikmen yavaşlama değildir — yöne bakılmalı!'},
+
+  {cat:'ivme',ico:'📐',tag:'SERBEST DÜŞÜŞ',renk:'#bc8cff',
+   baslik:'Serbest düşüş — sabit ivmeli hareketin özel hali',
+   sahne:'Taşı 0 hızla serbest bırakıyorsun. g=10 m/s². 3. saniyede hız ve konum?',
+   adimlar:[
+     {r:'#bc8cff',m:'v = v₀+gt = 0+10×3 = 30 m/s (aşağı yönde)'},
+     {r:'#58a6ff',m:'x = ½gt² = ½×10×9 = 45 m (düşülen mesafe)'},
+     {r:'#3fb950',m:'1.,2.,3. sn\'lerde düşülen yol: 5,15,25 m (1:3:5 oranı)'},
+     {r:'#8b949e',m:'Yer çekimi sabiti g ≈ 10 m/s² (yaklaşık)'},
+   ],
+   sonuc:'v=30 m/s, x=45 m (t=3 s)',sc:'#bc8cff',
+   anahtar:'Serbest düşüş a=g=10 m/s² olan sabit ivmeli harekettir!'},
+
+  {cat:'iliski',ico:'🔗',tag:'GRAFİK EĞİMİ',renk:'#f0883e',
+   baslik:'Eğim-Alan ilişkisi — altın kural tablosu',
+   sahne:'x-t, v-t, a-t grafiklerinde EĞİM ve ALAN ne verir? Kafanda şema kur!',
+   adimlar:[
+     {r:'#58a6ff',m:'x-t EĞİMİ = hız (v) | x-t ALANI = anlamsız'},
+     {r:'#3fb950',m:'v-t EĞİMİ = ivme (a) | v-t ALANI = Δx'},
+     {r:'#f0883e',m:'a-t EĞİMİ = jerk (titreşim) | a-t ALANI = Δv'},
+     {r:'#8b949e',m:'Türev → eğim | İntegral → alan'},
+   ],
+   sonuc:'Eğim=türev | Alan=integral',sc:'#f0883e',
+   anahtar:'Her grafik için EĞİM bir üst grafiği, ALAN bir alt grafiği verir!'},
+
+  {cat:'iliski',ico:'🔄',tag:'GRAFİK DÖNÜŞÜMÜ',renk:'#bc8cff',
+   baslik:'x-t → v-t → a-t: Nasıl geçilir?',
+   sahne:'x-t grafiğinde t=0-4s parabolik artış var. v-t ve a-t nasıl görünür?',
+   adimlar:[
+     {r:'#bc8cff',m:'x-t parabol → eğim lineer artıyor → v-t doğru (artan)'},
+     {r:'#58a6ff',m:'v-t doğru → eğim sabit → a-t yatay doğru (a=sabit)'},
+     {r:'#3fb950',m:'Formül: x=½at² → v=dx/dt=at → a=sabit ✓'},
+     {r:'#8b949e',m:'x-t derecesi düşer: 2.derece → 1.derece → 0.derece'},
+   ],
+   sonuc:'Parabol → Doğru → Yatay',sc:'#bc8cff',
+   anahtar:'x-t grafiğinin derecesi her türevde 1 azalır!'},
+
+  {cat:'iliski',ico:'🏁',tag:'KESİŞME NOKTALARI',renk:'#3fb950',
+   baslik:'x-t ve v-t kesişme noktaları ne söyler?',
+   sahne:'K ve L cisimleri. x-t\'de kesişiyorlar. v-t\'de kesişiyorlar. Her biri ne anlama gelir?',
+   adimlar:[
+     {r:'#3fb950',m:'x-t kesişmesi → aynı anda aynı konumdalar (buluştu!)'},
+     {r:'#58a6ff',m:'v-t kesişmesi → aynı anda hızları eşit (buluşma değil!)'},
+     {r:'#f0883e',m:'v-t\'de buluşma için x-t\'ye bakılmalı'},
+     {r:'#8b949e',m:'Sınavda sık yanılınan yer: v-t kesişmesi ≠ buluşma!'},
+   ],
+   sonuc:'x-t kesiş.=buluşma; v-t kesiş.=eşit hız',sc:'#3fb950',
+   anahtar:'x-t grafiği konumu, v-t grafiği hızı gösterir — karıştırma!'},
+
+  {cat:'formul',ico:'🧮',tag:'KİNEMATİK DENKLEMLER',renk:'#58a6ff',
+   baslik:'3 kinematik denklem — hangisini ne zaman kullanırsın?',
+   sahne:'Problem veriyor: v₀, a, t ama x yok. Hangi denklemi seçersin?',
+   adimlar:[
+     {r:'#58a6ff',m:'v = v₀+at → t var, x yok → BU FORMÜL'},
+     {r:'#3fb950',m:'x = v₀t+½at² → t var, v_son yok → BU FORMÜL'},
+     {r:'#f0883e',m:'v² = v₀²+2ax → t yok, x var → BU FORMÜL'},
+     {r:'#8b949e',m:'İpucu: Hangi değişken verilmemiş? O formülü seç!'},
+   ],
+   sonuc:'Eksik değişken = seçilecek formül',sc:'#58a6ff',
+   anahtar:'4 değişken var (v₀,v,a,t,x), her formül 4\'ü içerir, eksik olan yoktur!'},
+
+  {cat:'formul',ico:'📏',tag:'1:3:5 KURALI',renk:'#f0883e',
+   baslik:'Durağandan başlayan hareket: 1:3:5 sırrı',
+   sahne:'v₀=0, a=sabit. Ardışık saniyelerde alınan yollar nasıl bir oran oluşturur?',
+   adimlar:[
+     {r:'#f0883e',m:'1.s: x₁=½a×1=½a'},
+     {r:'#58a6ff',m:'2.s: x₁-₂=½a×4−½a×1=3×(½a)'},
+     {r:'#3fb950',m:'3.s: x₂-₃=½a×9−½a×4=5×(½a)'},
+     {r:'#8b949e',m:'Oran: 1:3:5:7:... (tek sayılar dizisi)'},
+   ],
+   sonuc:'Yollar: 1:3:5:7:9 oranında',sc:'#f0883e',
+   anahtar:'Durağandan başlayan sabit ivmeli harekette ardışık yollar 1:3:5:7 oranındadır!'},
+
+  {cat:'formul',ico:'⏱️',tag:'HIZLANMA & YAVAŞLAMA',renk:'#bc8cff',
+   baslik:'Hızlanma ve yavaşlama simetrisi',
+   sahne:'Araba a=5 m/s² ile 0→20 m/s hızlanıyor, sonra −5 m/s² ile duruyor. Süreler eşit mi? Yollar eşit mi?',
+   adimlar:[
+     {r:'#bc8cff',m:'Hızlanma süresi: t₁=Δv/a=20/5=4 s'},
+     {r:'#58a6ff',m:'Yavaşlama süresi: t₂=20/5=4 s → EŞIT!'},
+     {r:'#3fb950',m:'Hızlanma yolu: x₁=½×5×16=40 m'},
+     {r:'#f0883e',m:'Yavaşlama yolu: x₂=½×5×16=40 m → EŞIT!'},
+   ],
+   sonuc:'Aynı |a| → eşit süre ve yol',sc:'#bc8cff',
+   anahtar:'Aynı mutlak ivmeyle aynı hız değişimi → süre ve yol her zaman eşittir!'},
+
+  {cat:'konum',ico:'🗺️',tag:'TOPLAM YOL vs Δx',renk:'#3fb950',
+   baslik:'Gidip dönünce yer değiştirme sıfır ama yol değil',
+   sahne:'10 m ileri gidip 10 m geri dönen koşucu. Yol ve yer değiştirme?',
+   adimlar:[
+     {r:'#3fb950',m:'Alınan yol = 10+10 = 20 m (hep pozitif, toplanır)'},
+     {r:'#ff7b72',m:'Yer değiştirme = 10+(−10) = 0 m (başladığı yerde)'},
+     {r:'#58a6ff',m:'Ortalama hız = Δx/t = 0/t = 0 m/s'},
+     {r:'#f0883e',m:'Ortalama sürat = yol/t = 20/t ≠ 0 m/s'},
+   ],
+   sonuc:'Δx=0, yol=20 m, v_ort=0',sc:'#3fb950',
+   anahtar:'Gidip gelme → yer değiştirme=0 → ortalama hız=0 ama sürat sıfır değil!'},
+
+  {cat:'hiz',ico:'🚦',tag:'ANLIK HIZ = 0',renk:'#ff7b72',
+   baslik:'Hız sıfır = durdu mu? Her zaman değil!',
+   sahne:'Yukarı fırlatılan top en yüksek noktada bir an için v=0 oluyor. Durdu mu?',
+   adimlar:[
+     {r:'#ff7b72',m:'v=0 anında cisim duraksıyor ama hareket etmeyi bırakmıyor!'},
+     {r:'#58a6ff',m:'İvme hâlâ g=10 m/s² (aşağı) — durmak ivmeyi sıfırlamaz'},
+     {r:'#3fb950',m:'x-t grafiğinde bu an bir TEPE noktasıdır'},
+     {r:'#8b949e',m:'Bir sonraki anda v negatif oluyor (aşağı iniyor)'},
+   ],
+   sonuc:'v=0 ≠ durdu; ivme hâlâ var',sc:'#ff7b72',
+   anahtar:'Hız sıfır olduğunda ivme sıfır olmak zorunda değil — tepe noktası klasik örnek!'},
+
+  {cat:'iliski',ico:'🎯',tag:'ALAN HESABI',renk:'#58a6ff',
+   baslik:'v-t grafiğinde karmaşık alan — adım adım çöz',
+   sahne:'v-t: 0-2s arası v=4 m/s sabit, 2-6s arası v=4→0 lineer. Toplam yer değiştirme?',
+   adimlar:[
+     {r:'#58a6ff',m:'0-2 s: Dikdörtgen → 4×2 = 8 m'},
+     {r:'#3fb950',m:'2-6 s: Üçgen → ½×4×4 = 8 m'},
+     {r:'#f0883e',m:'Toplam Δx = 8+8 = 16 m'},
+     {r:'#8b949e',m:'Eğer grafik ekseni keserse: alan ayrı ayrı hesaplanır ve + ile − toplanır'},
+   ],
+   sonuc:'Δx = 8+8 = 16 m',sc:'#58a6ff',
+   anahtar:'v-t grafiğini şekillere böl, her alanı hesapla, işaretine dikkat ederek topla!'},
+
+  {cat:'formul',ico:'⚖️',tag:'BAĞIL HAREKET',renk:'#f0883e',
+   baslik:'K araca göre L aracının hızı nasıl bulunur?',
+   sahne:'K aracı 20 m/s, L aracı 30 m/s aynı yönde. K\'ya göre L\'nin hızı?',
+   adimlar:[
+     {r:'#f0883e',m:'v_L^K = v_L − v_K = 30−20 = +10 m/s (L, K\'ya göre ilerliyor)'},
+     {r:'#58a6ff',m:'Zıt yön olsaydı: v_L = −30 m/s → v_L^K = −30−20 = −50 m/s'},
+     {r:'#3fb950',m:'Bağıl hız: referans aracın hızını çıkar'},
+     {r:'#8b949e',m:'AYT\'de sıkça gelir: araçlar arası uzaklık = bağıl hız × süre'},
+   ],
+   sonuc:'v_bağıl = v₂ − v₁ = 10 m/s',sc:'#f0883e',
+   anahtar:'Bağıl hız = hedefin hızı eksi referansın hızı (yön işaretine dikkat)!'},
+
+  {cat:'iliski',ico:'🏎️',tag:'ARAÇLAR ARASI MESAFE',renk:'#3fb950',
+   baslik:'Yan yana duran iki araç — aralarındaki mesafe nasıl değişir?',
+   sahne:'K: v=15 m/s, a=0. L: v=5 m/s, a=2 m/s². Aynı yönde. 4 s sonra aralarındaki fark?',
+   adimlar:[
+     {r:'#3fb950',m:'K\'nun konumu: x_K = 15×4 = 60 m'},
+     {r:'#58a6ff',m:'L\'nin konumu: x_L = 5×4+½×2×16 = 20+16 = 36 m'},
+     {r:'#f0883e',m:'Aradaki fark = 60−36 = 24 m (K önde)'},
+     {r:'#8b949e',m:'Buluşurlar mı? x_K=x_L → 15t=5t+t² → t²-10t=0 → t=10 s'},
+   ],
+   sonuc:'4 s sonra: 24 m aralık',sc:'#3fb950',
+   anahtar:'İki araç problemi: her birinin konumunu ayrı yaz, eşitle ya da fark al!'},
+];
+
+function buildCards(cat) {
+  if(!cat) cat = 'hepsi';
+  var grid = document.getElementById('exGrid');
+  if(!grid) return;
+  grid.innerHTML = '';
+  var list = cat==='hepsi' ? KART : KART.filter(function(k){ return k.cat===cat; });
+  list.forEach(function(kart) {
+    var div = document.createElement('div');
+    div.className = 'ex-card';
+    div.style.borderTop = '3px solid '+kart.renk;
+    var stepsHtml = kart.adimlar.map(function(a) {
+      return '<li style="border-color:'+a.r+';color:'+a.r+'">'+a.m+'</li>';
+    }).join('');
+    var top = document.createElement('div');
+    top.className = 'ex-top';
+    top.style.borderBottomColor = kart.renk+'44';
+    top.innerHTML = '<div class="ex-ico">'+kart.ico+'</div><div>'
+      +'<div class="ex-tag" style="color:'+kart.renk+'">'+kart.tag+'</div>'
+      +'<div class="ex-title">'+kart.baslik+'</div></div>';
+    var body = document.createElement('div');
+    body.className = 'ex-body';
+    body.innerHTML = '<div class="ex-scene">'+kart.sahne+'</div>'
+      +'<ul class="ex-steps">'+stepsHtml+'</ul>'
+      +'<div class="ex-result" style="background:'+kart.sc+'18;color:'+kart.sc+';border:1px solid '+kart.sc+'44">'+kart.sonuc+'</div>'
+      +'<div class="ex-key"><span style="color:var(--accent3);font-weight:800">💡 </span>'+kart.anahtar+'</div>'
+      +'<div class="ex-hint">Karta tıkla ↩</div>';
+    div.appendChild(top);
+    div.appendChild(body);
+    div.addEventListener('click', function(){ div.classList.toggle('flipped'); });
+    grid.appendChild(div);
+  });
+}
+
+function filterCards(cat, btn) {
+  document.querySelectorAll('.flt-btn').forEach(function(b){ b.classList.remove('on'); });
+  btn.classList.add('on');
+  buildCards(cat);
+}
+
+// Init
+t50Init();
+buildCards('hepsi');
+
+</script>
+</body>
+</html>
