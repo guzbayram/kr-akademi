@@ -272,6 +272,97 @@ footer span { color:var(--accent); font-weight:700; }
 .flip-hint { font-size:0.68rem; color:var(--muted); text-align:right; margin-top:0.6rem; font-style:italic; }
 
 @media(max-width:600px) { header{padding:2rem 1rem 1.5rem} .section{padding:1.2rem 0.75rem} .card{padding:1rem} }
+
+/* ===== TEST SPLIT LAYOUT ===== */
+.test-split {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 1rem;
+  align-items: stretch;
+  margin-top: 1rem;
+}
+.test-q-panel {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  min-height: 480px;
+}
+.test-q-header {
+  padding: 0.7rem 1rem;
+  background: var(--card2);
+  border-bottom: 1px solid var(--border);
+  display: flex; justify-content: space-between; align-items: center;
+  flex-shrink: 0;
+}
+.test-q-body { padding: 1rem; flex: 1; overflow-y: auto; }
+
+.scratch-panel {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  min-height: 480px;
+}
+.scratch-header {
+  padding: 0.6rem 1rem;
+  background: var(--card2);
+  border-bottom: 1px solid var(--border);
+  display: flex; justify-content: space-between; align-items: center;
+  flex-wrap: wrap; gap: 0.4rem;
+}
+.scratch-header > span { font-size: 0.72rem; font-weight: 800; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; }
+.scratch-tools { display: flex; gap: 0.3rem; align-items: center; flex-wrap: wrap; }
+.tool-btn {
+  width: 30px; height: 30px; border-radius: 6px;
+  border: 1px solid var(--border);
+  background: var(--card); color: var(--text);
+  cursor: pointer; font-size: 0.8rem;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.15s; font-weight: 700;
+}
+.tool-btn:hover { border-color: var(--accent); }
+.tool-btn.active { background: var(--accent); border-color: var(--accent); color: #000; }
+.tool-btn.tdanger { background: var(--red); border-color: var(--red); color: #fff; }
+.scratch-size {
+  display: flex; align-items: center; gap: 0.3rem;
+  font-size: 0.7rem; color: var(--muted);
+}
+.scratch-size input[type=range] {
+  -webkit-appearance: none; width: 60px; height: 3px;
+  border-radius: 3px; background: var(--border); outline: none;
+}
+.scratch-size input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none; width: 12px; height: 12px;
+  border-radius: 50%; background: var(--accent); cursor: pointer;
+}
+.color-dots { display:flex; gap:0.28rem; align-items:center; }
+.cdot {
+  width: 18px; height: 18px; border-radius: 50%;
+  cursor: pointer; border: 2px solid transparent;
+  transition: transform 0.15s, border-color 0.15s;
+}
+.cdot:hover { transform: scale(1.2); }
+.cdot.selected { border-color: var(--text); transform: scale(1.15); }
+#scratchCanvas {
+  display: block;
+  width: 100%;
+  flex: 1;
+  min-height: 400px;
+  cursor: crosshair;
+  touch-action: none;
+  background: var(--card2);
+}
+[data-theme="light"] #scratchCanvas { background: #fafbff; }
+@media(max-width:700px) {
+  .test-split { grid-template-columns: 1fr; }
+  .test-q-panel { min-height: auto; }
+  .scratch-panel { min-height: 340px; }
+}
 </style>
 </head>
 <body>
@@ -555,25 +646,71 @@ footer span { color:var(--accent); font-weight:700; }
     </div>
   </div>
 
-  <!-- Quiz kartı -->
+  <!-- Quiz kartı: progress + soru numaraları (tam genişlik) -->
   <div id="testCard" class="card">
     <div class="test-header">
       <span class="test-meta" id="qMeta">Soru 1 / 50</span>
       <span class="test-score"><span id="scoreGreen" style="color:var(--green)">✓0</span> &nbsp;<span id="scoreRed" style="color:var(--red)">✗0</span></span>
     </div>
-    <div class="prog-bar-wrap"><div class="prog-bar" id="progBar" style="width:2%"></div></div>
+    <div class="prog-bar-wrap" style="margin-bottom:0.8rem"><div class="prog-bar" id="progBar" style="width:2%"></div></div>
+    <div class="q-nums" id="qNums" style="margin-bottom:0"></div>
+  </div>
 
-    <!-- Soru numarası grid -->
-    <div class="q-nums" id="qNums"></div>
+  <!-- SPLIT: Sol soru paneli + Sağ çizim alanı -->
+  <div class="test-split">
 
-    <div class="q-text" id="qText"></div>
-    <div class="q-options" id="qOpts"></div>
-    <div class="q-feedback" id="qFb"></div>
-    <div class="test-nav">
-      <button class="btn btn-gx" id="btnPrev" onclick="prevQ()" style="display:none">← Önceki</button>
-      <button class="btn btn-y"  id="btnNext" onclick="nextQ()" style="display:none">Sonraki →</button>
-      <button class="btn btn-r"  id="btnFinish" onclick="finishTest()" style="display:none">🏁 Testi Bitir</button>
+    <!-- SOL: Soru & Seçenekler -->
+    <div class="test-q-panel" id="testQPanel">
+      <div class="test-q-header">
+        <span style="font-size:0.7rem;font-weight:800;text-transform:uppercase;letter-spacing:0.5px;color:var(--muted)">📋 Soru</span>
+        <span id="qNumLabel" style="font-size:0.7rem;color:var(--accent);font-family:var(--mono);font-weight:700"></span>
+      </div>
+      <div class="test-q-body">
+        <div class="q-text" id="qText"></div>
+        <div class="q-options" id="qOpts"></div>
+        <div class="q-feedback" id="qFb"></div>
+        <div class="test-nav" style="margin-top:0.9rem">
+          <button class="btn btn-gx" id="btnPrev"   onclick="prevQ()"     style="display:none">&#8592; Önceki</button>
+          <button class="btn btn-y"  id="btnNext"   onclick="nextQ()"     style="display:none">Sonraki &#8594;</button>
+          <button class="btn btn-r"  id="btnFinish" onclick="finishTest()" style="display:none">&#x1F3C1; Bitir</button>
+        </div>
+      </div>
     </div>
+
+    <!-- SAĞ: Çizim / Karalama Alanı -->
+    <div class="scratch-panel">
+      <div class="scratch-header">
+        <span>&#9999;&#65039; Çözüm Alanı</span>
+        <div style="display:flex;gap:0.4rem;align-items:center;flex-wrap:wrap">
+          <div class="scratch-tools">
+            <button class="tool-btn active" id="igeTool_pen"    onclick="igeSetTool('pen')"    title="Kalem">&#9999;&#65039;</button>
+            <button class="tool-btn"        id="igeTool_line"   onclick="igeSetTool('line')"   title="Dogru">&#128207;</button>
+            <button class="tool-btn"        id="igeTool_rect"   onclick="igeSetTool('rect')"   title="Dikdortgen">&#11036;</button>
+            <button class="tool-btn"        id="igeTool_circle" onclick="igeSetTool('circle')" title="Daire">&#11093;</button>
+            <button class="tool-btn"        id="igeTool_text"   onclick="igeSetTool('text')"   title="Metin">T</button>
+            <button class="tool-btn"        id="igeTool_eraser" onclick="igeSetTool('eraser')" title="Silgi">&#129529;</button>
+          </div>
+          <div class="color-dots">
+            <div class="cdot selected" style="background:#f5a623" data-color="#f5a623" onclick="igeSetColor(this)"></div>
+            <div class="cdot" style="background:#4d9dff" data-color="#4d9dff" onclick="igeSetColor(this)"></div>
+            <div class="cdot" style="background:#3dd68c" data-color="#3dd68c" onclick="igeSetColor(this)"></div>
+            <div class="cdot" style="background:#ff5f6d" data-color="#ff5f6d" onclick="igeSetColor(this)"></div>
+            <div class="cdot" style="background:#b57bee" data-color="#b57bee" onclick="igeSetColor(this)"></div>
+            <div class="cdot" style="background:#eef0f8" data-color="#eef0f8" onclick="igeSetColor(this)"></div>
+          </div>
+          <div class="scratch-size">
+            <span>Kalinlik</span>
+            <input type="range" id="igeBrushSize" min="1" max="18" value="2" oninput="igeUpdateBrush()">
+            <span id="igeBrushVal" style="font-family:var(--mono);color:var(--accent)">2</span>
+          </div>
+          <button class="tool-btn" id="igeTool_grid" onclick="igeToggleGrid()" style="width:auto;padding:0 8px">&#8862; Izgara</button>
+          <button class="tool-btn tdanger" onclick="igeClear()" style="width:auto;padding:0 8px">&#128465; Temizle</button>
+          <button class="tool-btn" onclick="igeUndo()" style="width:auto;padding:0 8px">&#8617; Geri</button>
+        </div>
+      </div>
+      <canvas id="scratchCanvas"></canvas>
+    </div>
+
   </div>
 </section>
 
@@ -624,6 +761,7 @@ function showSec(id, btn) {
   document.getElementById(id).classList.add('active');
   if(btn) btn.classList.add('active');
   if(id === 'simul') { setTimeout(() => { drawFreeFall(); drawSpring(); updateSpringInfo(); }, 50); }
+  if(id === 'test')  { setTimeout(function(){ if(typeof igeInit==='function') igeInit(); }, 80); }
 }
 
 // ========== ENERJİ BARLARI (kavramlar sayfası) ==========
@@ -1019,7 +1157,7 @@ function updateQNums() {
   const btns = document.querySelectorAll('.q-num');
   btns.forEach((b,i) => {
     b.className = 'q-num';
-    if(answered[i]!==null) b.classList.add(answered[i]?'done-ok':'done-no');
+    if(answered[i]!==null) b.classList.add(answered[i] === ALL_Q[i].ans ? 'done-ok' : 'done-no');
     if(i===qIdx) b.classList.add('current');
   });
 }
@@ -1031,6 +1169,8 @@ function loadQ() {
   document.getElementById('scoreGreen').textContent = '✓'+correctCount;
   document.getElementById('scoreRed').textContent   = '✗'+wrongCount;
   document.getElementById('qText').textContent = q.q;
+  var qnl = document.getElementById('qNumLabel');
+  if(qnl) qnl.textContent = (qIdx+1) + ' / ' + ALL_Q.length;
   const opts = document.getElementById('qOpts');
   opts.innerHTML = '';
   q.opts.forEach((opt,i) => {
@@ -1086,6 +1226,192 @@ function selectAns(idx) {
 
 function nextQ() { qIdx++; loadQ(); }
 function prevQ() { if(qIdx>0){qIdx--;loadQ();} }
+
+// ========== ÇİZİM ALANI ==========
+(function() {
+  var canvas, ctx;
+  var tool = 'pen', color = '#f5a623', brushSize = 2;
+  var drawing = false, startX = 0, startY = 0, snapshot = null;
+  var history = [];
+  var gridOn = false;
+
+  function igeResizeCanvas() {
+    if (!canvas) return;
+    var dpr = window.devicePixelRatio || 1;
+    var w = canvas.offsetWidth;
+    var h = canvas.offsetHeight;
+    if (h < 10) { var p = canvas.parentElement; if (p) h = p.offsetHeight - 60; }
+    if (w < 10 || h < 10) return;
+    var saved = null;
+    try { saved = ctx ? ctx.getImageData(0, 0, canvas.width, canvas.height) : null; } catch(e){}
+    canvas.width  = w * dpr;
+    canvas.height = h * dpr;
+    ctx = canvas.getContext('2d');
+    ctx.scale(dpr, dpr);
+    if (saved && saved.width > 0) { try { ctx.putImageData(saved, 0, 0); } catch(e){} }
+  }
+
+  window.igeInit = function() {
+    canvas = document.getElementById('scratchCanvas');
+    if (!canvas) return;
+    ctx = canvas.getContext('2d');
+    igeResizeCanvas();
+
+    canvas.removeEventListener('mousedown', onDown);
+    canvas.removeEventListener('mousemove', onMove);
+    canvas.removeEventListener('mouseup',   onUp);
+    canvas.removeEventListener('mouseleave',onUp);
+    canvas.addEventListener('mousedown',  onDown);
+    canvas.addEventListener('mousemove',  onMove);
+    canvas.addEventListener('mouseup',    onUp);
+    canvas.addEventListener('mouseleave', onUp);
+
+    if (canvas._ts) { canvas.removeEventListener('touchstart', canvas._ts); }
+    if (canvas._tm) { canvas.removeEventListener('touchmove',  canvas._tm); }
+    if (canvas._te) { canvas.removeEventListener('touchend',   canvas._te); }
+    canvas._ts = function(e){ e.preventDefault(); onDown(toMouse(e)); };
+    canvas._tm = function(e){ e.preventDefault(); onMove(toMouse(e)); };
+    canvas._te = function(e){ e.preventDefault(); onUp();             };
+    canvas.addEventListener('touchstart',  canvas._ts, {passive:false});
+    canvas.addEventListener('touchmove',   canvas._tm, {passive:false});
+    canvas.addEventListener('touchend',    canvas._te, {passive:false});
+
+    if (window.ResizeObserver) {
+      var qp = document.getElementById('testQPanel');
+      if (qp) { new ResizeObserver(function(){ igeResizeCanvas(); }).observe(qp); }
+    }
+    setTimeout(function(){ igeResizeCanvas(); }, 150);
+  };
+
+  function toMouse(e) { var t=e.touches[0]; return {clientX:t.clientX,clientY:t.clientY}; }
+
+  function getPos(e) {
+    var r = canvas.getBoundingClientRect();
+    return { x: e.clientX - r.left, y: e.clientY - r.top };
+  }
+
+  function pushHistory() {
+    history.push(ctx.getImageData(0, 0, canvas.width, canvas.height));
+    if (history.length > 40) history.shift();
+  }
+
+  function onDown(e) {
+    var p = getPos(e);
+    startX = p.x; startY = p.y;
+    drawing = true;
+    if (tool === 'text') {
+      var txt = prompt('Metin gir:');
+      if (txt) {
+        pushHistory();
+        ctx.fillStyle = color;
+        ctx.font = 'bold ' + (brushSize * 6 + 10) + 'px Outfit, sans-serif';
+        ctx.fillText(txt, p.x, p.y);
+      }
+      drawing = false; return;
+    }
+    if (tool === 'pen' || tool === 'eraser') {
+      pushHistory(); ctx.beginPath(); ctx.moveTo(p.x, p.y);
+    } else {
+      snapshot = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    }
+  }
+
+  function onMove(e) {
+    if (!drawing) return;
+    var p = getPos(e);
+    if (tool === 'pen') {
+      ctx.strokeStyle = color; ctx.lineWidth = brushSize;
+      ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+      ctx.lineTo(p.x, p.y); ctx.stroke();
+    } else if (tool === 'eraser') {
+      var bg = getComputedStyle(document.documentElement).getPropertyValue('--card2').trim() || '#21253a';
+      ctx.strokeStyle = bg; ctx.lineWidth = brushSize * 5;
+      ctx.lineCap = 'round'; ctx.lineTo(p.x, p.y); ctx.stroke();
+    } else {
+      ctx.putImageData(snapshot, 0, 0);
+      ctx.strokeStyle = color; ctx.lineWidth = brushSize; ctx.lineCap = 'round';
+      if (tool === 'line') {
+        ctx.beginPath(); ctx.moveTo(startX, startY); ctx.lineTo(p.x, p.y); ctx.stroke();
+      } else if (tool === 'rect') {
+        ctx.beginPath(); ctx.strokeRect(startX, startY, p.x-startX, p.y-startY);
+      } else if (tool === 'circle') {
+        var rx=Math.abs(p.x-startX)/2, ry=Math.abs(p.y-startY)/2;
+        var cx=startX+(p.x-startX)/2, cy=startY+(p.y-startY)/2;
+        ctx.beginPath(); ctx.ellipse(cx,cy,rx,ry,0,0,Math.PI*2); ctx.stroke();
+      }
+    }
+  }
+
+  function onUp() {
+    if (!drawing) return; drawing = false;
+    if (tool==='line'||tool==='rect'||tool==='circle') pushHistory();
+    ctx.beginPath();
+  }
+
+  window.igeSetTool = function(t) {
+    tool = t;
+    document.querySelectorAll('.tool-btn[id^="igeTool_"]').forEach(function(b){ b.classList.remove('active'); });
+    var el = document.getElementById('igeTool_'+t);
+    if (el) el.classList.add('active');
+    canvas.style.cursor = t==='eraser'?'cell': t==='text'?'text':'crosshair';
+  };
+
+  window.igeSetColor = function(el) {
+    color = el.getAttribute('data-color');
+    document.querySelectorAll('.cdot').forEach(function(d){ d.classList.remove('selected'); });
+    el.classList.add('selected');
+  };
+
+  window.igeUpdateBrush = function() {
+    brushSize = parseInt(document.getElementById('igeBrushSize').value);
+    document.getElementById('igeBrushVal').textContent = brushSize;
+  };
+
+  window.igeClear = function() {
+    if (!ctx) return;
+    pushHistory();
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  };
+
+  window.igeUndo = function() {
+    if (!ctx || history.length === 0) return;
+    ctx.putImageData(history.pop(), 0, 0);
+  };
+
+  window.igeToggleGrid = function() {
+    gridOn = !gridOn;
+    var btn = document.getElementById('igeTool_grid');
+    if (btn) btn.classList.toggle('active', gridOn);
+    var overlay = document.getElementById('igeGridOverlay');
+    if (!gridOn) { if (overlay) overlay.style.display='none'; return; }
+    if (!overlay) {
+      overlay = document.createElement('canvas');
+      overlay.id = 'igeGridOverlay';
+      overlay.style.cssText = 'position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;';
+      var sp = canvas ? canvas.parentElement : null;
+      if (sp) { sp.style.position='relative'; sp.appendChild(overlay); }
+    }
+    overlay.style.display = 'block';
+    var dpr=window.devicePixelRatio||1, cw=canvas?canvas.offsetWidth:400, ch=canvas?canvas.offsetHeight:400;
+    overlay.width=cw*dpr; overlay.height=ch*dpr;
+    overlay.style.width=cw+'px'; overlay.style.height=ch+'px';
+    var gc=overlay.getContext('2d'); gc.scale(dpr,dpr);
+    gc.clearRect(0,0,cw,ch);
+    var step=30;
+    gc.strokeStyle='#f5a623'; gc.lineWidth=0.5; gc.globalAlpha=0.2;
+    for(var x=step;x<cw;x+=step){gc.beginPath();gc.moveTo(x,0);gc.lineTo(x,ch);gc.stroke();}
+    for(var y=step;y<ch;y+=step){gc.beginPath();gc.moveTo(0,y);gc.lineTo(cw,y);gc.stroke();}
+    gc.globalAlpha=1;
+  };
+
+  window.addEventListener('resize', function(){ igeResizeCanvas(); });
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function(){ setTimeout(igeInit, 200); });
+  } else {
+    setTimeout(igeInit, 200);
+  }
+})();
 
 function finishTest() {
   document.getElementById('testCard').style.display='none';
