@@ -328,7 +328,7 @@
     display: block;
     width: 100%;
     flex: 1;
-    min-height: 0;
+    min-height: 400px;
     cursor: crosshair;
     touch-action: none;
     background: var(--card2);
@@ -695,7 +695,7 @@
     </div>
     <div style="display:flex;gap:0.5rem;justify-content:center;flex-wrap:wrap">
       <button class="btn btn-primary" onclick="t50Restart()">🔄 Tekrar Çöz</button>
-      <button class="btn btn-gray"    onclick="t50Review()">🔍 Gözden Geçir</button>
+      <button class="btn btn-gray"    onclick="t50ReviewFn()">🔍 Gözden Geçir</button>
     </div>
   </div>
 
@@ -803,6 +803,12 @@ function showSection(id, btn) {
   if(btn) btn.classList.add('active');
   if(id === 'grafik') setTimeout(drawGraphs, 60);
   if(id === 'simul') { initLiveChart(); drawLiveChart(); }
+  if(id === 'test50') {
+    setTimeout(function() {
+      if (typeof window.scratchInit === 'function') window.scratchInit();
+      else if (typeof syncPanelHeight === 'function') syncPanelHeight();
+    }, 80);
+  }
 }
 
 // ===== GRAFİKLER =====
@@ -1415,7 +1421,7 @@ function updateT50Nums() {
   var btns = document.querySelectorAll('.qnum');
   btns.forEach(function(b, i) {
     b.className = 'qnum';
-    if(t50Answers[i]!==null) b.classList.add(t50Answers[i] ? 'ok' : 'no');
+    if(t50Answers[i]!==null) b.classList.add(t50Answers[i] === T50[i].ans ? 'ok' : 'no');
     if(i===t50Idx) b.classList.add('cur');
   });
 }
@@ -1428,7 +1434,7 @@ function loadT50() {
   document.getElementById('t50ScRd').textContent = '\u2717'+t50Wrg;
   document.getElementById('t50Q').textContent = q.q;
   var qnumEl = document.getElementById('t50QNum');
-  if(qnumEl) qnumEl.textContent = (t50Idx+1) + ' / ' + T50_Q.length;
+  if(qnumEl) qnumEl.textContent = (t50Idx+1) + ' / ' + T50.length;
   var opts = document.getElementById('t50Opts');
   opts.innerHTML = '';
   var labels = ['A','B','C','D'];
@@ -1471,11 +1477,12 @@ function t50Select(idx) {
   opts[idx].classList.add(correct ? 'correct' : 'wrong');
   if(correct) playOK(); else playNO();
   var fb = document.getElementById('t50Fb');
-  fb.textContent = (correct ? '\u2705 Dogru! ' : '\u274C Yanlis. ') + q.exp;
+  fb.textContent = (correct ? '\u2705 Doğru! ' : '\u274C Yanlış. ') + q.exp;
   fb.className = 'quiz-feedback show ' + (correct ? 'ok' : 'no');
   document.getElementById('t50ScGr').textContent = '\u2713'+t50Cor;
   document.getElementById('t50ScRd').textContent = '\u2717'+t50Wrg;
   updateT50Nums();
+
   if(t50Idx < T50.length-1) document.getElementById('t50BtnNext').style.display='block';
   else document.getElementById('t50BtnFin').style.display='block';
 }
@@ -1513,12 +1520,6 @@ function t50ReviewFn() {
   document.getElementById('t50Card').style.display='block';
   t50Idx=0; loadT50();
 }
-
-// Override the t50Review button — rename to avoid conflict with var name
-document.addEventListener('DOMContentLoaded',function(){
-  var btn = document.querySelector('[onclick="t50Review()"]');
-  if(btn) btn.setAttribute('onclick','t50ReviewFn()');
-});
 
 // ===== KAVRAM KARTLARI (20 adet) =====
 var KART = [
@@ -1827,16 +1828,28 @@ buildCards('hepsi');
     ctx = canvas.getContext('2d');
     resizeCanvas();
 
+    // Daha önce event listener eklenmişse temizle (çift bağlama önlemi)
+    canvas.removeEventListener('mousedown',  onDown);
+    canvas.removeEventListener('mousemove',  onMove);
+    canvas.removeEventListener('mouseup',    onUp);
+    canvas.removeEventListener('mouseleave', onUp);
+
     // Fare olayları
     canvas.addEventListener('mousedown',  onDown);
     canvas.addEventListener('mousemove',  onMove);
     canvas.addEventListener('mouseup',    onUp);
     canvas.addEventListener('mouseleave', onUp);
 
-    // Dokunma olayları
-    canvas.addEventListener('touchstart',  function(e){ e.preventDefault(); onDown(toMouse(e)); }, {passive:false});
-    canvas.addEventListener('touchmove',   function(e){ e.preventDefault(); onMove(toMouse(e)); }, {passive:false});
-    canvas.addEventListener('touchend',    function(e){ e.preventDefault(); onUp();             }, {passive:false});
+    // Dokunma olayları (yeniden eklemeden önce kaldır)
+    canvas.removeEventListener('touchstart', canvas._ts);
+    canvas.removeEventListener('touchmove',  canvas._tm);
+    canvas.removeEventListener('touchend',   canvas._te);
+    canvas._ts = function(e){ e.preventDefault(); onDown(toMouse(e)); };
+    canvas._tm = function(e){ e.preventDefault(); onMove(toMouse(e)); };
+    canvas._te = function(e){ e.preventDefault(); onUp();             };
+    canvas.addEventListener('touchstart',  canvas._ts, {passive:false});
+    canvas.addEventListener('touchmove',   canvas._tm, {passive:false});
+    canvas.addEventListener('touchend',    canvas._te, {passive:false});
 
     window.addEventListener('resize', function() {
       syncPanelHeight();
@@ -1854,8 +1867,11 @@ buildCards('hepsi');
     }
 
     // İlk render'da biraz bekle
-    setTimeout(function() { syncPanelHeight(); }, 120);
+    setTimeout(function() { syncPanelHeight(); resizeCanvas(); }, 150);
   }
+
+  // Global erişim için dışa aç
+  window.scratchInit = init;
 
   function toMouse(e) {
     var t = e.touches[0];
@@ -1867,6 +1883,12 @@ buildCards('hepsi');
     var dpr   = window.devicePixelRatio || 1;
     var w     = canvas.offsetWidth;
     var h     = canvas.offsetHeight;
+
+    // Section gizliyken offsetHeight=0 olabilir; parent'tan tahmin et
+    if (h < 10) {
+      var parent = canvas.parentElement;
+      if (parent) h = parent.offsetHeight - 60; // header yüksekliğini çıkar
+    }
     if (w < 10 || h < 10) return;
 
     // Mevcut içeriği koru
