@@ -1335,11 +1335,11 @@ function playNO() {
 var T50 = [
   // KONUM & YER DEĞİŞTİRME (1-10)
   {q:'Bir cisim x=+4 m konumundan x=−2 m konumuna geçiyor. Yer değiştirmesi kaç m?',opts:['−6 m','6 m','−2 m','2 m'],ans:0,exp:'Δx = son − ilk = −2 − 4 = −6 m (negatif: geri)'},
-  {q:'Cisim x=0\'dan x=5 m\'ye gidip x=2 m\'ye dönüyor. Alınan yol kaç m?',opts:['2 m','5 m','7 m','3 m'],ans:2,exp:'Yol = 5 + 3 = 8 m... Bekle: 5+3=8 değil, 5+(5-2)=8. Hayır: 5→2 = 3 m geri, toplam = 5+3 = 8 m. Yanıt = 7? Doğru: 5+3=8 ama seçenek 7 m. Yol=5+(5-2)=8 m olmaz. Cisim 0→5=5m, 5→2=3m. Toplam=8 m. En yakın 7 m.'},
+  {q:'Cisim x=0\'dan x=6 m\'ye gidip x=2 m\'ye dönüyor. Alınan yol kaç m?',opts:['4 m','6 m','10 m','8 m'],ans:2,exp:'0→6 m = 6 m, sonra 6→2 m = 4 m geri. Toplam yol = 6+4 = 10 m.'},
   {q:'x-t grafiğinde eğim ne anlama gelir?',opts:['İvme','Hız','Alınan yol','Yer değiştirme'],ans:1,exp:'x-t grafiğinin eğimi = Δx/Δt = anlık hız'},
   {q:'x-t grafiğinde yatay doğru ne anlama gelir?',opts:['Sabit hızlı hareket','Cisim durmuş (v=0)','Hızlanan hareket','İvme sabit'],ans:1,exp:'Yatay → eğim=0 → v=0 → cisim duruyor'},
-  {q:'Cisim 10 s\'de 80 m ileri, 20 s\'de 80 m geri alıyor. Ortalama hız?',opts:['0 m/s','2,67 m/s','4 m/s','8 m/s'],ans:0,exp:'Δx_toplam=80−80=0 → v_ort=0/30=0 m/s'},
-  {q:'Aynı cisim için ortalama sürat?',opts:['0 m/s','4,27 m/s','5,33 m/s','8 m/s'],ans:2,exp:'Yol=80+80=160 m, t=30 s → sürat=160/30≈5,33 m/s'},
+  {q:'Cisim 20 s\'de 60 m ileri, 20 s\'de 60 m geri alıyor. Ortalama hız?',opts:['0 m/s','3 m/s','6 m/s','9 m/s'],ans:0,exp:'Δx_toplam = 60−60 = 0 → v_ort = 0/40 = 0 m/s'},
+  {q:'Aynı cisim için ortalama sürat?',opts:['0 m/s','2 m/s','3 m/s','4 m/s'],ans:2,exp:'Toplam yol = 60+60 = 120 m, toplam t = 40 s → sürat = 120/40 = 3 m/s'},
   {q:'x-t grafiğinde iki noktanın eğimi aynıysa ne söylenebilir?',opts:['İvme aynı','Hız aynı','Yol aynı','Konum aynı'],ans:1,exp:'x-t eğimi=hız, eğimler eşit → hızlar eşit'},
   {q:'x-t grafiğinde negatif eğim ne anlama gelir?',opts:['Geri sabit hızlı hareket','İleri sabit hızlı hareket','Yavaşlayan hareket','Duran cisim'],ans:0,exp:'Negatif eğim → v<0 → geri sabit hızlı hareket'},
   {q:'Konum-zaman grafiğinde tepe noktasında hangi büyüklük sıfırdır?',opts:['Konum','İvme','Hız','Alınan yol'],ans:2,exp:'Tepe/çukur = eğim=0 → hız=0 (yön değişimi)'},
@@ -1352,7 +1352,7 @@ var T50 = [
   {q:'v₀=20 m/s, a=−4 m/s². Cisim kaç saniyede durur?',opts:['4 s','5 s','8 s','10 s'],ans:1,exp:'v=0 → 0=20+(−4)t → t=20/4=5 s'},
   {q:'Cisim 0-6 s\'de v=12 m/s sabit. Yer değiştirmesi?',opts:['2 m','12 m','72 m','6 m'],ans:2,exp:'Δx = v×t = 12×6 = 72 m'},
   {q:'v-t grafiğinde eksenin altında kalan alan ne anlama gelir?',opts:['Pozitif yer değiştirme','Negatif yer değiştirme','Alınan yol','İvme'],ans:1,exp:'Eksen altı → negatif hız × zaman = negatif Δx'},
-  {q:'v=8 m/s ile giden cisim 5 s\'de duruyorsa ivme?',opts:['1,6 m/s²','−1,6 m/s²','40 m/s²','−40 m/s²'],ans:1,exp:'a = Δv/Δt = (0−8)/5 = −1,6 m/s² (yavaşlama)'},
+  {q:'v=10 m/s ile giden cisim 5 s\'de duruyorsa ivme?',opts:['2 m/s²','−2 m/s²','5 m/s²','−5 m/s²'],ans:1,exp:'a = Δv/Δt = (0−10)/5 = −2 m/s² (yavaşlama)'},
   {q:'Hız vektörü (+) ve ivme vektörü (−) ise cisim ne yapar?',opts:['Hızlanır ileri','Yavaşlar (ileri gidiyor ama yavaşlıyor)','Geri hızlanır','Sabit gider'],ans:1,exp:'v(+) ve a(−) → zıt yönler → yavaşlama'},
   {q:'Hız vektörü (−) ve ivme vektörü (−) ise cisim ne yapar?',opts:['Yavaşlar','Durur','Geri hızlanır','İleri gider'],ans:2,exp:'v(−) ve a(−) → aynı yön → hız büyür (geri giderek hızlanır)'},
   // İVME (21-30)
@@ -1363,9 +1363,9 @@ var T50 = [
   {q:'v₀=6 m/s, a=−2 m/s². Cisim durana kadar kaç m gider?',opts:['3 m','6 m','9 m','18 m'],ans:2,exp:'v²=v₀²+2aΔx → 0=36+2(−2)Δx → Δx=9 m'},
   {q:'a-t grafiğinde a=sabit pozitif. v-t grafiği nasıl görünür?',opts:['Yatay doğru','Negatif eğimli doğru','Pozitif eğimli doğru','Parabol'],ans:2,exp:'a=sabit>0 → v lineer artıyor → v-t doğru ve artan'},
   {q:'v₀=0, a=6 m/s². 2.saniyede anlık hız?',opts:['6 m/s','12 m/s','18 m/s','3 m/s'],ans:1,exp:'v=v₀+at=0+6×2=12 m/s'},
-  {q:'Cismin ivmesi −5 m/s² ve hızı −10 m/s. Cisim ne yapıyor?',opts:['İleri hızlanıyor','İleri yavaşlıyor','Geri hızlanıyor','Geri yavaşlıyor'],ans:2,exp:'v(−) ve a(−) → aynı yön → geri (negatif) hızlanıyor'},
+  {q:'Cismin ivmesi −5 m/s² ve hızı −10 m/s. Cisim ne yapıyor?',opts:['İleri hızlanıyor','İleri yavaşlıyor','Geri hızlanıyor','Geri yavaşlıyor'],ans:2,exp:'v(−) ve a(−) → ikisi de aynı yönde (negatif) → hız büyüklüğü artıyor → geri hızlanıyor'},
   {q:'Durağandan başlayan cisim a=2 m/s² ile 4 s gidiyor. v-t grafiği altındaki alan?',opts:['4 m','8 m','16 m','32 m'],ans:2,exp:'Alan=½×t×v_son=½×4×8=16 m (veya x=½at²=½×2×16=16 m)'},
-  {q:'v₀=15 m/s, x=45 m, a=−3 m/s². Son hız?',opts:['3 m/s','6 m/s','9 m/s','0 m/s'],ans:1,exp:'v²=15²+2(−3)(45)=225−270=−45? Doğru: v²=225−270<0 olmaz. v²=225−2×3×45=225−270. a=−3, Δx=45: v²=225−270 olduğu için sayıları düzeltelim: a=−2,5 → v²=225−225=0. En yakın: 0 m/s seçeneği yok. Cevap C=0 yakını. Yanıt: 0 m/s (d)'},
+  {q:'v₀=6 m/s, a=−2 m/s², Δx=8 m. Son hız?',opts:['2 m/s','4 m/s','6 m/s','0 m/s'],ans:0,exp:'v²=v₀²+2aΔx = 36+2×(−2)×8 = 36−32 = 4 → v=2 m/s'},
   // GRAFİK DÖNÜŞÜMÜ (31-40)
   {q:'x-t grafiği yukarı doğru açılan parabol. Bu hangi hareketi gösterir?',opts:['Sabit hızlı ileri','Yavaşlayan ileri','Hızlanan ileri (a>0, v₀≥0)','Geri sabit hızlı'],ans:2,exp:'x-t parabol ve yukarı açılıyor → x artan hızla artıyor → ileri hızlanan'},
   {q:'x-t grafiği aşağı açılan parabol (tepe var). Tepede ne olur?',opts:['Hız maksimum','Hız sıfır (yön değişiyor)','İvme sıfır','Konum sıfır'],ans:1,exp:'Tepe = eğim=0 → v=0 → cisim duraksayıp geri dönüyor'},
