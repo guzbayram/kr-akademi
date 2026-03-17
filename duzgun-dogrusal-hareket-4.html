@@ -246,6 +246,100 @@
   .sc-l { font-size:0.66rem; font-weight:700; text-transform:uppercase; letter-spacing:1px; color:var(--muted); margin-top:0.15rem; }
 
   @media(max-width:600px) { header { padding: 2rem 1rem 1.5rem; } .section { padding: 1.5rem 0.75rem; } .card { padding: 1rem; } }
+
+  /* ===== TEST SPLIT LAYOUT ===== */
+  .test-split {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 1rem;
+    align-items: stretch;
+  }
+  .test-q-panel {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    min-height: 480px;
+  }
+  .test-q-header {
+    padding: 0.75rem 1rem;
+    background: var(--card2);
+    border-bottom: 1px solid var(--border);
+    display: flex; justify-content: space-between; align-items: center;
+    flex-shrink: 0;
+  }
+  .test-q-body { padding: 1rem; flex: 1; overflow-y: auto; }
+
+  .scratch-panel {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    min-height: 480px;
+  }
+  .scratch-header {
+    padding: 0.65rem 1rem;
+    background: var(--card2);
+    border-bottom: 1px solid var(--border);
+    display: flex; justify-content: space-between; align-items: center;
+    flex-wrap: wrap; gap: 0.4rem;
+  }
+  .scratch-header span { font-size: 0.75rem; font-weight: 800; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; }
+  .scratch-tools {
+    display: flex; gap: 0.35rem; align-items: center; flex-wrap: wrap;
+  }
+  .tool-btn {
+    width: 30px; height: 30px; border-radius: 6px;
+    border: 1px solid var(--border);
+    background: var(--card); color: var(--text);
+    cursor: pointer; font-size: 0.8rem;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.15s; font-weight: 700;
+  }
+  .tool-btn:hover { border-color: var(--accent1); }
+  .tool-btn.active { background: var(--accent1); border-color: var(--accent1); color: #000; }
+  .tool-btn.danger { background: var(--accent5); border-color: var(--accent5); color: #fff; }
+  .scratch-size {
+    display: flex; align-items: center; gap: 0.3rem;
+    font-size: 0.72rem; color: var(--muted);
+  }
+  .scratch-size input[type=range] {
+    -webkit-appearance: none; width: 60px; height: 3px;
+    border-radius: 3px; background: var(--border); outline: none;
+  }
+  .scratch-size input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none; width: 12px; height: 12px;
+    border-radius: 50%; background: var(--accent1); cursor: pointer;
+  }
+  .color-dots { display:flex; gap:0.3rem; align-items:center; }
+  .cdot {
+    width: 20px; height: 20px; border-radius: 50%;
+    cursor: pointer; border: 2px solid transparent;
+    transition: transform 0.15s, border-color 0.15s;
+  }
+  .cdot:hover { transform: scale(1.2); }
+  .cdot.selected { border-color: var(--text); transform: scale(1.15); }
+
+  #scratchCanvas {
+    display: block;
+    width: 100%;
+    flex: 1;
+    min-height: 0;
+    cursor: crosshair;
+    touch-action: none;
+    background: var(--card2);
+  }
+  [data-theme="light"] #scratchCanvas { background: #fafbff; }
+
+  @media(max-width: 700px) {
+    .test-split { grid-template-columns: 1fr; }
+    .test-q-panel { min-height: auto; }
+    .scratch-panel { min-height: 340px; }
+  }
 </style>
 </head>
 <body>
@@ -605,21 +699,77 @@
     </div>
   </div>
 
+  <!-- Soru numaraları + progress — split dışında, tam genişlik -->
   <div class="card" id="t50Card">
     <div class="test-hdr">
       <span class="test-meta" id="t50Meta">Soru 1 / 50</span>
       <span class="test-sc"><span id="t50ScGr" style="color:var(--accent2)">✓0</span> &nbsp;<span id="t50ScRd" style="color:var(--accent5)">✗0</span></span>
     </div>
-    <div class="progress-bar-wrap"><div class="progress-bar" id="t50Prog" style="width:2%"></div></div>
-    <div class="qnum-grid" id="t50Nums"></div>
-    <div class="quiz-question" id="t50Q"></div>
-    <div class="quiz-options" id="t50Opts"></div>
-    <div class="quiz-feedback" id="t50Fb"></div>
-    <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-top:0.9rem">
-      <button class="btn btn-gray"    id="t50BtnPrev" onclick="t50Prev()" style="display:none">← Önceki</button>
-      <button class="btn btn-primary" id="t50BtnNext" onclick="t50Next()" style="display:none">Sonraki →</button>
-      <button class="btn btn-danger"  id="t50BtnFin"  onclick="t50Finish()" style="display:none">🏁 Bitir</button>
+    <div class="progress-bar-wrap" style="margin-bottom:0.8rem">
+      <div class="progress-bar" id="t50Prog" style="width:2%"></div>
     </div>
+    <div class="qnum-grid" id="t50Nums" style="margin-bottom:0"></div>
+  </div>
+
+  <!-- SPLIT: Soru Paneli (1/3) + Çizim Alanı (2/3) -->
+  <div class="test-split" id="t50Split">
+
+    <!-- SOL: Soru & Seçenekler -->
+    <div class="test-q-panel" id="t50QPanel">
+      <div class="test-q-header">
+        <span style="font-size:0.72rem;font-weight:800;text-transform:uppercase;letter-spacing:0.5px;color:var(--muted)">📋 Soru</span>
+        <span id="t50QNum" style="font-size:0.72rem;color:var(--accent1);font-family:var(--mono);font-weight:700"></span>
+      </div>
+      <div class="test-q-body">
+        <div class="quiz-question" id="t50Q"></div>
+        <div class="quiz-options" id="t50Opts"></div>
+        <div class="quiz-feedback" id="t50Fb"></div>
+        <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-top:0.9rem">
+          <button class="btn btn-gray"    id="t50BtnPrev" onclick="t50Prev()" style="display:none">← Önceki</button>
+          <button class="btn btn-primary" id="t50BtnNext" onclick="t50Next()" style="display:none">Sonraki →</button>
+          <button class="btn btn-danger"  id="t50BtnFin"  onclick="t50Finish()" style="display:none">🏁 Bitir</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- SAĞ: Karalama / Çizim Alanı -->
+    <div class="scratch-panel">
+      <div class="scratch-header">
+        <span>✏️ Çözüm Alanı</span>
+        <div style="display:flex;gap:0.5rem;align-items:center;flex-wrap:wrap">
+          <!-- Araç Seçimi -->
+          <div class="scratch-tools">
+            <button class="tool-btn active" id="toolPen"    onclick="setTool('pen')"    title="Kalem">✏️</button>
+            <button class="tool-btn"        id="toolLine"   onclick="setTool('line')"   title="Doğru">📏</button>
+            <button class="tool-btn"        id="toolRect"   onclick="setTool('rect')"   title="Dikdörtgen">⬜</button>
+            <button class="tool-btn"        id="toolCircle" onclick="setTool('circle')" title="Daire">⭕</button>
+            <button class="tool-btn"        id="toolText"   onclick="setTool('text')"   title="Metin">T</button>
+            <button class="tool-btn"        id="toolEraser" onclick="setTool('eraser')" title="Silgi">🧹</button>
+          </div>
+          <!-- Renk Seçimi -->
+          <div class="color-dots">
+            <div class="cdot selected" style="background:#58a6ff" data-color="#58a6ff" onclick="setColor(this)"></div>
+            <div class="cdot" style="background:#3fb950" data-color="#3fb950" onclick="setColor(this)"></div>
+            <div class="cdot" style="background:#f0883e" data-color="#f0883e" onclick="setColor(this)"></div>
+            <div class="cdot" style="background:#ff7b72" data-color="#ff7b72" onclick="setColor(this)"></div>
+            <div class="cdot" style="background:#bc8cff" data-color="#bc8cff" onclick="setColor(this)"></div>
+            <div class="cdot" style="background:#e6edf3" data-color="#e6edf3" onclick="setColor(this)"></div>
+          </div>
+          <!-- Fırça Kalınlığı -->
+          <div class="scratch-size">
+            <span>Kalınlık</span>
+            <input type="range" id="brushSize" min="1" max="18" value="2" oninput="updateBrush()">
+            <span id="brushVal" style="font-family:var(--mono);color:var(--accent1)">2</span>
+          </div>
+          <!-- Temizle / Geri Al -->
+          <button class="tool-btn" id="toolGrid" onclick="toggleGrid()" title="Izgara Aç/Kapat" style="width:auto;padding:0 8px">⊞ Izgara</button>
+          <button class="tool-btn danger" onclick="clearScratch()" title="Tümünü Temizle" style="width:auto;padding:0 8px">🗑 Temizle</button>
+          <button class="tool-btn" onclick="undoScratch()" title="Geri Al" style="width:auto;padding:0 8px">↩ Geri</button>
+        </div>
+      </div>
+      <canvas id="scratchCanvas"></canvas>
+    </div>
+
   </div>
 </section>
 
@@ -1277,6 +1427,8 @@ function loadT50() {
   document.getElementById('t50ScGr').textContent = '\u2713'+t50Cor;
   document.getElementById('t50ScRd').textContent = '\u2717'+t50Wrg;
   document.getElementById('t50Q').textContent = q.q;
+  var qnumEl = document.getElementById('t50QNum');
+  if(qnumEl) qnumEl.textContent = (t50Idx+1) + ' / ' + T50_Q.length;
   var opts = document.getElementById('t50Opts');
   opts.innerHTML = '';
   var labels = ['A','B','C','D'];
@@ -1301,6 +1453,10 @@ function loadT50() {
   document.getElementById('t50BtnNext').style.display = 'none';
   document.getElementById('t50BtnFin').style.display = 'none';
   updateT50Nums();
+  // Çizim alanını soru paneli yüksekliğiyle eşitle
+  setTimeout(function() {
+    if (typeof syncPanelHeight === 'function') syncPanelHeight();
+  }, 60);
 }
 
 function t50Select(idx) {
@@ -1649,6 +1805,274 @@ function filterCards(cat, btn) {
 // Init
 t50Init();
 buildCards('hepsi');
+
+
+// ═══════════════════════════════════════════════════
+// ÇIZIM ALANI (SCRATCHPAD)
+// ═══════════════════════════════════════════════════
+(function() {
+  var canvas, ctx;
+  var tool = 'pen';
+  var color = '#58a6ff';
+  var brushSize = 2;
+  var drawing = false;
+  var startX = 0, startY = 0;
+  var snapshot = null;     // şekil çizerken anlık kopya
+  var history = [];        // geri al yığını
+  var textMode = false;
+
+  function init() {
+    canvas = document.getElementById('scratchCanvas');
+    if (!canvas) return;
+    ctx = canvas.getContext('2d');
+    resizeCanvas();
+
+    // Fare olayları
+    canvas.addEventListener('mousedown',  onDown);
+    canvas.addEventListener('mousemove',  onMove);
+    canvas.addEventListener('mouseup',    onUp);
+    canvas.addEventListener('mouseleave', onUp);
+
+    // Dokunma olayları
+    canvas.addEventListener('touchstart',  function(e){ e.preventDefault(); onDown(toMouse(e)); }, {passive:false});
+    canvas.addEventListener('touchmove',   function(e){ e.preventDefault(); onMove(toMouse(e)); }, {passive:false});
+    canvas.addEventListener('touchend',    function(e){ e.preventDefault(); onUp();             }, {passive:false});
+
+    window.addEventListener('resize', function() {
+      syncPanelHeight();
+      resizeCanvas();
+    });
+
+    // ResizeObserver: soru paneli boyutu değişince çizim alanını güncelle
+    if (window.ResizeObserver) {
+      var qPanel = document.getElementById('t50QPanel');
+      if (qPanel) {
+        new ResizeObserver(function() {
+          syncPanelHeight();
+        }).observe(qPanel);
+      }
+    }
+
+    // İlk render'da biraz bekle
+    setTimeout(function() { syncPanelHeight(); }, 120);
+  }
+
+  function toMouse(e) {
+    var t = e.touches[0];
+    return { clientX: t.clientX, clientY: t.clientY };
+  }
+
+  function resizeCanvas() {
+    if (!canvas) return;
+    var dpr   = window.devicePixelRatio || 1;
+    var w     = canvas.offsetWidth;
+    var h     = canvas.offsetHeight;
+    if (w < 10 || h < 10) return;
+
+    // Mevcut içeriği koru
+    var saved = null;
+    try { saved = ctx ? ctx.getImageData(0, 0, canvas.width, canvas.height) : null; } catch(e){}
+
+    canvas.width  = w * dpr;
+    canvas.height = h * dpr;
+    ctx = canvas.getContext('2d');
+    ctx.scale(dpr, dpr);
+
+    if (saved && saved.width > 0 && saved.height > 0) {
+      try { ctx.putImageData(saved, 0, 0); } catch(e){}
+    }
+  }
+
+  function syncPanelHeight() {
+    var qPanel  = document.getElementById('t50QPanel');
+    var sPanel  = canvas ? canvas.closest('.scratch-panel') : null;
+    if (!qPanel || !sPanel) return;
+    var h = qPanel.offsetHeight;
+    if (h > 200) {
+      sPanel.style.height = h + 'px';
+      resizeCanvas();
+    }
+  }
+
+  function getPos(e) {
+    var r = canvas.getBoundingClientRect();
+    return {
+      x: (e.clientX - r.left),
+      y: (e.clientY - r.top)
+    };
+  }
+
+  function pushHistory() {
+    history.push(ctx.getImageData(0, 0, canvas.width, canvas.height));
+    if (history.length > 40) history.shift();
+  }
+
+  function onDown(e) {
+    var p = getPos(e);
+    startX = p.x; startY = p.y;
+    drawing = true;
+
+    if (tool === 'text') {
+      var txt = prompt('Metin gir:');
+      if (txt) {
+        pushHistory();
+        ctx.fillStyle = color;
+        ctx.font = 'bold ' + (brushSize * 6 + 10) + 'px Nunito, sans-serif';
+        ctx.fillText(txt, p.x, p.y);
+      }
+      drawing = false;
+      return;
+    }
+
+    if (tool === 'pen' || tool === 'eraser') {
+      pushHistory();
+      ctx.beginPath();
+      ctx.moveTo(p.x, p.y);
+    } else {
+      // Şekil araçları: anlık kopya al
+      snapshot = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    }
+  }
+
+  function onMove(e) {
+    if (!drawing) return;
+    var p = getPos(e);
+
+    if (tool === 'pen') {
+      ctx.strokeStyle = color;
+      ctx.lineWidth   = brushSize;
+      ctx.lineCap     = 'round';
+      ctx.lineJoin    = 'round';
+      ctx.lineTo(p.x, p.y);
+      ctx.stroke();
+    } else if (tool === 'eraser') {
+      ctx.strokeStyle = getComputedStyle(canvas).backgroundColor || '#1c2333';
+      ctx.lineWidth   = brushSize * 5;
+      ctx.lineCap     = 'round';
+      ctx.lineTo(p.x, p.y);
+      ctx.stroke();
+    } else {
+      // Şekil çizimi: önceki kopyayı restore et, yeni şekli üstüne çiz
+      ctx.putImageData(snapshot, 0, 0);
+      ctx.strokeStyle = color;
+      ctx.lineWidth   = brushSize;
+      ctx.lineCap     = 'round';
+
+      if (tool === 'line') {
+        ctx.beginPath();
+        ctx.moveTo(startX, startY);
+        ctx.lineTo(p.x, p.y);
+        ctx.stroke();
+      } else if (tool === 'rect') {
+        ctx.beginPath();
+        ctx.strokeRect(startX, startY, p.x - startX, p.y - startY);
+      } else if (tool === 'circle') {
+        var rx = Math.abs(p.x - startX) / 2;
+        var ry = Math.abs(p.y - startY) / 2;
+        var cx = startX + (p.x - startX) / 2;
+        var cy = startY + (p.y - startY) / 2;
+        ctx.beginPath();
+        ctx.ellipse(cx, cy, rx, ry, 0, 0, Math.PI * 2);
+        ctx.stroke();
+      }
+    }
+  }
+
+  function onUp() {
+    if (!drawing) return;
+    drawing = false;
+    if (tool === 'line' || tool === 'rect' || tool === 'circle') {
+      pushHistory();
+    }
+    ctx.beginPath();
+  }
+
+  // Global fonksiyonlar — butonlardan çağrılır
+  window.setTool = function(t) {
+    tool = t;
+    document.querySelectorAll('.tool-btn[id^="tool"]').forEach(function(b) {
+      b.classList.remove('active');
+    });
+    var el = document.getElementById('tool' + t.charAt(0).toUpperCase() + t.slice(1));
+    if (el) el.classList.add('active');
+    canvas.style.cursor = t === 'eraser' ? 'cell' : t === 'text' ? 'text' : 'crosshair';
+  };
+
+  window.setColor = function(el) {
+    color = el.getAttribute('data-color');
+    document.querySelectorAll('.cdot').forEach(function(d){ d.classList.remove('selected'); });
+    el.classList.add('selected');
+  };
+
+  window.updateBrush = function() {
+    brushSize = parseInt(document.getElementById('brushSize').value);
+    document.getElementById('brushVal').textContent = brushSize;
+  };
+
+  window.clearScratch = function() {
+    if (!ctx) return;
+    pushHistory();
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  };
+
+  window.undoScratch = function() {
+    if (!ctx || history.length === 0) return;
+    ctx.putImageData(history.pop(), 0, 0);
+  };
+
+  var gridOn = false;
+
+  window.toggleGrid = function() {
+    gridOn = !gridOn;
+    var btn = document.getElementById('toolGrid');
+    if (btn) btn.classList.toggle('active', gridOn);
+    var overlay = document.getElementById('gridOverlay');
+    if (!gridOn) {
+      if (overlay) overlay.style.display = 'none';
+      return;
+    }
+    if (!overlay) {
+      overlay = document.createElement('canvas');
+      overlay.id = 'gridOverlay';
+      overlay.style.cssText = 'position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;';
+      var sp = canvas ? canvas.parentElement : null;
+      if (sp) { sp.style.position = 'relative'; sp.appendChild(overlay); }
+    }
+    overlay.style.display = 'block';
+    var dpr = window.devicePixelRatio || 1;
+    var cw = canvas ? canvas.offsetWidth : 400;
+    var ch = canvas ? canvas.offsetHeight : 400;
+    overlay.width  = cw * dpr;
+    overlay.height = ch * dpr;
+    overlay.style.width  = cw + 'px';
+    overlay.style.height = ch + 'px';
+    var gc = overlay.getContext('2d');
+    gc.scale(dpr, dpr);
+    gc.clearRect(0, 0, cw, ch);
+    var step = 30;
+    gc.strokeStyle = '#58a6ff';
+    gc.lineWidth = 0.6;
+    gc.globalAlpha = 0.25;
+    for (var x = step; x < cw; x += step) {
+      gc.beginPath(); gc.moveTo(x, 0); gc.lineTo(x, ch); gc.stroke();
+    }
+    for (var y = step; y < ch; y += step) {
+      gc.beginPath(); gc.moveTo(0, y); gc.lineTo(cw, y); gc.stroke();
+    }
+    gc.globalAlpha = 1;
+  };
+
+  window.resizeScratchToQ = function() {
+    if (canvas) resizeCanvas();
+  };
+
+  // DOM hazır olunca başlat
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    setTimeout(init, 200);
+  }
+})();
 
 </script>
 </body>
