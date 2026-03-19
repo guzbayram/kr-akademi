@@ -948,10 +948,14 @@
   body.tahta-open #split-view #main-area { min-width: 5%; overflow-y: auto; }
   body.tahta-open #sketchpad-overlay { display: none; }
 
-  /* Sol içerik tablet gibi zoom destekli */
+  /* Sol içerik zoom destekli */
   body.tahta-open #main-area {
-    touch-action: pan-y pinch-zoom;
     -webkit-overflow-scrolling: touch;
+    overflow: auto;
+  }
+  #page-wrapper-inner {
+    transform-origin: top center;
+    transition: transform 0.15s ease;
   }
 
   /* Toolbar */
@@ -1060,6 +1064,10 @@
   <div class="stat-group"><span class="stat-icon">📈</span><span class="stat-label">Başarı:</span><span class="stat-val" id="stat-pct">—</span></div>
   <div id="stat-bar-wrap"><div id="stat-bar-fill"></div></div>
   <button class="stat-reset-btn" onclick="resetAll()">🔄 Sıfırla</button>
+  <button id="page-zoom-out" onclick="pageZoom(-0.1)" title="Sayfayı küçült (Ctrl+−)" style="background:#ede8fb;border:1.5px solid #c9b8ea;color:#3d2a80;border-radius:6px;padding:3px 8px;font-size:12px;font-weight:700;cursor:pointer;">🔍−</button>
+  <span id="page-zoom-label" style="font-size:11px;min-width:36px;text-align:center;color:#555;font-weight:700;">100%</span>
+  <button id="page-zoom-in"  onclick="pageZoom(+0.1)" title="Sayfayı büyüt (Ctrl++)" style="background:#ede8fb;border:1.5px solid #c9b8ea;color:#3d2a80;border-radius:6px;padding:3px 8px;font-size:12px;font-weight:700;cursor:pointer;">🔍+</button>
+  <button id="page-zoom-reset" onclick="pageZoomReset()" title="Sayfa zoom sıfırla (Ctrl+0)" style="background:#ede8fb;border:1.5px solid #c9b8ea;color:#3d2a80;border-radius:6px;padding:3px 8px;font-size:12px;font-weight:700;cursor:pointer;">⊙</button>
   <button id="sketchpad-btn" onclick="toggleSketchpad()">✏️ Tahta</button>
 </div>
 
@@ -1078,6 +1086,7 @@
   </div>
 </div>
 
+  <div id="page-wrapper-inner">
   <div class="page-wrapper">
 
   <!-- ============================================================ -->
@@ -10459,6 +10468,7 @@ YUZDE_KKT2_GENEL = '''
 
 
 </div><!-- /page-wrapper -->
+  </div><!-- /page-wrapper-inner -->
 </div><!-- /main-area -->
 
 <!-- BÖLME ÇUBUĞU -->
@@ -11474,6 +11484,86 @@ document.addEventListener('keydown', (e) => {
       pw.style.marginRight = 'auto';
     });
   }
+})();
+
+// ═══════════════════════════════════════════════════════
+//  SAYFA ZOOM
+// ═══════════════════════════════════════════════════════
+(function() {
+  let pgScale = 1;
+  const MIN = 0.3, MAX = 3, STEP = 0.1;
+  const inner = document.getElementById('page-wrapper-inner');
+  const label = document.getElementById('page-zoom-label');
+  const mainArea = document.getElementById('main-area');
+
+  function applyPageZoom() {
+    if (!inner) return;
+    inner.style.transform = `scale(${pgScale})`;
+    inner.style.transformOrigin = 'top center';
+    // İçerik büyüyünce scroll alanını ayarla
+    inner.style.width = '100%';
+    if (label) label.textContent = Math.round(pgScale * 100) + '%';
+  }
+
+  window.pageZoom = function(delta) {
+    pgScale = Math.min(MAX, Math.max(MIN, +(pgScale + delta).toFixed(2)));
+    applyPageZoom();
+  };
+
+  window.pageZoomReset = function() {
+    pgScale = 1;
+    applyPageZoom();
+  };
+
+  // Ctrl + Tekerlek ile zoom (sayfa alanında)
+  if (mainArea) {
+    mainArea.addEventListener('wheel', (e) => {
+      if (!e.ctrlKey && !e.metaKey) return;
+      e.preventDefault();
+      pageZoom(e.deltaY < 0 ? STEP : -STEP);
+    }, { passive: false });
+  }
+
+  // Pinch zoom (mobil / tablet)
+  let lastDist = null;
+  document.addEventListener('touchstart', (e) => {
+    if (e.target.closest('#sketchpad-panel')) return;
+    if (e.touches.length === 2) {
+      lastDist = Math.hypot(
+        e.touches[0].clientX - e.touches[1].clientX,
+        e.touches[0].clientY - e.touches[1].clientY
+      );
+    }
+  }, { passive: true });
+
+  document.addEventListener('touchmove', (e) => {
+    if (e.target.closest('#sketchpad-panel')) return;
+    if (e.touches.length === 2 && lastDist !== null) {
+      const dist = Math.hypot(
+        e.touches[0].clientX - e.touches[1].clientX,
+        e.touches[0].clientY - e.touches[1].clientY
+      );
+      const delta = (dist - lastDist) / 300;
+      if (Math.abs(delta) > 0.005) {
+        pgScale = Math.min(MAX, Math.max(MIN, +(pgScale + delta).toFixed(3)));
+        applyPageZoom();
+        lastDist = dist;
+      }
+      e.preventDefault();
+    }
+  }, { passive: false });
+
+  document.addEventListener('touchend', () => { lastDist = null; });
+
+  // Klavye kısayolları
+  document.addEventListener('keydown', (e) => {
+    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+    if (e.ctrlKey || e.metaKey) {
+      if (e.key === '=' || e.key === '+') { e.preventDefault(); pageZoom(STEP); }
+      if (e.key === '-')                  { e.preventDefault(); pageZoom(-STEP); }
+      if (e.key === '0')                  { e.preventDefault(); pageZoomReset(); }
+    }
+  });
 })();
 
 </script>
